@@ -11,7 +11,8 @@ Luís Eduardo Dorneles Fauth 13679436_<br>
 O projeto consiste na elaboração de uma plataforma de e-commerce voltada para a compra e venda de produtos por meio de um sistema de subscrição. A plataforma será dedicada a conectar compradores e vendedores, permitindo que os consumidores adquiram pacotes periódicos de produtos de lojas específicas.<br>
 	Assim, este projeto visa criar uma plataforma de e-commerce inovadora que combina a conveniência das compras online com um sistema de subscrição. Ao focar em uma experiência de usuário simplificada e em uma gestão eficiente de subscrições, a plataforma oferece aos consumidores uma nova forma de adquirir produtos de suas lojas preferidas de maneira contínua e personalizada. A atenção à segurança, desempenho, e usabilidade garantirá que a plataforma seja confiável e atraente para todos os usuários.
 
-**Nome adotado para a plataforma:** MyBox
+**Nome adotado para a plataforma:** MyBox <br>
+**Figma Link:** https://www.figma.com/proto/K7wcsNdh4D18uQggwRcw3F/MyBox?node-id=0-1&t=erScI8Fkic8k3lhP-1
 	
 ## Atores do Sistema
 
