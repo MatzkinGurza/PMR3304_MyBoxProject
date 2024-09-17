@@ -1,6 +1,6 @@
 # Proposta de Sistema: Plataforma de E-Commerce por Subscrição
 
-_Grupo F:
+_Grupo F:<br>
 Mateus Matzkin Gurza 6010281<br>
 Gustavo Loiola dos Santos 13681784<br>
 Vinicius Barile Lora Franco 13679930<br>
