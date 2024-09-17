@@ -72,12 +72,14 @@ O projeto consiste na elaboração de uma plataforma de e-commerce voltada para 
 
 ## Casos de uso
 A seguir será abordada a questão dos casos de uso do sistema, indicando o fluxo de informações entre telas presentes nele. Note que múltiplos fluxos de navegação serão possíveis.<br>
+
 **Sequência inicial de fluxo de dados e telas:**
+
 - _Telas:_ [1] tela comum de entrada (inicial MyBox) sem usuário logado -> [2] tela de entrada de usuário -> [2.a] tela para login ou [2.b] tela para cadastro -> [3] tela inicial MyBox comusuário logado
 	- Opções de sequência:
-   		- _Pesquisa de Loja_ -> [3.1] tela de loja -> [3.2] tela de produto (box) -> [3.3] tela de confirmação de compra
-       		- _Pesquisa de produto_ -> Produto aparece na página principal MyBox
-       		- _Carrinho de compras_ -> [3.1] tela de carrinho de compras/subscrições e gerenciamento de subscrições -> [3.2] tela de cadastro ou alterações de informações de pagamento e informações de usuário
+		- _Pesquisa de Loja_ -> [3.1] tela de loja -> [3.2] tela de produto (box) -> [3.3] tela de confirmação de compra
+		- _Pesquisa de produto_ -> Produto aparece na página principal MyBox
+		- _Carrinho de compras_ -> [3.1] tela de carrinho de compras/subscrições e gerenciamento de subscrições -> [3.2] tela de cadastro ou alterações de informações de pagamento e informações de usuário
 
            
        
