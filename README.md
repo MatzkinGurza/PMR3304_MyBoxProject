@@ -91,7 +91,7 @@ A seguir será abordada a questão dos casos de uso do sistema, indicando o flux
 		- E-mail
 		- Telefone
 		- CPF
-		- Idade
+		- Data de nascimento
 		- Gênero
 		- Endereço
 		- Complemento
