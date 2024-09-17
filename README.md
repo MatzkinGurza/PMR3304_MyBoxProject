@@ -101,8 +101,8 @@ A seguir será abordada a questão dos casos de uso do sistema, indicando o flux
 		- ID de pacote
 		- Usuário
 		- Tempo (tempo de subscrição)
- 		- Data de compra
-     		- Data de fim
+ 		- Data de compra (momento de início da subscrição)
+		- Data de fim (momento de encerramento da subscrição)  
 		- Status (subscrição, ativa ou inativa)
 	- Dados de pacote [fornecidos a 3.2.a com informações provindas do input ou alteração em 3.1.d] dados obtidos são enviados para uma tabela com as informações relevantes do pacote -> tabela "Dados de pacote":
 		- ID de pacote
