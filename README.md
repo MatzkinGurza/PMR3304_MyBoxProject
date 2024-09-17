@@ -75,7 +75,7 @@ A seguir será abordada a questão dos casos de uso do sistema, indicando o flux
 
 **Sequência inicial de fluxo de dados e telas:**
 
-- _Telas:_ [1] tela comum de entrada (inicial MyBox) sem usuário logado -> [2] tela de entrada de usuário -> [2.a] tela para login ou [2.b] tela para cadastro -> [3] tela inicial MyBox comusuário logado
+- _Telas:_ [1] tela comum de entrada (inicial MyBox) sem usuário logado -> [2] tela de entrada de usuário -> [2.a] tela para login ou [2.b] tela para cadastro -> [3] tela inicial MyBox com usuário logado
 	- Opções de sequência:
 		- _Pesquisa de Loja_ -> [3.1] tela de loja -> [3.2] tela de produto (box) -> [3.3] tela de confirmação de compra
 		- _Pesquisa de produto_ -> Produto aparece na página principal MyBox
