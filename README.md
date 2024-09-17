@@ -92,7 +92,7 @@ A seguir será abordada a questão dos casos de uso do sistema, indicando o flux
 		- Telefone
 		- CPF
 		- Data de nascimento
-		- Gênero
+		- Sexo (de nascimento)
 		- Endereço
 		- Complemento
 		- CEP
