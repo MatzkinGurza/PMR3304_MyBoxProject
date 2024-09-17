@@ -77,9 +77,42 @@ A seguir será abordada a questão dos casos de uso do sistema, indicando o flux
 
 - _Telas:_ [1] tela comum de entrada (inicial MyBox) sem usuário logado -> [2] tela de entrada de usuário -> [2.a] tela para login ou [2.b] tela para cadastro -> [3] tela inicial MyBox com usuário logado
 	- Opções de sequência:
-		- _Pesquisa de Loja_ -> [3.1] tela de loja -> [3.2] tela de produto (box) -> [3.3] tela de confirmação de compra
-		- _Pesquisa de produto_ -> Produto aparece na página principal MyBox
-		- _Carrinho de compras_ -> [3.1] tela de carrinho de compras/subscrições e gerenciamento de subscrições -> [3.2] tela de cadastro ou alterações de informações de pagamento e informações de usuário
-
-           
-       
+		- _Pesquisa de Loja_ -> [3.1.a] tela de loja -> [3.2.a] tela de produto (box) -> [3.3.a] tela de confirmação de compra
+		- _Pesquisa de produto_ -> [3.1.b] produto aparece na página principal MyBox
+		- _Carrinho de compras_ -> [3.1.c] tela de carrinho de compras/subscrições e gerenciamento de subscrições -> [3.2.c] tela de cadastro ou alterações de informações de pagamento e informações de usuário
+		-_Exclusivo para **Vendedor**_ -> [3.1.d] página de edição e adição de pacotes e configuração da página da loja
+ 
+- _Fluxo de dados_:
+	- Dados Pessoais [obtidos em 2.b ou checados em 2.a] vão da interface para o banco de dados -> tabela "Dados Pessoais":
+		- Usuário
+		- Agente (tipo de agente, comprador ou vendedor)   
+		- Nome
+		- Sobrenome
+		- E-mail
+		- Telefone
+		- CPF
+		- Idade
+		- Gênero
+		- Endereço
+		- Complemento
+		- CEP
+	- Subscrições [obtidas em 3.3.a ao confirma-se a compra] dados obtidos são encaminhados para um banco que guarda as subscrições atuais -> tabela "Subscrições":
+		- ID de compra
+		- ID de pacote
+		- Usuário
+		- Tempo (tempo de subscrição)
+ 		- Data de compra
+     		- Data de fim
+		- Status (subscrição, ativa ou inativa)
+	- Dados de pacote [fornecidos a 3.2.a com informações provindas do input ou alteração em 3.1.d] dados obtidos são enviados para uma tabela com as informações relevantes do pacote -> tabela "Dados de pacote":
+		- ID de pacote
+		- Descrição
+		- Preço 
+		- Usuário_vendedor    
+	- Dados sensíveis [Utilizados em 3.1.c e obtidos em 3.2.c] dados sensíveis protegidos -> tabela "Dados sensíveis":
+		- Usuário
+		- Senha
+		- Forma de pagamento
+		- Titular do cartão
+		- Número do cartão
+		- Pin do cartão       
