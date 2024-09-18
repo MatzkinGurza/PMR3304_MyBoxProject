@@ -108,7 +108,8 @@ A seguir será abordada a questão dos casos de uso do sistema, indicando o flux
 		- ID de pacote
 		- Descrição
 		- Preço 
-		- Usuário_vendedor    
+		- Usuário_vendedor
+		- Imagem    
 	- Dados sensíveis [Utilizados em 3.1.c e obtidos em 3.2.c] dados sensíveis protegidos -> tabela "Dados sensíveis":
 		- Usuário
 		- Senha
