@@ -70,7 +70,7 @@ O projeto consiste na elaboração de uma plataforma de e-commerce voltada para 
    - Facilidade de integração com novos métodos de pagamento e outros serviços terceirizados.
 ---
 
-## Casos de uso
+## Esquema simplificado de interação:
 A seguir será abordada a questão dos casos de uso do sistema, indicando o fluxo de informações entre telas presentes nele. Note que múltiplos fluxos de navegação serão possíveis.<br>
 
 **Sequência inicial de fluxo de dados e telas:**
