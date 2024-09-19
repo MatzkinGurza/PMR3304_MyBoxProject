@@ -70,53 +70,48 @@ O projeto consiste na elaboração de uma plataforma de e-commerce voltada para 
    - Facilidade de integração com novos métodos de pagamento e outros serviços terceirizados.
 ---
 
-## Esquema simplificado de interação:
-A seguir será abordada a questão dos casos de uso do sistema, indicando o fluxo de informações entre telas presentes nele. Note que múltiplos fluxos de navegação serão possíveis.<br>
+| **Tabela**         | **Dado Armazenado**     | **Casos de Uso (Dado Obtido)** | **Casos de Uso (Dado Utilizado)** |
+|--------------------|-------------------------|--------------------------------|----------------------------------|
+| Usuário            | Nome                    | 1 (Cadastro de Usuário)        | 4 (Atualização de Perfil de Usuário) |
+| Usuário            | Sobrenome                | 1 (Cadastro de Usuário)        | 4 (Atualização de Perfil de Usuário) |
+| Usuário            | E-mail Usuário           | 1 (Cadastro de Usuário)        | 2 (Login no Sistema), 3 (Recuperação de Senha), 4 (Atualização de Perfil), 20 (Notificações de Subscrição) |
+| Usuário            | Telefone                | 1 (Cadastro de Usuário)        | 4 (Atualização de Perfil de Usuário) |
+| Usuário            | CPF                      | 1 (Cadastro de Usuário)        | 4 (Atualização de Perfil de Usuário) |
+| Usuário            | Data de nascimento       | 1 (Cadastro de Usuário)        | 4 (Atualização de Perfil de Usuário) |
+| Usuário            | Sexo                     | 1 (Cadastro de Usuário)        | 4 (Atualização de Perfil de Usuário) |
+| Usuário            | Endereço                 | 1 (Cadastro de Usuário)        | 12 (Gerenciar Informações de Pagamento e Endereço) |
+| Usuário            | Complemento              | 1 (Cadastro de Usuário)        | 12 (Gerenciar Informações de Pagamento e Endereço) |
+| Usuário            | CEP                      | 1 (Cadastro de Usuário)        | 12 (Gerenciar Informações de Pagamento e Endereço) |
+| Usuário            | Senha                    | 1 (Cadastro de Usuário)        | 2 (Login no Sistema), 3 (Recuperação de Senha), 4 (Atualização de Perfil de Usuário) |
+| Agente             | Tipo de Agente (comprador/vendedor) | 1 (Cadastro de Usuário)  | 2 (Login no Sistema), 13 (Criar e Gerenciar Pacotes), 5 (Navegar em Lojas e Produtos) |
+| Loja               | Nome Loja                | 1 (Cadastro de Usuário, se vendedor) | 19 (Gerenciar Configurações da Loja) |
+| Loja               | E-mail Loja              | 1 (Cadastro de Usuário, se vendedor) | 14 (Acompanhar Vendas e Subscrições), 19 (Gerenciar Configurações da Loja) |
+| Loja               | CNPJ                     | 1 (Cadastro de Usuário, se vendedor) | 4 (Atualização de Perfil) |
+| Loja               | Imagem_logo              | 19 (Gerenciar Configurações da Loja) | 19 (Gerenciar Configurações da Loja) |
+| Loja               | Imagem de plano de fundo | 19 (Gerenciar Configurações da Loja) | 19 (Gerenciar Configurações da Loja) |
+| Pacote             | ID de Pacote             | 7 (Adicionar Pacote ao Carrinho) | 9 (Finalizar Compra), 14 (Acompanhar Vendas e Subscrições) |
+| Pacote             | Descrição do pacote      | 13 (Criar e Gerenciar Pacotes)  | 5 (Navegar em Lojas e Produtos), 9 (Finalizar Compra) |
+| Pacote             | Preço do pacote          | 13 (Criar e Gerenciar Pacotes)  | 7 (Adicionar Pacote ao Carrinho), 9 (Finalizar Compra) |
+| Pacote             | Imagem do pacote         | 13 (Criar e Gerenciar Pacotes)  | 5 (Navegar em Lojas e Produtos) |
+| Subscrição         | ID de compra             | 9 (Finalizar Compra)            | 11 (Visualizar Histórico de Compras), 14 (Acompanhar Vendas e Subscrições) |
+| Subscrição         | Tempo (duração)          | 7 (Adicionar Pacote ao Carrinho) | 9 (Finalizar Compra), 14 (Acompanhar Vendas e Subscrições) |
+| Subscrição         | Data de compra           | 9 (Finalizar Compra)            | 11 (Visualizar Histórico de Compras), 14 (Acompanhar Vendas e Subscrições) |
+| Subscrição         | Data de fim              | 7 (Adicionar Pacote ao Carrinho) | 14 (Acompanhar Vendas e Subscrições), 20 (Notificações de Subscrição) |
+| Subscrição         | Status                   | 14 (Acompanhar Vendas e Subscrições) | 10 (Gerenciar Subscrições) |
+| Pagamento          | Forma de pagamento       | 9 (Finalizar Compra)            | 12 (Gerenciar Informações de Pagamento), 18 (Processar Pagamento de Subscrição) |
+| Pagamento          | Titular do cartão        | 9 (Finalizar Compra)            | 12 (Gerenciar Informações de Pagamento) |
+| Pagamento          | Número do cartão         | 9 (Finalizar Compra)            | 12 (Gerenciar Informações de Pagamento) |
+| Pagamento          | Pin do cartão            | 9 (Finalizar Compra)            | 12 (Gerenciar Informações de Pagamento) |
 
-**Sequência inicial de fluxo de dados e telas:**
+Tabela 1: Mapeamento de dados coletados e utilizados nos casos de uso do e-commerce por subscrição.
 
-- _Telas:_ [1] tela comum de entrada (inicial MyBox) sem usuário logado -> [2] tela de entrada de usuário -> [2.a] tela para login ou [2.b.a] tela para cadastro para comprador ou [2.b.b] tela para cadastro para vendedor -> [3] tela inicial MyBox com usuário logado
-	- Opções de sequência:
-		- _Pesquisa de Loja_ -> [3.1.a] tela de loja -> [3.2.a] tela de produto (box) -> [3.3.a] tela de confirmação de compra
-		- _Pesquisa de produto_ -> [3.1.b] produto aparece na página principal MyBox
-		- _Carrinho de compras_ -> [3.1.c] tela de carrinho de compras/subscrições e gerenciamento de subscrições -> [3.2.c] tela de cadastro ou alterações de informações de pagamento e informações de usuário
-		-_Exclusivo para **Vendedor**_ -> [3.1.d] página de edição e adição de pacotes e configuração da página da loja
- 
-- _Fluxo de dados_:
-	- Dados Pessoais [obtidos em 2.b ou checados em 2.a] vão da interface para o banco de dados -> tabela "Dados Pessoais":
-		- Usuário
-		- Agente (tipo de agente, comprador ou vendedor)   
-		- Nome
-		- Loja (se for vendedor)    
-		- Sobrenome
-		- E-mail Usuário
-		- E-mail Loja (se for vendedor)    
-		- Telefone
-		- CPF
-		- CNPJ (se for vendedor)   
-		- Data de nascimento
-		- Sexo (de nascimento)
-		- Endereço
-		- Complemento
-		- CEP
-	- Subscrições [obtidas em 3.3.a ao confirma-se a compra] dados obtidos são encaminhados para um banco que guarda as subscrições atuais -> tabela "Subscrições":
-		- ID de compra
-		- ID de pacote
-		- Usuário
-		- Tempo (tempo de subscrição)
- 		- Data de compra (momento de início da subscrição)
-		- Data de fim (momento de encerramento da subscrição)  
-		- Status (subscrição, ativa ou inativa)
-	- Dados de pacote [fornecidos a 3.2.a com informações provindas do input ou alteração em 3.1.d] dados obtidos são enviados para uma tabela com as informações relevantes do pacote -> tabela "Dados de pacote":
-		- ID de pacote
-		- Descrição
-		- Preço 
-		- Usuário_vendedor
-		- Imagem    
-	- Dados sensíveis [Utilizados em 3.1.c e obtidos em 3.2.c] dados sensíveis protegidos -> tabela "Dados sensíveis":
-		- Usuário
-		- Senha
-		- Forma de pagamento
-		- Titular do cartão
-		- Número do cartão
-		- Pin do cartão       
+| **Tabela**   | **Dados Presentes**                                                                                      | **Key**            |
+|--------------|----------------------------------------------------------------------------------------------------------|--------------------|
+| Usuário      | Nome, Sobrenome, E-mail, Telefone, CPF, Data de nascimento, Sexo, Endereço, Complemento, CEP, Senha        | ID_Usuário         |
+| Agente       | Tipo de Agente (comprador/vendedor), ID_Usuário                                                           | ID_Agente          |
+| Loja         | Nome da loja, E-mail, CNPJ, Imagem_logo, Imagem de plano de fundo                                         | ID_Loja            |
+| Pacote       | ID_Pacote, Descrição do Pacote, Preço, Imagem                                                             | ID_Pacote          |
+| Subscrição   | ID_Compra, Tempo (duração), Data de compra, Data de fim, Status, ID_Pacote, ID_Usuário                    | ID_Compra          |
+| Pagamento    | Forma de pagamento, Titular do cartão, Número do cartão, Pin do cartão, ID_Compra, ID_Usuário             | ID_Pagamento       |
+
+Tabela 2: Estrutura das tabelas, com dados presentes e chaves primárias para relacionamentos.
