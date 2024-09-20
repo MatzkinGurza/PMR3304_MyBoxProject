@@ -114,3 +114,7 @@ Tabela 1: Mapeamento de dados coletados e utilizados nos casos de uso do e-comme
 | Pagamento    | Forma de pagamento, Titular do cartão, Número do cartão, Pin do cartão, ID_Compra, ID_Usuário             | ID_Pagamento       |
 
 Tabela 2: Estrutura das tabelas, com dados presentes e chaves primárias para relacionamentos.
+
+## Esboço inicial
+Na tentativa de tornar o trabalho feito até então mais visual e interativo, foi elaborado conjuntamente a seguinte prototipagem interativa do site: 
+https://www.figma.com/proto/K7wcsNdh4D18uQggwRcw3F/MyBox?node-id=1-1745&node-type=frame&t=Ni9OPdg8exw7GAox-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A1745
