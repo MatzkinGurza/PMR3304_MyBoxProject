@@ -1,6 +1,6 @@
 # Proposta de Sistema: Plataforma de E-Commerce por Subscrição
 
-_Grupo F:
+_Grupo F:<br>
 Mateus Matzkin Gurza 6010281<br>
 Gustavo Loiola dos Santos 13681784<br>
 Vinicius Barile Lora Franco 13679930<br>
@@ -11,7 +11,7 @@ Luís Eduardo Dorneles Fauth 13679436_<br>
 O projeto consiste na elaboração de uma plataforma de e-commerce voltada para a compra e venda de produtos por meio de um sistema de subscrição. A plataforma será dedicada a conectar compradores e vendedores, permitindo que os consumidores adquiram pacotes periódicos de produtos de lojas específicas.<br>
 	Assim, este projeto visa criar uma plataforma de e-commerce inovadora que combina a conveniência das compras online com um sistema de subscrição. Ao focar em uma experiência de usuário simplificada e em uma gestão eficiente de subscrições, a plataforma oferece aos consumidores uma nova forma de adquirir produtos de suas lojas preferidas de maneira contínua e personalizada. A atenção à segurança, desempenho, e usabilidade garantirá que a plataforma seja confiável e atraente para todos os usuários.
 
-**Nome adotado para a plataforma:** MyBox
+**Nome adotado para a plataforma:** MyBox <br>
 	
 ## Atores do Sistema
 
@@ -67,4 +67,54 @@ O projeto consiste na elaboração de uma plataforma de e-commerce voltada para 
 ### 4. Escalabilidade:
    - A arquitetura do sistema deve suportar o crescimento da base de usuários e do volume de transações.
    - Facilidade de integração com novos métodos de pagamento e outros serviços terceirizados.
+---
 
+| **Tabela**         | **Dado Armazenado**     | **Casos de Uso (Dado Obtido)** | **Casos de Uso (Dado Utilizado)** |
+|--------------------|-------------------------|--------------------------------|----------------------------------|
+| Usuário            | Nome                    | 1 (Cadastro de Usuário)        | 4 (Atualização de Perfil de Usuário) |
+| Usuário            | Sobrenome                | 1 (Cadastro de Usuário)        | 4 (Atualização de Perfil de Usuário) |
+| Usuário            | E-mail Usuário           | 1 (Cadastro de Usuário)        | 2 (Login no Sistema), 3 (Recuperação de Senha), 4 (Atualização de Perfil), 20 (Notificações de Subscrição) |
+| Usuário            | Telefone                | 1 (Cadastro de Usuário)        | 4 (Atualização de Perfil de Usuário) |
+| Usuário            | CPF                      | 1 (Cadastro de Usuário)        | 4 (Atualização de Perfil de Usuário) |
+| Usuário            | Data de nascimento       | 1 (Cadastro de Usuário)        | 4 (Atualização de Perfil de Usuário) |
+| Usuário            | Sexo                     | 1 (Cadastro de Usuário)        | 4 (Atualização de Perfil de Usuário) |
+| Usuário            | Endereço                 | 1 (Cadastro de Usuário)        | 12 (Gerenciar Informações de Pagamento e Endereço) |
+| Usuário            | Complemento              | 1 (Cadastro de Usuário)        | 12 (Gerenciar Informações de Pagamento e Endereço) |
+| Usuário            | CEP                      | 1 (Cadastro de Usuário)        | 12 (Gerenciar Informações de Pagamento e Endereço) |
+| Usuário            | Senha                    | 1 (Cadastro de Usuário)        | 2 (Login no Sistema), 3 (Recuperação de Senha), 4 (Atualização de Perfil de Usuário) |
+| Agente             | Tipo de Agente (comprador/vendedor) | 1 (Cadastro de Usuário)  | 2 (Login no Sistema), 13 (Criar e Gerenciar Pacotes), 5 (Navegar em Lojas e Produtos) |
+| Loja               | Nome Loja                | 1 (Cadastro de Usuário, se vendedor) | 19 (Gerenciar Configurações da Loja) |
+| Loja               | E-mail Loja              | 1 (Cadastro de Usuário, se vendedor) | 14 (Acompanhar Vendas e Subscrições), 19 (Gerenciar Configurações da Loja) |
+| Loja               | CNPJ                     | 1 (Cadastro de Usuário, se vendedor) | 4 (Atualização de Perfil) |
+| Loja               | Imagem_logo              | 19 (Gerenciar Configurações da Loja) | 19 (Gerenciar Configurações da Loja) |
+| Loja               | Imagem de plano de fundo | 19 (Gerenciar Configurações da Loja) | 19 (Gerenciar Configurações da Loja) |
+| Pacote             | ID de Pacote             | 7 (Adicionar Pacote ao Carrinho) | 9 (Finalizar Compra), 14 (Acompanhar Vendas e Subscrições) |
+| Pacote             | Descrição do pacote      | 13 (Criar e Gerenciar Pacotes)  | 5 (Navegar em Lojas e Produtos), 9 (Finalizar Compra) |
+| Pacote             | Preço do pacote          | 13 (Criar e Gerenciar Pacotes)  | 7 (Adicionar Pacote ao Carrinho), 9 (Finalizar Compra) |
+| Pacote             | Imagem do pacote         | 13 (Criar e Gerenciar Pacotes)  | 5 (Navegar em Lojas e Produtos) |
+| Subscrição         | ID de compra             | 9 (Finalizar Compra)            | 11 (Visualizar Histórico de Compras), 14 (Acompanhar Vendas e Subscrições) |
+| Subscrição         | Tempo (duração)          | 7 (Adicionar Pacote ao Carrinho) | 9 (Finalizar Compra), 14 (Acompanhar Vendas e Subscrições) |
+| Subscrição         | Data de compra           | 9 (Finalizar Compra)            | 11 (Visualizar Histórico de Compras), 14 (Acompanhar Vendas e Subscrições) |
+| Subscrição         | Data de fim              | 7 (Adicionar Pacote ao Carrinho) | 14 (Acompanhar Vendas e Subscrições), 20 (Notificações de Subscrição) |
+| Subscrição         | Status                   | 14 (Acompanhar Vendas e Subscrições) | 10 (Gerenciar Subscrições) |
+| Pagamento          | Forma de pagamento       | 9 (Finalizar Compra)            | 12 (Gerenciar Informações de Pagamento), 18 (Processar Pagamento de Subscrição) |
+| Pagamento          | Titular do cartão        | 9 (Finalizar Compra)            | 12 (Gerenciar Informações de Pagamento) |
+| Pagamento          | Número do cartão         | 9 (Finalizar Compra)            | 12 (Gerenciar Informações de Pagamento) |
+| Pagamento          | Pin do cartão            | 9 (Finalizar Compra)            | 12 (Gerenciar Informações de Pagamento) |
+
+Tabela 1: Mapeamento de dados coletados e utilizados nos casos de uso do e-commerce por subscrição.
+
+| **Tabela**   | **Dados Presentes**                                                                                      | **Key**            |
+|--------------|----------------------------------------------------------------------------------------------------------|--------------------|
+| Usuário      | Nome, Sobrenome, E-mail, Telefone, CPF, Data de nascimento, Sexo, Endereço, Complemento, CEP, Senha        | ID_Usuário         |
+| Agente       | Tipo de Agente (comprador/vendedor), ID_Usuário                                                           | ID_Agente          |
+| Loja         | Nome da loja, E-mail, CNPJ, Imagem_logo, Imagem de plano de fundo                                         | ID_Loja            |
+| Pacote       | ID_Pacote, Descrição do Pacote, Preço, Imagem                                                             | ID_Pacote          |
+| Subscrição   | ID_Compra, Tempo (duração), Data de compra, Data de fim, Status, ID_Pacote, ID_Usuário                    | ID_Compra          |
+| Pagamento    | Forma de pagamento, Titular do cartão, Número do cartão, Pin do cartão, ID_Compra, ID_Usuário             | ID_Pagamento       |
+
+Tabela 2: Estrutura das tabelas, com dados presentes e chaves primárias para relacionamentos.
+
+## Esboço inicial
+Na tentativa de tornar o trabalho feito até então mais visual e interativo, foi elaborado conjuntamente a seguinte prototipagem interativa do site: 
+https://www.figma.com/proto/K7wcsNdh4D18uQggwRcw3F/MyBox?node-id=1-1745&node-type=frame&t=Ni9OPdg8exw7GAox-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A1745
