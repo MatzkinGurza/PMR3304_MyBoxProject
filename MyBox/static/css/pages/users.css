@@ -116,3 +116,77 @@ textarea {
     font-size: 0.9em;
     color: #888;
 }
+
+/* login.css */
+
+/* Container do Formulário de Login */
+.login-container {
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 20px 30px;
+    background-color: #333;
+    border-radius: 10px;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Título da Página de Login */
+.login-container h2 {
+    font-size: 1.5em;
+    color: #888;
+    margin-bottom: 20px;
+}
+
+/* Labels do Formulário de Login */
+.login-container label {
+    display: block;
+    font-size: 0.9em;
+    color: #ccc;
+    margin: 10px 0 5px;
+    text-align: left;
+}
+
+/* Campos de Entrada de Texto e Senha */
+.login-container input[type="email"],
+.login-container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #222;
+    border: 1px solid #444;
+    border-radius: 5px;
+    color: #fff;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+/* Botão de Login */
+.login-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #fff;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.login-container button:hover {
+    background-color: #ddd;
+}
+
+/* Link para Esqueceu a Senha */
+.login-container .forgot-password {
+    display: block;
+    margin-top: 15px;
+    font-size: 0.9em;
+    color: #888;
+    text-decoration: none;
+}
+
+.login-container .forgot-password:hover {
+    color: #fff;
+}
