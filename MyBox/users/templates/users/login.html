@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Entrar{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <h2>Entrar</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="email">Email</label>
+        <input type="email" id="email" name="username" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Sign In</button>
+
+        <a href="{% url 'password_reset' %}" class="forgot-password">Forgot password?</a>
+    </form>
+</div>
+{% endblock %}

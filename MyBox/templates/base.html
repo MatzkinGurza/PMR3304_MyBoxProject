@@ -10,7 +10,8 @@
     <title>
         {% block title %}{% endblock %} | MyBox
     </title>
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <!-- Link para o CSS principal que importa os outros arquivos de estilo -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
 </head>
 
 <body>
@@ -18,7 +19,7 @@
         <div class="header-container">
             <!-- Logo -->
             <div class="logo">
-                <img src="{% static 'images/logo.png' %}" alt="MyBox Logo">
+                <img src="{% static 'static/images/logo-mybox.png' %}" alt="MyBox Logo">
                 <span>MyBox</span>
             </div>
     
