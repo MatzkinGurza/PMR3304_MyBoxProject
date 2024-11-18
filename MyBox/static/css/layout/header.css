@@ -19,7 +19,9 @@
 }
 
 .logo img {
-    width: 40px;
+    width: 100px;
+    height: auto;
+    max-width: none;
     margin-right: 10px;
 }
 
