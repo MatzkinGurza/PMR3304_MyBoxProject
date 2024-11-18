@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}Registre-se{% endblock %}
+
+{% block content %}
+<div class="register-container">
+    <h2>Registre-se</h2>
+    
+    <!-- Botões para selecionar tipo de usuário -->
+    <div class="user-type-selection">
+        <button id="seller-btn" class="active">Vendedor</button>
+        <button id="buyer-btn">Comprador</button>
+    </div>
+    
+    <!-- Formulário de Registro para Vendedor -->
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- Formulário do Vendedor -->
+        <div class="form-section" id="seller-form">
+            <label for="store_name">Loja</label>
+            <input type="text" id="store_name" name="store_name" placeholder="Example" required>
+            
+            <label for="cnpj">CNPJ - Loja</label>
+            <input type="text" id="cnpj" name="cnpj" placeholder="Example" required>
+            
+            <label for="cpf">CPF - Usuário</label>
+            <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+            
+            <label for="store_email">E-mail - Loja</label>
+            <input type="email" id="store_email" name="store_email" placeholder="example@gmail.com" required>
+            
+            <label for="user_email">E-mail - Usuário</label>
+            <input type="email" id="user_email" name="user_email" placeholder="example@gmail.com" required>
+            
+            <label for="phone">Tel/Cel - Loja</label>
+            <input type="text" id="phone" name="phone" placeholder="(00) 00000-0000" required>
+            
+            <label for="address">Endereço</label>
+            <input type="text" id="address" name="address" placeholder="Rua exemplo, bairro" required>
+            
+            <label for="complement">Complemento</label>
+            <input type="text" id="complement" name="complement" placeholder="Apto yy">
+            
+            <label for="cep">CEP</label>
+            <input type="text" id="cep" name="cep" placeholder="00000-000" required>
+            
+            <label for="username">Usuário</label>
+            <input type="text" id="username" name="username" placeholder="Value" required>
+            
+            <label for="password">Senha</label>
+            <input type="password" id="password" name="password" placeholder="Value" required>
+            
+            <label for="description">Descrição da loja</label>
+            <textarea id="description" name="description" placeholder="até 200 caracteres"></textarea>
+            
+            <label for="logo">Logo ou Imagem da Loja</label>
+            <input type="file" id="logo" name="logo">
+            
+            <label for="background_image">Plano de fundo da Loja</label>
+            <input type="file" id="background_image" name="background_image">
+        </div>
+        
+        <!-- Formulário do Comprador -->
+        <div class="form-section" id="buyer-form" style="display: none;">
+            <label for="first_name">Nome</label>
+            <input type="text" id="first_name" name="first_name" placeholder="Example" required>
+            
+            <label for="last_name">Sobrenome</label>
+            <input type="text" id="last_name" name="last_name" placeholder="Example" required>
+            
+            <label for="cpf_buyer">CPF</label>
+            <input type="text" id="cpf_buyer" name="cpf_buyer" placeholder="000.000.000-00" required>
+            
+            <label for="email_buyer">E-mail</label>
+            <input type="email" id="email_buyer" name="email_buyer" placeholder="example@gmail.com" required>
+            
+            <label for="phone_buyer">Tel/Cel</label>
+            <input type="text" id="phone_buyer" name="phone_buyer" placeholder="(00) 00000-0000" required>
+            
+            <label for="gender">Gênero</label>
+            <input type="text" id="gender" name="gender" placeholder="Example">
+            
+            <label for="address_buyer">Endereço</label>
+            <input type="text" id="address_buyer" name="address_buyer" placeholder="Rua exemplo, bairro" required>
+            
+            <label for="complement_buyer">Complemento</label>
+            <input type="text" id="complement_buyer" name="complement_buyer" placeholder="Apto yy">
+            
+            <label for="cep_buyer">CEP</label>
+            <input type="text" id="cep_buyer" name="cep_buyer" placeholder="00000-000" required>
+            
+            <label for="birthdate">Data de nascimento</label>
+            <input type="date" id="birthdate" name="birthdate" required>
+            
+            <label for="username_buyer">Usuário</label>
+            <input type="text" id="username_buyer" name="username_buyer" placeholder="Value" required>
+            
+            <label for="password_buyer">Senha</label>
+            <input type="password" id="password_buyer" name="password_buyer" placeholder="Value" required>
+        </div>
+        
+        <button type="submit" class="register-button">Register</button>
+    </form>
+    
+    <p class="register-footer">Cadastre-se e viva a experiência MyBox</p>
+</div>
+
+<!-- Script para alternar entre formulários de Vendedor e Comprador -->
+<script>
+    document.getElementById("seller-btn").addEventListener("click", function() {
+        document.getElementById("seller-form").style.display = "flex";
+        document.getElementById("buyer-form").style.display = "none";
+        document.getElementById("seller-btn").classList.add("active");
+        document.getElementById("buyer-btn").classList.remove("active");
+    });
+
+    document.getElementById("buyer-btn").addEventListener("click", function() {
+        document.getElementById("seller-form").style.display = "none";
+        document.getElementById("buyer-form").style.display = "flex";
+        document.getElementById("buyer-btn").classList.add("active");
+        document.getElementById("seller-btn").classList.remove("active");
+    });
+</script>
+{% endblock %}

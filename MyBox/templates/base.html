@@ -10,7 +10,8 @@
     <title>
         {% block title %}{% endblock %} | MyBox
     </title>
-    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <!-- Link para o CSS principal que importa os outros arquivos de estilo -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
 </head>
 
 <body>
@@ -18,21 +19,21 @@
         <div class="header-container">
             <!-- Logo -->
             <div class="logo">
-                <img src="{% static 'images/logo.png' %}" alt="MyBox Logo">
-                <span>MyBox</span>
+                <img src="{% static 'images/logo-mybox.png' %}" alt="MyBox Logo" width="200" height="auto">
+                <span></span>
             </div>
     
             <!-- Barra de Pesquisa -->
             <div class="search-bar">
                 <input type="text" placeholder="Procure sua Loja ou Box favorita">
                 <button type="submit">
-                    <img src="{% static 'images/search-icon.png' %}" alt="Buscar">
+                    <img src="{% static 'images/lupa-branca.png' %}" alt="Buscar">
                 </button>
             </div>
     
             <!-- Ícone do Carrinho -->
             <div class="cart-icon">
-                <img src="{% static 'images/cart-icon.png' %}" alt="Carrinho">
+                <img src="{% static 'images/carrinho-compras-branco.png' %}" alt="Carrinho">
             </div>
     
             <!-- Botões de Entrar e Inscrever -->
@@ -58,13 +59,12 @@
             <!-- Seção de Redes Sociais e Logo -->
             <div class="footer-social">
                 <div class="social-icons">
-                    <a href="#"><img src="{% static 'images/x-icon.png' %}" alt="X"></a>
-                    <a href="#"><img src="{% static 'images/instagram-icon.png' %}" alt="Instagram"></a>
-                    <a href="#"><img src="{% static 'images/youtube-icon.png' %}" alt="YouTube"></a>
-                    <a href="#"><img src="{% static 'images/linkedin-icon.png' %}" alt="LinkedIn"></a>
+                    <a href="#"><img src="{% static 'images/logo-x-branco.png' %}" alt="X"></a>
+                    <a href="#"><img src="{% static 'images/instagram-branco.png' %}" alt="Instagram"></a>
+                    <a href="#"><img src="{% static 'images/linkedin-branco.png' %}" alt="LinkedIn"></a>
                 </div>
                 <div class="footer-logo">
-                    <img src="{% static 'images/logo.png' %}" alt="MyBox Logo">
+                    <img src="{% static 'images/logo-mybox.png' %}" alt="MyBox Logo">
                 </div>
             </div>
 
