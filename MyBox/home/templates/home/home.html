@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="home-container">
+    <!-- Texto de Apresentação -->
+    <div class="intro-section">
+        <h1>Procure por uma Box perfeita para você</h1>
+        <p>
+            A MyBox é uma plataforma de e-commerce que oferece a você a conveniência de receber produtos personalizados de suas lojas favoritas, automaticamente e sem complicações. Escolha seus pacotes, relaxe, e deixe o resto com a gente. Simples, prático e feito para facilitar sua vida! Venha procurar a Box perfeita para você.
+        </p>
+    </div>
+
+    <!-- Grade de Produtos -->
+    <div class="products-grid">
+        {% for box in boxes %}
+        <div class="product-card">
+            <img src="{{ box.image.url }}" alt="{{ box.name }}" class="product-image">
+            <h3>{{ box.name }}</h3>
+            <span class="product-tag">{{ box.tag }}</span>
+            <p class="product-price">${{ box.price }}</p>
+            <p class="product-description">{{ box.description }}</p>
+        </div>
+        {% empty %}
+        <p>Nenhuma Box disponível no momento.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
