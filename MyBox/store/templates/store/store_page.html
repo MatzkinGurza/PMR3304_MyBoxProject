@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ seller.username }} - Loja{% endblock %}
+
+{% block content %}
+<div class="store-container">
+    <!-- Informações da Loja -->
+    <div class="store-header">
+        <div class="store-info">
+            <img src="{% static 'images/profile-placeholder.png' %}" alt="Profile Picture" class="store-profile-pic">
+            <div>
+                <h2>{{ seller.username }}</h2>
+                <p><strong>Localidade:</strong> Cidade, Estado (opcional)</p>
+                <p><strong>Neste site desde:</strong> xx/xx/xxxx</p>
+            </div>
+        </div>
+        <div class="store-contact">
+            <p><strong>Contato:</strong></p>
+            <p>Telefone: (xx) xxxx-xxxx</p>
+            <p>Email: {{ seller.email }}</p>
+            <p>Instagram: @loja_oficial</p>
+            <p>Website: <a href="#">link_para_site</a></p>
+        </div>
+    </div>
+
+    <!-- Descrição da Loja -->
+    <div class="store-description">
+        <p>Descrição da loja.</p>
+    </div>
+
+    <!-- Produtos (Boxes) -->
+    <div class="boxes-grid">
+        {% for box in boxes %}
+        <div class="box-card">
+            {% if box.image %}
+                <img src="{{ box.image.url }}" alt="{{ box.name }}" class="box-image">
+            {% else %}
+                <img src="{% static 'images/default-box.jpg' %}" alt="Imagem não disponível" class="box-image">
+            {% endif %}
+            <h3>{{ box.name }}</h3>
+            <p class="tag">{{ box.tag }}</p>
+            <p class="price">R$ {{ box.price }}</p>
+            <p class="description">{{ box.description }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Paginação -->
+    <div class="pagination">
+        {{ boxes.paginator.page_range|slice:":2" }}
+    </div>
+</div>
+{% endblock %}
