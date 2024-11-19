@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ box.name|default:"Adicionar Produto" }}{% endblock %}
+
+{% block content %}
+<div class="manage-box-container">
+    <div class="seller-info">
+        <div class="profile-picture">
+            <!-- Substituir pela foto do vendedor, se disponível -->
+            <img src="{% static 'images/default-user.png' %}" alt="User">
+        </div>
+        <div class="seller-details">
+            <h2>{{ request.user.username }}</h2>
+            <p>Localidade</p>
+            <p>Neste site desde {{ request.user.date_joined|date:"d/m/Y" }}</p>
+            <p>{{ request.user.email }}</p>
+        </div>
+    </div>
+
+    <h2>Adicionar / Editar produto da loja:</h2>
+
+    <form method="post" enctype="multipart/form-data" class="product-form">
+        {% csrf_token %}
+        <div class="product-image-upload">
+            {% if box and box.image %}
+                <img src="{{ box.image.url }}" alt="Imagem do Produto">
+            {% else %}
+                <img src="{% static 'images/image-placeholder.png' %}" alt="Placeholder">
+            {% endif %}
+            <p>Insira as imagens relativas ao produto (sua_foto.jpg)</p>
+            {{ form.image }}
+        </div>
+
+        <div class="product-details">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            
+            {{ form.price.label_tag }}
+            {{ form.price }}
+            
+            {{ form.description.label_tag }}
+            {{ form.description }}
+            
+            {{ form.tag.label_tag }}
+            {{ form.tag }}
+        </div>
+
+        <div class="form-actions">
+            {% if box %}
+            <button type="submit" name="delete" class="btn-delete">Apagar</button>
+            {% endif %}
+            <button type="submit" class="btn-submit">Publicar</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
