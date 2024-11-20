@@ -49,13 +49,26 @@
     
             <!-- Botões de Entrar e Inscrever -->
             <div class="auth-buttons">
-                <button onclick="window.location.href='{% url 'users:login' %}'">Entrar</button>
-                <button onclick="window.location.href='{% url 'users:register' %}'">Inscrever</button>
+                {% if user.is_authenticated %}
+                    <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="logout-button">Logout</button>
+                    </form>
+                {% else %}
+                    <button onclick="window.location.href='{% url 'users:login' %}'">Entrar</button>
+                    <button onclick="window.location.href='{% url 'users:register' %}'">Inscrever</button>
+                {% endif %}
             </div>
     
             <!-- Ícone do Perfil do Usuário -->
             <div class="user-icon">
-                <span>User</span>
+                {% if user.is_authenticated %}
+                    <a href="{% if user.profile.is_seller %}{% url 'store:store_page' user.profile.id %}{% else %}{% url 'home' %}{% endif %}">
+                        <span>User</span>
+                    </a>
+                {% else %}
+                    <span>User</span>
+                {% endif %}
             </div>
         </div>
     </header>

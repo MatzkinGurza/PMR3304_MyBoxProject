@@ -133,7 +133,7 @@ textarea {
 
 /* Título da Página de Login */
 .login-container h2 {
-    font-size: 1.5em;
+    font-size: 1.8em;
     color: #888;
     margin-bottom: 20px;
 }
@@ -148,7 +148,7 @@ textarea {
 }
 
 /* Campos de Entrada de Texto e Senha */
-.login-container input[type="email"],
+.login-container input[type="text"],
 .login-container input[type="password"] {
     width: 100%;
     padding: 10px;

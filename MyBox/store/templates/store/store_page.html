@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="store-container">
+
+    <!-- Perfil da Loja -->
+    <div class="store-header">
+        <img class="store-profile-pic" src="{% static 'images/default-store.jpg' %}" alt="Imagem da Loja">
+        <h1 class="store-name">{{ seller.username }}</h1>
+        <p class="store-description">{{ seller.profile.description }}</p>
+        <p class="store-details">
+            Localidade: {{ seller.profile.location }}<br>
+            Neste site desde: {{ seller.date_joined|date:"d/m/Y" }}
+        </p>
+    </div>
+
+    <!-- Grid de Produtos ou Mensagem de Feedback -->
+    {% if boxes.exists %}
+        <div class="boxes-grid">
+            {% for box in boxes %}
+                <div class="box-card">
+                    {% if box.image %}
+                        <img class="box-image" src="{{ box.image.url }}" alt="Imagem da Box">
+                    {% else %}
+                        <img class="box-image" src="{% static 'images/default-box.jpg' %}" alt="Imagem não disponível">
+                    {% endif %}
+                    <h3>{{ box.name }}</h3>
+                    <span class="tag">{{ box.tag }}</span>
+                    <p class="price">R$ {{ box.price }}</p>
+                    <p class="description">{{ box.description }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-boxes">
+            <p>Esta loja ainda não possui nenhuma Box cadastrada.</p>
+            {% if request.user == seller %}
+                <a href="{% url 'store:manage_box' %}" class="add-box-button">Adicionar Box</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
