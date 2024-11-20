@@ -10,8 +10,14 @@
     <title>
         {% block title %}{% endblock %} | MyBox
     </title>
+
+    <!-- Link para o CSS do Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" 
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
     <!-- Link para o CSS principal que importa os outros arquivos de estilo -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+    
 </head>
 
 <body>
@@ -37,6 +43,10 @@
             <div class="cart-icon">
                 <img src="{% static 'images/carrinho-compras-branco.png' %}" alt="Carrinho">
             </div>
+            <!-- Ícone do Carrinho -->
+            
+            <a class="btn btn-outline-success me-2 mr-auto" href="{% url 'store:add_box' %}">Add Box</a>
+           
     
             <!-- Botões de Entrar e Inscrever -->
             <div class="auth-buttons">

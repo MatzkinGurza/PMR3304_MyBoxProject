@@ -1,26 +1,48 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 
 <div class="home-container">
     <!-- Texto de Apresentação -->
     <div class="intro-section">
-        <h1>Procure por uma Box perfeita para você</h1>
-        <p>
-            A MyBox é uma plataforma de e-commerce que oferece a você a conveniência de receber produtos personalizados de suas lojas favoritas, automaticamente e sem complicações. Escolha seus pacotes, relaxe, e deixe o resto com a gente. Simples, prático e feito para facilitar sua vida! Venha procurar a Box perfeita para você.
-        </p>
+        <div class="card text-white mb-3" style="background-color: #222; width: 100%;">
+            <div class="card-header text-center">Bem vindo à MyBox – onde sua vontade se encaixa.</div>
+            <div class="card-body text-center">
+                <h5 class="card-title">Procure a Box perfeita para você</h5>
+                <p class="card-text">
+                    A MyBox é uma plataforma de e-commerce que 
+                    oferece a você a conveniência de receber produtos personalizados 
+                    de suas lojas favoritas, automaticamente e sem complicações. 
+                    Escolha seus pacotes, relaxe, e deixe o resto com a gente. Simples, 
+                    prático e feito para facilitar sua vida! Venha procurar a Box perfeita para você.
+                </p>
+            </div>
+        </div>
     </div>
 
     <!-- Grade de Produtos -->
     <div class="products-grid">
         {% for box in boxes %}
-        <div class="product-card">
-            <img src="{{ box.image.url }}" alt="{{ box.name }}" class="product-image">
-            <h3>{{ box.name }}</h3>
-            <span class="product-tag">{{ box.tag }}</span>
-            <p class="product-price">${{ box.price }}</p>
-            <p class="product-description">{{ box.description }}</p>
-        </div>
+        <div class="card mb-3" style="max-width: 540px; background-color: #222;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                {% if box.image %}
+                    <img src="{{ box.image }}" alt="{{ box.name }}" class="img-fluid rounded-start" alt="...">
+                {% else %}
+                    <img src="{% static 'images/logo-mybox.png' %}" alt="{{ box.name }}" class="img-fluid rounded-start" alt="...">
+                {% endif%}
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{ box.name }}</h5>
+                  <span class="product-tag">{{ box.tag }}</span>
+                  <p class="card-text">{{ box.description }}</p>
+                  <p class="card-text"><strong class="text-body-secondary">${{ box.price }}</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
         {% empty %}
         <p>Nenhuma Box disponível no momento.</p>
         {% endfor %}
