@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Blog - add box{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<br/>
+<br/>
+<div class="card" style="background-color: #222; width: 100%;">
+    <h1 class="card-header">Add a Box as {{user.username}}</h1>
+    <div class="card-body">
+        <div class="form-group">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.media }}
+                {{ form.as_p }}
+                <button class="btn btn-secondary">Create</button>
+            </form>
+        </div>
+
+        <script>
+            var name = "{{user.id}}";
+            document.getElementById("authorID").value = name;
+        </script>
+    </div>
+  </div>
+<br/>
+<br/>
+{% else %}
+<h2> You need to be logged in to do this</h2>
+
+{% endif %}
+
+<a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Back</a>
+<br/>
+<br/>
+
+{% endblock %}

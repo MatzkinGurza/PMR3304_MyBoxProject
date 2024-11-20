@@ -17,6 +17,7 @@
     
     <!-- Link para o CSS principal que importa os outros arquivos de estilo -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+    
 </head>
 
 <body>
@@ -44,7 +45,7 @@
             </div>
             <!-- Ícone do Carrinho -->
             
-            <a class="btn btn-outline-success me-2 mr-auto" href="{% url 'add_box' %}">Add Box</a>
+            <a class="btn btn-outline-success me-2 mr-auto" href="{% url 'store:add_box' %}">Add Box</a>
            
     
             <!-- Botões de Entrar e Inscrever -->

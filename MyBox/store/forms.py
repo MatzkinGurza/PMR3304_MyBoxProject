@@ -23,7 +23,7 @@ class BoxForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control','placeholder':'write your title here'}), 
             'tag': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'choose a tag for the post'}), 
             'seller': forms.TextInput(attrs={'class': 'form-control', 'value':'', 'id':'authorID', 'type': 'hidden'}),
-            'price': forms.FloatField(),
+            'price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter the price'}),
             'description': forms.Textarea(attrs={'class': 'form-control','placeholder':'write your post here'})
         }
 
@@ -41,6 +41,6 @@ class BoxFormUpdate(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control','placeholder':'write your title here'}), 
             'tag': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'choose a tag for the post'}), 
             'seller': forms.TextInput(attrs={'class': 'form-control', 'value':'', 'id':'authorID', 'type': 'hidden'}),
-            'price': forms.FloatField(),
+            'price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter the price'}),
             'description': forms.Textarea(attrs={'class': 'form-control','placeholder':'write your post here'})
         }

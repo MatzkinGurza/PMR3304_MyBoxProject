@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 
 <div class="home-container">
@@ -23,13 +23,26 @@
     <!-- Grade de Produtos -->
     <div class="products-grid">
         {% for box in boxes %}
-        <div class="product-card">
-            <img src="{{ box.image.url }}" alt="{{ box.name }}" class="product-image">
-            <h3>{{ box.name }}</h3>
-            <span class="product-tag">{{ box.tag }}</span>
-            <p class="product-price">${{ box.price }}</p>
-            <p class="product-description">{{ box.description }}</p>
-        </div>
+        <div class="card mb-3" style="max-width: 540px; background-color: #222;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                {% if box.image %}
+                    <img src="{{ box.image }}" alt="{{ box.name }}" class="img-fluid rounded-start" alt="...">
+                {% else %}
+                    <img src="{% static 'images/logo-mybox.png' %}" alt="{{ box.name }}" class="img-fluid rounded-start" alt="...">
+                {% endif%}
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{ box.name }}</h5>
+                  <span class="product-tag">{{ box.tag }}</span>
+                  <p class="card-text">{{ box.description }}</p>
+                  <p class="card-text"><strong class="text-body-secondary">${{ box.price }}</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
         {% empty %}
         <p>Nenhuma Box disponível no momento.</p>
         {% endfor %}
