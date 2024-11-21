@@ -15,6 +15,11 @@
     <!-- Formulário de Registro para Vendedor -->
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
+
+        <!-- exibir as mensagens de erro e sucesso -->
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
         
         <!-- Formulário do Vendedor -->
         <div class="form-section" id="seller-form">
