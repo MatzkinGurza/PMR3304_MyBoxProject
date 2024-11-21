@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
+
 
 class Box(models.Model):
     seller = models.ForeignKey(User, on_delete=models.CASCADE)  # Relaciona a Box a um vendedor
@@ -11,3 +13,7 @@ class Box(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        # Redireciona para os detalhes da Box ou para a página da loja
+        return reverse('store:store_page', kwargs={'seller_id': self.seller.id})

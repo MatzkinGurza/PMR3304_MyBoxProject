@@ -3,11 +3,11 @@
 
 {% block content %}
 
-{% if user.is_authenticated %}
+{% if user.is_authenticated and user.profile.is_seller %}
 <br/>
 <br/>
 <div class="card" style="background-color: #222; width: 100%;">
-    <h1 class="card-header">Adicionar Box como {{user.username}}</h1>
+    <h1 class="card-header">Adicionar Box como {{ user.username }}</h1>
     <div class="card-body">
         <div class="form-group">
             <form method="POST" enctype="multipart/form-data">
@@ -17,18 +17,12 @@
                 <button class="btn btn-secondary">Criar</button>
             </form>
         </div>
-
-        <script>
-            var name = "{{user.id}}";
-            document.getElementById("authorID").value = name;
-        </script>
     </div>
-  </div>
+</div>
 <br/>
 <br/>
 {% else %}
-<h2> Você precisa estar logado para adicionar uma Box</h2>
-
+<h2>Você não tem permissão para adicionar uma Box.</h2>
 {% endif %}
 
 <a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Voltar</a>
