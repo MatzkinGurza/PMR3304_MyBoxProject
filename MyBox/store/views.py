@@ -10,12 +10,9 @@ from .models import Box  # Importa o modelo Box do app store
 from django.urls import reverse_lazy, reverse
 import requests
 from django.conf import settings
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, HttpResponseForbidden
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-@login_required
-def dashboard(request):
-    return render(request, 'store/dashboard.html')
 
 def store_page(request, seller_id):
     seller = get_object_or_404(User, id=seller_id)
@@ -34,10 +31,12 @@ def store_page(request, seller_id):
 
 @login_required
 def manage_box(request, box_id=None):
+    if not request.user.profile.is_seller:
+        return HttpResponseForbidden("Apenas vendedores podem gerenciar Boxes.")
+
+    box = None
     if box_id:
-        box = get_object_or_404(Box, id=box_id, seller=request.user)  # Verifica se o Box pertence ao vendedor
-    else:
-        box = None
+        box = get_object_or_404(Box, id=box_id, seller=request.user)
 
     if request.method == 'POST':
         form = BoxForm(request.POST, request.FILES, instance=box)
@@ -45,7 +44,7 @@ def manage_box(request, box_id=None):
             box = form.save(commit=False)
             box.seller = request.user
             box.save()
-            return redirect('store:store_page', seller_id=request.user.id)  # Redireciona para a página da loja
+            return redirect('store:store_page', seller_id=request.user.id)
     else:
         form = BoxForm(instance=box)
 
@@ -81,37 +80,19 @@ class AddBoxView(CreateView):
     # fields = '__all__'
     # fields = ('title', 'tag','body')
 
-    def form_valid(self, form):
-        image_file = form.cleaned_data.get('image')
-        if image_file:
-            # Enviar a imagem para o Imgur
-            url = "https://api.imgur.com/3/image"
-            headers = {"Authorization": f"Client-ID {settings.IMGUR_CLIENT_ID}"}
-            files = {'image': image_file.read()}
-
-            response = requests.post(url, headers=headers, files=files)
-            data = response.json()
-
-            if response.status_code == 200 and data['success']:
-                form.instance.image_url = data['data']['link']
-            
-            else:
-                # Log failure details
-                print("Imgur upload failed:", response.status_code, data)
-            
-            url = "https://api.imgur.com/3/credits"
-            headers = {"Authorization": "Client-ID 017429aafa9c2c9"}
-
-            response = requests.get(url, headers=headers)
-            print("Imgur API Quota Check:", response.status_code, response.json())
-        
-        return super().form_valid(form)
+    def dispatch(self, request, *args, **kwargs):
+        # Redireciona buyers ou usuários não autenticados para uma página informativa
+        if not request.user.is_authenticated or not request.user.profile.is_seller:
+            return redirect('store:not_seller')
+        return super().dispatch(request, *args, **kwargs)
     
-    # def get_context_data(self, *args, **kwargs):
-    #     cat_menu = Category.objects.all()
-    #     context = super(AddPostView, self).get_context_data(*args, **kwargs)
-    #     context["cat_menu"] = cat_menu
-    #     return context
+    def form_valid(self, form):        
+        # Associa o vendedor à Box
+        form.instance.seller = self.request.user
+        return super().form_valid(form)
+
+def not_seller(request):
+    return render(request, 'store/not_seller.html')
 
 class UpdateBoxView(UpdateView):
     model=Box

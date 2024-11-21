@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Apenas Vendedores{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <div class="card shadow-lg p-4">
+        <h2 class="card-title text-danger mb-3">Acesso Restrito</h2>
+        <p class="card-text text-secondary">
+            Apenas vendedores podem criar Boxes. Para continuar, registre-se como vendedor ou volte para a página inicial.
+        </p>
+        <div class="mt-4">
+            <a href="{% url 'users:register' %}" class="btn btn-primary btn-lg">
+                Registre-se como Vendedor
+            </a>
+            <a href="{% url 'home:home' %}" class="btn btn-secondary btn-lg ml-3">
+                Voltar para a Home
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

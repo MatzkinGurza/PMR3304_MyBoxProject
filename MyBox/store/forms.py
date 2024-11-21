@@ -10,23 +10,19 @@ from .models import Box
 #         }
 
 class BoxForm(forms.ModelForm):
-    image = forms.ImageField(required=False)  # campo para upload de imagem
+    image = forms.ImageField(required=False)  # Campo para upload de imagem
 
-    class Meta: 
+    class Meta:
         model = Box
-        fields = ('name', 
-                  'tag', 
-                  'seller', 
-                  'price',
-                  'description' )
+        fields = ('name', 'tag', 'price', 'description', 'image')
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control','placeholder':'write your title here'}), 
-            'tag': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'choose a tag for the post'}), 
-            'seller': forms.TextInput(attrs={'class': 'form-control', 'value':'', 'id':'authorID', 'type': 'hidden'}),
-            'price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter the price'}),
-            'description': forms.Textarea(attrs={'class': 'form-control','placeholder':'write your post here'})
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Digite o nome da Box'}),
+            'tag': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escolha uma tag para a Box'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Digite o preço'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Escreva a descrição aqui'}),
         }
 
+# Esse abaixo NÃO está sendo usado
 class BoxFormUpdate(forms.ModelForm):
     image = forms.ImageField(required=False)  # campo para upload de imagem
 
@@ -42,5 +38,5 @@ class BoxFormUpdate(forms.ModelForm):
             'tag': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'choose a tag for the post'}), 
             'seller': forms.TextInput(attrs={'class': 'form-control', 'value':'', 'id':'authorID', 'type': 'hidden'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter the price'}),
-            'description': forms.Textarea(attrs={'class': 'form-control','placeholder':'write your post here'})
+            'description': forms.Textarea(attrs={'class': 'form-control','placeholder':'Escreva a descrição aqui'})
         }

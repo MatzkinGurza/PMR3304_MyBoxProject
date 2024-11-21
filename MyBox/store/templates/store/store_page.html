@@ -1,44 +1,95 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block content %}
-<div class="store-container">
+{% block title %}Página da Loja{% endblock %}
 
-    <!-- Perfil da Loja -->
-    <div class="store-header">
-        <img class="store-profile-pic" src="{% static 'images/default-store.jpg' %}" alt="Imagem da Loja">
-        <h1 class="store-name">{{ seller.username }}</h1>
-        <p class="store-description">{{ seller.profile.description }}</p>
-        <p class="store-details">
-            Localidade: {{ seller.profile.location }}<br>
-            Neste site desde: {{ seller.date_joined|date:"d/m/Y" }}
-        </p>
+{% block content %}
+<div class="container mt-5">
+    <!-- Informações da Loja -->
+    <div class="card mb-4 shadow-lg" style="background-color: #222; color: #fff;">
+        <div class="row no-gutters">
+            <div class="col-md-3 d-flex justify-content-center align-items-center">
+                <img 
+                    src="{% if seller.profile.store_image %}{{ seller.profile.store_image.url }}{% else %}{% static 'images/default-store.jpg' %}{% endif %}" 
+                    class="img-fluid rounded-circle p-3" 
+                    alt="Imagem da Loja"
+                    style="max-width: 150px; height: auto;">
+            </div>
+            <div class="col-md-9">
+                <div class="card-body">
+                    <h2 class="card-title text-primary">{{ seller.profile.store_name|default:seller.username }}</h2>
+                    <p class="card-text">{{ seller.profile.description|default:"Descrição da loja." }}</p>
+                    <p class="card-text">
+                        <strong>Localidade:</strong> {{ seller.profile.location|default:"Não informada" }}<br>
+                        <strong>Membro desde:</strong> {{ seller.date_joined|date:"d/m/Y" }}
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Grid de Produtos ou Mensagem de Feedback -->
-    {% if boxes.exists %}
-        <div class="boxes-grid">
+    <!-- Grade de Produtos -->
+    <div class="row">
+        {% if boxes %}
             {% for box in boxes %}
-                <div class="box-card">
-                    {% if box.image %}
-                        <img class="box-image" src="{{ box.image.url }}" alt="Imagem da Box">
-                    {% else %}
-                        <img class="box-image" src="{% static 'images/default-box.jpg' %}" alt="Imagem não disponível">
-                    {% endif %}
-                    <h3>{{ box.name }}</h3>
-                    <span class="tag">{{ box.tag }}</span>
-                    <p class="price">R$ {{ box.price }}</p>
-                    <p class="description">{{ box.description }}</p>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-lg" style="background-color: #222; color: #fff;">
+                    <div class="row g-0">
+                        <div class="col-4">
+                            {% if box.image %}
+                                <img 
+                                    src="{{ box.image.url }}" 
+                                    alt="{{ box.name }}" 
+                                    class="img-fluid rounded-start">
+                            {% else %}
+                                <img 
+                                    src="{% static 'images/logo-mybox.png' %}" 
+                                    alt="{{ box.name }}" 
+                                    class="img-fluid rounded-start">
+                            {% endif %}
+                        </div>
+                        <div class="col-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ box.name }}</h5>
+                                <span class="badge bg-info text-dark">{{ box.tag }}</span>
+                                <p class="card-text">{{ box.description|truncatewords:20 }}</p>
+                                <p class="card-text"><strong>R$ {{ box.price }}</strong></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
             {% endfor %}
-        </div>
-    {% else %}
-        <div class="no-boxes">
-            <p>Esta loja ainda não possui nenhuma Box cadastrada.</p>
-            {% if request.user == seller %}
-                <a href="{% url 'store:manage_box' %}" class="add-box-button">Adicionar Box</a>
+        {% else %}
+            <div class="alert alert-warning text-center" role="alert">
+                Esta loja ainda não possui nenhuma Box cadastrada.
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Paginação -->
+    <nav>
+        <ul class="pagination justify-content-center">
+            {% if boxes.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ boxes.previous_page_number }}" aria-label="Anterior">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
             {% endif %}
-        </div>
-    {% endif %}
+            {% for num in boxes.paginator.page_range %}
+                <li class="page-item {% if boxes.number == num %}active{% endif %}">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+            {% endfor %}
+            {% if boxes.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ boxes.next_page_number }}" aria-label="Próximo">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
 </div>
 {% endblock %}

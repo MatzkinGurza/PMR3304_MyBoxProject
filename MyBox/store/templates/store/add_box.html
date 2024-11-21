@@ -1,37 +1,31 @@
 {% extends 'base.html' %}
-{% block title %}Blog - add box{% endblock %}
+{% block title %}MyBox - adicionar caixa{% endblock %}
 
 {% block content %}
 
-{% if user.is_authenticated %}
+{% if user.is_authenticated and user.profile.is_seller %}
 <br/>
 <br/>
 <div class="card" style="background-color: #222; width: 100%;">
-    <h1 class="card-header">Add a Box as {{user.username}}</h1>
+    <h1 class="card-header">Adicionar Box como {{ user.username }}</h1>
     <div class="card-body">
         <div class="form-group">
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.media }}
                 {{ form.as_p }}
-                <button class="btn btn-secondary">Create</button>
+                <button class="btn btn-secondary">Criar</button>
             </form>
         </div>
-
-        <script>
-            var name = "{{user.id}}";
-            document.getElementById("authorID").value = name;
-        </script>
     </div>
-  </div>
+</div>
 <br/>
 <br/>
 {% else %}
-<h2> You need to be logged in to do this</h2>
-
+<h2>Você não tem permissão para adicionar uma Box.</h2>
 {% endif %}
 
-<a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Back</a>
+<a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Voltar</a>
 <br/>
 <br/>
 

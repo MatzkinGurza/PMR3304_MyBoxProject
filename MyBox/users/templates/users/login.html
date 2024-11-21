@@ -7,6 +7,9 @@
     <h2>Entrar</h2>
     <form method="post">
         {% csrf_token %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
         <label for="username">Usuário ou Email</label>
         <input type="text" id="username" name="username" placeholder="Digite seu usuário ou email" required>
 
