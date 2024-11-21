@@ -13,4 +13,25 @@ def home(request):
     boxes = Box.objects.all()
     return render(request, 'home/home.html', {'boxes': boxes})
 
+class BoxDetailView(DetailView):
+    model = Box
+    template_name = 'home/box_details.html'
+
+    def get_object(self):
+        # Use get_object_or_404 to retrieve the Post or raise a 404 if not found
+        return get_object_or_404(Box, pk=self.kwargs.get('pk'))
+    
+    # def get_context_data(self, *args, **kwargs):
+    #     cat_menu = Category.objects.all()
+    #     context = super(ArticleDetailView, self).get_context_data(*args, **kwargs)
+    #     current_post = get_object_or_404(Post, id=self.kwargs['pk'])
+    #     liked = False
+    #     if current_post.likes.filter(id=self.request.user.id).exists():
+    #         liked=True
+    #     context['comments'] = self.object.comments.all().order_by('-date_added')
+    #     context['total_likes'] = current_post.total_likes()
+    #     context["cat_menu"] = cat_menu
+    #     context['liked'] = liked
+    #     return context
+
 

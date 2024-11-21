@@ -50,7 +50,7 @@
                         </div>
                         <div class="col-8">
                             <div class="card-body">
-                                <h5 class="card-title">{{ box.name }}</h5>
+                                <h5 class="card-title"><a href="{% url 'home:box-details' box.pk %}"> {{ box.name }} </a></h5>
                                 <span class="badge bg-info text-dark">{{ box.tag }}</span>
                                 <p class="card-text">{{ box.description|truncatewords:20 }}</p>
                                 <p class="card-text"><strong>R$ {{ box.price }}</strong></p>

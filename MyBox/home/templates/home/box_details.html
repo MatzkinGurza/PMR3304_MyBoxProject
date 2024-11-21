@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{box.author}}{% endblock %}
+
+{% block content %}
+<br/>
+<h4>You found {{box.name}} from {{box.seller.profile.store_name}}</h4>
+<hr>
+<div class="card text-white mb-2" style="background-color: #222; width: 100%;">
+    <div class="row no-gutters">
+      <div class="col-md-2">
+        {% if box.seller.profile.store_image %}
+        <img src="{{box.seller.profile.store_image}}" class="img-fluid rounded-start" alt="store picture" style="height: 100%;" >
+        {% else %}
+        <img src="{% static 'images/logo-mybox.png' %}" class="card-img-top" alt="store picture" style="height: 100%;">
+        {% endif %}
+    </div>
+      <div class="col-md-10">
+        <div class="card-body">
+        <h5 class="card-title">
+            {% if box.seller.profile %}
+            <a href="{% url 'store:store_page' box.seller.profile.id %}">{{post.seller.profile.store_name}}</a>
+            {% else %}
+                {{ box.seller.profile.store_name }}
+            {% endif %}
+        </h5>
+          {% if box.seller.profile.description %}
+          <p class="card-text">{{box.seller.profile.description}}</p>
+          {% endif %}
+          {% if box.seller.profile.location %}
+          <small>Localidade: {{ box.seller.profile.location|default:"Não informada" }}</small><br>
+          {% endif %}
+          {% if  box.seller.profile.store_email %}
+          <small>Contato: {{ box.seller.profile.store_email|default:"Não informado" }}</small><br>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+<hr>
+
+<div class="container my-5">
+  <div class="post-container border rounded p-4 shadow-sm">
+      <h2 class="post-title text-primary">{{ box.name }}</h2>
+      <small class="text-muted">
+          {{ post.author.first_name }} {{ post.author.last_name }} on 
+          {% for category in post.category.all %}<a href="{% url 'categories' category %}">{{category}}</a>; {% endfor %} 
+            {{ post.post_date|date:"d/m/Y" }}
+      </small>
+
+      {% if box.image %}
+          <div class="image-container my-3 text-center">
+              <img src="{{ box.image }}" alt="Imagem do Post" class="img-thumbnail w-50">
+          </div>
+      {% endif %}
+
+      <p class="post-body fs-5">{{ box.description|safe }}</p>
+  </div>
+
+  <hr class="my-4">
+</div>
+
+<br/>
+<br/>
+<a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Back</a>
+<br/>
+<br/>
+
+{% endblock %}
