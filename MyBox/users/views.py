@@ -36,7 +36,17 @@ class CreateStoreView(CreateView):
             data = response.json()
 
             if response.status_code == 200 and data['success']:
-                form.instance.logo_url = data['data']['link']
+                try:
+                    data = response.json()
+                    if data.get('success'):
+                        form.instance.logo_url = data['data']['link']
+                    else:
+                        print("Erro no JSON retornado:", data)
+                except ValueError:
+                    print("Erro ao interpretar JSON:", response.text)                
+            else:
+                print("Erro no upload do Imgur:", response.text)
+
         if bg_file:
             # Enviar a imagem para o Imgur
             url = "https://api.imgur.com/3/image"
@@ -47,7 +57,17 @@ class CreateStoreView(CreateView):
             data = response.json()
 
             if response.status_code == 200 and data['success']:
-                form.instance.background_url = data['data']['link']
+                    try:
+                        data = response.json()
+                        if data.get('success'):
+                            form.instance.background_url = data['data']['link']
+                        else:
+                            print("Erro no JSON retornado:", data)
+                    except ValueError:
+                        print("Erro ao interpretar JSON:", response.text)
+            else:
+                print("Erro no upload do Imgur:", response.text)
+                
         return super().form_valid(form)
 
 

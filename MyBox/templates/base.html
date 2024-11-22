@@ -61,15 +61,18 @@
                             Profile Configs
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            {{ user.profile.is_seller }}
-                            {{ user.profile.is_buyer }}
+                            <small class="ml-4">Logged in as {{ user.profile.user_type }}</small>
                             {% if user.profile %}
                             <li><a class="dropdown-item" href="{% url 'users:edit_profile' %}">Edit your profile</a></li>
                             {% else %}
                             <li><a class="dropdown-item" href="{% url 'users:create_profile' %}">Create your profile</a></li>
                             {% endif %}
                             {% if user.profile.is_seller %}
+                            {% if user.profile.store %}
+                            <li><a class="dropdown-item" href="#">Edit your store page</a></li>
+                            {% else %}
                             <li><a class="dropdown-item" href="{% url 'users:create_store' %}">Create your store page</a></li>
+                            {% endif %}
                             {% endif %}
                         </ul>
                     </div>

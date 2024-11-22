@@ -9,7 +9,7 @@ class Profile(models.Model):
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, null =True)
-    user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES, default="buyer")
+    user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
     
     # Campos para usuários
     cpf = models.CharField(max_length=14, unique=False, blank=False, null=False, default="000.000.000-00")  # CPF genérico
@@ -35,7 +35,7 @@ class Profile(models.Model):
 
 # Modelo de Loja para Vendedores
 class Store(models.Model):
-    owner = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='store')
+    owner = models.OneToOneField(Profile, on_delete=models.CASCADE, null=True)
     store_name = models.CharField(max_length=100, blank=False, null=False)
     store_email = models.EmailField(unique=True, blank=False, null=False)  # Email único para a loja
     cnpj = models.CharField(max_length=18, unique=True, blank=False, null=False)  # CNPJ único
