@@ -8,7 +8,7 @@ class RegisterForm(forms.ModelForm):
     username = forms.CharField(max_length=150)
     email = forms.EmailField()
     password = forms.CharField(widget=forms.PasswordInput)
-    user_type = forms.ChoiceField(choices=Profile.USER_TYPE_CHOICES)
+    user_type = forms.ChoiceField(choices=Profile.USER_TYPE_CHOICES)#, widget=forms.HiddenInput(attrs={'id': 'user_type'}))
     logo = forms.ImageField(required=False)
     background_image = forms.ImageField(required=False)
 
