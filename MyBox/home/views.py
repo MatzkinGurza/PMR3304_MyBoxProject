@@ -7,10 +7,15 @@ import requests
 from django.conf import settings
 from django.http import Http404, HttpResponseRedirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.core.paginator import Paginator
 
 def home(request):
     # Busca todas as boxes no banco de dados
-    boxes = Box.objects.all()
+    all_boxes = Box.objects.all()
+    paginator = Paginator(all_boxes, 16)  # Limita 16 produtos por página
+    page_number = request.GET.get('page')  # Obtém o número da página da URL
+    boxes = paginator.get_page(page_number)  # Recupera os objetos da página atual
+
     return render(request, 'home/home.html', {'boxes': boxes})
 
 class BoxDetailView(DetailView):
