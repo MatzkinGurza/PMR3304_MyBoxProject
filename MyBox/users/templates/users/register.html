@@ -6,6 +6,43 @@
 <div class="register-container">
     <h2>Registre-se</h2>
 
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h3>Informações do Usuário</h3>
+        {{ profile_form.as_p }}
+
+        <div id="store-fields" style="display: none;">
+            <h3>Informações da Loja</h3>
+            {{ store_form.as_p }}
+        </div>
+
+        <label>
+            <input type="checkbox" id="is-seller-checkbox" name="is_seller" value="true">
+            Registrar como Vendedor
+        </label>
+
+        <button type="submit" class="btn btn-primary">Registrar</button>
+    </form>
+
+    <p class="register-footer">Cadastre-se e viva a experiência MyBox</p>
+</div>
+
+<script>
+    document.getElementById('is-seller-checkbox').addEventListener('change', function () {
+        document.getElementById('store-fields').style.display = this.checked ? 'block' : 'none';
+    });
+</script>
+{% endblock %}
+
+
+{% comment %} {% extends 'base.html' %}
+
+{% block title %}Registre-se{% endblock %}
+
+{% block content %}
+<div class="register-container">
+    <h2>Registre-se</h2>
+
     <!-- Botões para selecionar tipo de usuário -->
     <div class="user-type-selection">
         <button id="seller-btn" class="active">Vendedor</button>
@@ -114,4 +151,4 @@
         document.getElementById("user_type").value = "buyer"; // Set hidden input value to "buyer"
     });
 </script>
-{% endblock %}
+{% endblock %} {% endcomment %}
