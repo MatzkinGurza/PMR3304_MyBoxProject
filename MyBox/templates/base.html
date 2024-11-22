@@ -21,7 +21,7 @@
 </head>
 
 <body>
-    <header>
+    <header class="sticky-top">
         <div class="header-container">
             <!-- Logo -->
             <div class="logo">
@@ -61,14 +61,15 @@
             </div>
     
             <!-- Ícone do Perfil do Usuário -->
-            <div class="user-icon">
-                {% if user.is_authenticated %}
-                    <a href="{% if user.profile.is_seller %}{% url 'store:store_page' user.profile.id %}{% else %}{% url 'home:home' %}{% endif %}">
-                        <span>User</span>
+            {% if user.is_authenticated %}
+                <div class="user-icon d-inline">
+                    <a href="{% if user.profile.is_seller %}{% url 'store:store_page' user.id %}{% else %}{% url 'home:home' %}{% endif %}">
+                        <span class="text-white">User</span>
                     </a>
-                {% else %}
-                    <span>User</span>
-                {% endif %}
+                </div>
+{% else %}
+<div class="user-icon d-none"></div>
+{% endif %}
             </div>
         </div>
     </header>
