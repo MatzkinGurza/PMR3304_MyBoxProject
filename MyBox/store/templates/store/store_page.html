@@ -10,10 +10,10 @@
         <div class="row no-gutters">
             <div class="col-md-3 d-flex justify-content-center align-items-center">
                 <img 
-                    src="{% if seller.profile.store_image %}{{ seller.profile.store_image.url }}{% else %}{% static 'images/default-store.jpg' %}{% endif %}" 
+                    src="{% if seller.profile.store_image %}{{ seller.profile.store_image.url }}{% else %}{% static 'images/image-placeholder.svg' %}{% endif %}" 
                     class="img-fluid rounded-circle p-3" 
                     alt="Imagem da Loja"
-                    style="max-width: 150px; height: auto;">
+                    style="max-width: 180px; height: auto;">
             </div>
             <div class="col-md-9">
                 <div class="card-body">
@@ -29,28 +29,37 @@
     </div>
 
     <!-- Grade de Produtos -->
-    <div class="row">
+    <div class="row row-cols-1 row-cols-md-2 g-5">
         {% if boxes %}
             {% for box in boxes %}
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card h-100 shadow-lg" style="background-color: #222; color: #fff;">
-                    <div class="row g-0">
-                        <div class="col-4">
+            <div class="col">
+                <div class="card h-100 shadow-lg d-flex flex-column" style="background-color: #222; color: #fff;">
+                    <div class="row g-0 h-100">
+                        <!-- Imagem Quadrada e Centralizada -->
+                        <div class="col-4 d-flex align-items-center justify-content-center" style="min-height: 150px;">
                             {% if box.image %}
                                 <img 
                                     src="{{ box.image.url }}" 
                                     alt="{{ box.name }}" 
-                                    class="img-fluid rounded-start">
+                                    class="img-fluid rounded" 
+                                    style="width: 150px; height: 150px; object-fit: cover;">
                             {% else %}
                                 <img 
-                                    src="{% static 'images/logo-mybox.png' %}" 
+                                    src="{% static 'images/image-placeholder.svg' %}" 
                                     alt="{{ box.name }}" 
-                                    class="img-fluid rounded-start">
+                                    class="img-fluid rounded" 
+                                    style="width: 150px; height: 150px; object-fit: cover;">
                             {% endif %}
                         </div>
-                        <div class="col-8">
+
+                        <!-- Detalhes do Produto -->
+                        <div class="col-8 d-flex flex-column justify-content-between">
                             <div class="card-body">
-                                <h5 class="card-title"><a href="{% url 'home:box-details' box.pk %}"> {{ box.name }} </a></h5>
+                                <h5 class="card-title">
+                                    <a href="{% url 'home:box-details' box.pk %}" class="text-decoration-none text-white">
+                                        {{ box.name }}
+                                    </a>
+                                </h5>
                                 <span class="badge bg-info text-dark">{{ box.tag }}</span>
                                 <p class="card-text">{{ box.description|truncatewords:20 }}</p>
                                 <p class="card-text"><strong>R$ {{ box.price }}</strong></p>
@@ -69,7 +78,7 @@
 
     <!-- Paginação -->
     <nav>
-        <ul class="pagination justify-content-center">
+        <ul class="pagination justify-content-center mt-4">
             {% if boxes.has_previous %}
                 <li class="page-item">
                     <a class="page-link" href="?page={{ boxes.previous_page_number }}" aria-label="Anterior">
