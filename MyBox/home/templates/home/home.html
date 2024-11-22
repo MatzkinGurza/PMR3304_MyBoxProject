@@ -29,22 +29,24 @@
         {% if boxes %}
             {% for box in boxes %}
                 <div class="col-md-6 mb-4">
-                    <div class="card h-100 shadow-lg" style="background-color: #222; color: #fff;">
-                        <div class="row g-0">
-                            <div class="col-4">
+                    <div class="card h-100 shadow-lg d-flex flex-column" style="background-color: #222; color: #fff;">
+                        <div class="row g-0 h-100">
+                            <div class="col-4 d-flex align-items-center justify-content-center">
                                 {% if box.image %}
                                     <img 
                                         src="{{ box.image.url }}" 
                                         alt="{{ box.name }}" 
-                                        class="img-fluid rounded-start">
+                                        class="img-fluid rounded-start"
+                                        style="width: 150px; height: 150px; object-fit: cover;">
                                 {% else %}
                                     <img 
-                                        src="{% static 'images/logo-mybox.png' %}" 
+                                        src="{% static 'images/image-placeholder.svg' %}" 
                                         alt="{{ box.name }}" 
-                                        class="img-fluid rounded-start">
+                                        class="img-fluid rounded-start"
+                                        style="width: 150px; height: 150px; object-fit: cover;">
                                 {% endif %}
                             </div>
-                            <div class="col-8">
+                            <div class="col-8 d-flex flex-column justify-content-between">
                                 <div class="card-body">
                                     <h5 class="card-title">
                                         <a href="{% url 'home:box-details' box.pk %}" class="text-decoration-none text-white">
