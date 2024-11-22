@@ -8,12 +8,10 @@ class Profile(models.Model):
         ("buyer", "Comprador"),
     ]
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null =True)
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES, default="buyer")
     
     # Campos para usuários
-    first_name = models.CharField(max_length=100, blank=False, null=False, default="First Name")  # Nome padrão genérico
-    last_name = models.CharField(max_length=100, blank=False, null=False, default="Last Name")  # Sobrenome padrão genérico
     cpf = models.CharField(max_length=14, unique=False, blank=False, null=False, default="000.000.000-00")  # CPF genérico
     phone = models.CharField(max_length=15, blank=False, null=False, default="(00) 00000-0000")  # Telefone padrão genérico
     address = models.TextField(blank=False, null=False, default="Endereço não informado")  # Endereço padrão
@@ -41,8 +39,8 @@ class Store(models.Model):
     store_name = models.CharField(max_length=100, blank=False, null=False)
     store_email = models.EmailField(unique=True, blank=False, null=False)  # Email único para a loja
     cnpj = models.CharField(max_length=18, unique=True, blank=False, null=False)  # CNPJ único
-    logo = models.ImageField(upload_to='store_logos/', blank=True, null=True)  # Logo da loja
-    background_image = models.ImageField(upload_to='store_backgrounds/', blank=True, null=True)  # Imagem de fundo
+    logo_url = models.URLField(blank=True, null=True) # Logo da loja
+    background_url = models.URLField(blank=True, null=True) # Imagem de fundo
     store_description = models.TextField(max_length=200, blank=True, null=True)  # Descrição da loja
 
     def __str__(self):

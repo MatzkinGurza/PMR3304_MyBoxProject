@@ -49,6 +49,33 @@
                         <img src="{% static 'images/carrinho-compras-branco.png' %}" alt="Carrinho" width="30">
                     </a>
 
+                    <div class="mr-3 mb-2">
+                    {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <button 
+                            class="btn btn-secondary dropdown-toggle" 
+                            type="button" 
+                            id="dropdownMenuButton" 
+                            data-bs-toggle="dropdown" 
+                            aria-expanded="false">
+                            Profile Configs
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            {% if user.profile %}
+                            <li><a class="dropdown-item" href="{% url 'users:edit_profile' %}">Edit your profile</a></li>
+                            {% else %}
+                            <li><a class="dropdown-item" href="{% url 'users:create_profile' %}">Create your profile</a></li>
+                            {% endif %}
+                            {% if user.profile.is_seller %}
+                            <li><a class="dropdown-item" href="{% url 'users:create_store' %}">Create your store page</a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    </div>
+                    
+                    
+
                     <!-- Menu colapsável para Sellers -->
                     {% if user.is_authenticated and user.profile.is_seller %}
                         <ul class="navbar-nav ms-auto">
