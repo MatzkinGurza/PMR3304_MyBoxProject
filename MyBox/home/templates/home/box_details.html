@@ -4,13 +4,13 @@
 
 {% block content %}
 <br/>
-<h4>You found {{box.name}} from {{box.seller.profile.store_name}}</h4>
+<h4> You found {{box.name}} from {{box.seller.profile.store_name}}</h4>
 <hr>
 <div class="card text-white mb-2" style="background-color: #222; width: 100%;">
     <div class="row no-gutters">
       <div class="col-md-2">
         {% if box.seller.profile.store_image %}
-        <img src="{{box.seller.profile.store_image}}" class="img-fluid rounded-start" alt="store picture" style="height: 100%;" >
+        <img src="{{box.seller.profile.store_image.url}}" class="img-fluid rounded-start" alt="store picture" style="height: 100%;" >
         {% else %}
         <img src="{% static 'images/logo-mybox.png' %}" class="card-img-top" alt="store picture" style="height: 100%;">
         {% endif %}
@@ -19,20 +19,14 @@
         <div class="card-body">
         <h5 class="card-title">
             {% if box.seller.profile %}
-            <a href="{% url 'store:store_page' box.seller.profile.id %}">{{post.seller.profile.store_name}}</a>
+            <a href="{% url 'store:store_page' box.seller.profile.id %}">{{box.seller.profile.store_name}}</a>
             {% else %}
                 {{ box.seller.profile.store_name }}
             {% endif %}
         </h5>
-          {% if box.seller.profile.description %}
-          <p class="card-text">{{box.seller.profile.description}}</p>
-          {% endif %}
-          {% if box.seller.profile.location %}
+          <p class="card-text">{{box.seller.profile.description|default:"Descrição da loja."}}</p>
           <small>Localidade: {{ box.seller.profile.location|default:"Não informada" }}</small><br>
-          {% endif %}
-          {% if  box.seller.profile.store_email %}
           <small>Contato: {{ box.seller.profile.store_email|default:"Não informado" }}</small><br>
-          {% endif %}
         </div>
       </div>
     </div>

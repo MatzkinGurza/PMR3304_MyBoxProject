@@ -13,6 +13,12 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 
+
+IMGUR_CLIENT_ID = '	017429aafa9c2c9'
+IMGUR_CLIENT_SECRET = '	1dd706bed963d43daae40c7a95a45e8fa5e2b48e'
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 

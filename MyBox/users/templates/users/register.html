@@ -5,24 +5,137 @@
 {% block content %}
 <div class="register-container">
     <h2>Registre-se</h2>
-    
+
     <!-- Botões para selecionar tipo de usuário -->
     <div class="user-type-selection">
         <button id="seller-btn" class="active">Vendedor</button>
         <button id="buyer-btn">Comprador</button>
     </div>
-    
-    <!-- Formulário de Registro para Vendedor -->
-    <form method="post" enctype="multipart/form-data">
+
+    <!-- Formulário de Registro -->
+    <form method="POST" action="{% url 'users:register' %}" enctype="multipart/form-data">
         {% csrf_token %}
+        
+        <!-- Hidden input to store the user type -->
+        <input type="hidden" id="user_type" name="user_type" value="seller"> <!-- Default to "seller" -->
 
         <!-- exibir as mensagens de erro e sucesso -->
         {% for message in messages %}
             <p>{{ message }}</p>
         {% endfor %}
-        
+
         <!-- Formulário do Vendedor -->
         <div class="form-section" id="seller-form">
+            <!-- Fields for Seller -->
+            {{ form.username.label_tag }}
+            {{ form.username }}
+
+            {{ form.password.label_tag }}
+            {{ form.password }}
+
+            {{ form.store_name.label_tag }}
+            {{ form.store_name }}
+
+            {{ form.cnpj.label_tag }}
+            {{ form.cnpj }}
+
+            {{ form.cpf.label_tag }}
+            {{ form.cpf }}
+
+            {{ form.store_email.label_tag }}
+            {{ form.store_email }}
+
+            {{ form.store_phone.label_tag }}
+            {{ form.store_phone }}
+
+            {{ form.store_address.label_tag }}
+            {{ form.store_address }}
+
+            {{ form.store_description.label_tag }}
+            {{ form.store_description }}
+
+            {{ form.logo.label_tag }}
+            {{ form.logo }}
+
+            {{ form.background_image.label_tag }}
+            {{ form.background_image }}
+        </div>
+
+        <!-- Formulário do Comprador -->
+        <div class="form-section" id="buyer-form" style="display: none;">
+            <!-- Fields for Buyer -->
+            {{ form.username.label_tag }}
+            {{ form.username }}
+
+            {{ form.password.label_tag }}
+            {{ form.password }}
+
+            {{ form.first_name.label_tag }}
+            {{ form.first_name }}
+
+            {{ form.last_name.label_tag }}
+            {{ form.last_name }}
+
+            {{ form.buyer_cpf.label_tag }}
+            {{ form.buyer_cpf }}
+
+            {{ form.buyer_email.label_tag }}
+            {{ form.buyer_email }}
+
+            {{ form.buyer_phone.label_tag }}
+            {{ form.buyer_phone }}
+
+            {{ form.buyer_address.label_tag }}
+            {{ form.buyer_address }}
+
+            {{ form.birth_date.label_tag }}
+            {{ form.birth_date }}
+        </div>
+
+        <button type="submit" class="register-button">Registrar</button>
+    </form>
+
+    <p class="register-footer">Cadastre-se e viva a experiência MyBox</p>
+</div>
+
+<!-- Script para alternar entre formulários de Vendedor e Comprador -->
+<script>
+    document.getElementById("seller-btn").addEventListener("click", function() {
+        document.getElementById("seller-form").style.display = "flex";
+        document.getElementById("buyer-form").style.display = "none";
+        document.getElementById("seller-btn").classList.add("active");
+        document.getElementById("buyer-btn").classList.remove("active");
+        document.getElementById("user_type").value = "seller"; // Set hidden input value to "seller"
+    });
+
+    document.getElementById("buyer-btn").addEventListener("click", function() {
+        document.getElementById("seller-form").style.display = "none";
+        document.getElementById("buyer-form").style.display = "flex";
+        document.getElementById("buyer-btn").classList.add("active");
+        document.getElementById("seller-btn").classList.remove("active");
+        document.getElementById("user_type").value = "buyer"; // Set hidden input value to "buyer"
+    });
+</script>
+<!-- <div class="register-container">
+    <h2>Registre-se</h2> -->
+    
+    <!-- Botões para selecionar tipo de usuário -->
+    <!-- <div class="user-type-selection">
+        <button id="seller-btn" class="active">Vendedor</button>
+        <button id="buyer-btn">Comprador</button>
+    </div> -->
+
+    <!-- Formulário de Registro para Vendedor -->
+    <!-- <form method="post" enctype="multipart/form-data">
+        {% csrf_token %} -->
+
+        <!-- exibir as mensagens de erro e sucesso -->
+        <!-- {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+         -->
+        <!-- Formulário do Vendedor -->
+        <!-- <div class="form-section" id="seller-form">
             <label for="store_name">Loja</label>
             <input type="text" id="store_name" name="store_name" placeholder="Example" required>
             
@@ -64,10 +177,10 @@
             
             <label for="background_image">Plano de fundo da Loja</label>
             <input type="file" id="background_image" name="background_image">
-        </div>
+        </div> -->
         
         <!-- Formulário do Comprador -->
-        <div class="form-section" id="buyer-form" style="display: none;">
+        <!-- <div class="form-section" id="buyer-form" style="display: none;">
             <label for="first_name">Nome</label>
             <input type="text" id="first_name" name="first_name" placeholder="Example" required>
             
@@ -109,10 +222,10 @@
     </form>
     
     <p class="register-footer">Cadastre-se e viva a experiência MyBox</p>
-</div>
+</div> -->
 
 <!-- Script para alternar entre formulários de Vendedor e Comprador -->
-<script>
+<!-- <script>
     document.getElementById("seller-btn").addEventListener("click", function() {
         document.getElementById("seller-form").style.display = "flex";
         document.getElementById("buyer-form").style.display = "none";
@@ -126,5 +239,5 @@
         document.getElementById("buyer-btn").classList.add("active");
         document.getElementById("seller-btn").classList.remove("active");
     });
-</script>
+</script> -->
 {% endblock %}
