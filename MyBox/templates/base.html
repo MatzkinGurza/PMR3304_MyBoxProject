@@ -45,7 +45,7 @@
                     </form>
 
                     <!-- Ícone do Carrinho -->
-                    <a href="users/cart" class="nav-link text-center text-white mx-lg-3">
+                    <a href="{% url 'users:cart' %}" class="nav-link text-center text-white mx-lg-3">
                         <img src="{% static 'images/carrinho-compras-branco.png' %}" alt="Carrinho" width="30">
                     </a>
 
@@ -63,9 +63,9 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <small class="ml-4">Logged in as {{ user.profile.tipo_de_usuário }}</small>
                             {% if user.profile %}
-                            <li><a class="dropdown-item" href="{% url 'users:edit_profile' %}">Editar Perfil</a></li>
+                            <li><a class="dropdown-item" href="{% url 'users:edit_profile' %}">Editar perfil</a></li>
                             {% else %}
-                            <li><a class="dropdown-item" href="{% url 'users:create_profile' %}">Criar Perfil</a></li>
+                            <li><a class="dropdown-item" href="{% url 'users:create_profile' %}">Criar perfil</a></li>
                             {% endif %}
                             {% if user.profile.is_seller %}
                             {% if user.profile.store %}

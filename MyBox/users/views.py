@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from .models import Profile, Store, Cart, CartItem
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
-from django.views.generic import DetailView, CreateView, UpdateView, TemplateView
+from django.views.generic import DetailView, CreateView, UpdateView, TemplateView, DeleteView
 from django.urls import reverse_lazy
 from .forms import SignUpForm, UserProfileForm, StoreForm, EditUserForm
 from django.contrib.auth.views import PasswordChangeView
@@ -168,6 +168,10 @@ class CartDetailView(LoginRequiredMixin, TemplateView):
 
         return context
     
+class DeleteCartItem(DeleteView):
+    model=CartItem
+    template_name = 'users/cart_detail.html'
+    success_url = reverse_lazy('users:cart')
 
 
 # def login_view(request):

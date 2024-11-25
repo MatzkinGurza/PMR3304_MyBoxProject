@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.urls import path
-from .views import UserRegisterView, UserEditView, PasswordsChangeView, ShowProfilePageView, CreateProfileView, CreateStoreView, AddToCartView, CartDetailView
+from .views import UserRegisterView, UserEditView, PasswordsChangeView, ShowProfilePageView, CreateProfileView, CreateStoreView, AddToCartView, CartDetailView, DeleteCartItem
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LoginView
 
@@ -19,5 +19,6 @@ urlpatterns = [
     path('create_profile', CreateProfileView.as_view(), name="create_profile"),
     path('create_store', CreateStoreView.as_view(), name="create_store"),
     path('add/<int:box_id>/', AddToCartView.as_view(), name='add_to_cart'),
-    path('cart/', CartDetailView.as_view(), name='detail'),
+    path('cart/', CartDetailView.as_view(), name='cart'),
+    path('delete/<int:pk>/', DeleteCartItem.as_view(), name='delete_item'),
 ]
