@@ -3,8 +3,8 @@ from .models import Profile, Store, Cart, CartItem
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     # Campos exibidos na lista do admin
-    list_display = ('user', 'user_type', 'join_date')  # Atualizado para campos existentes no modelo
-    list_filter = ('user_type', 'join_date')  # Filtros baseados nos campos válidos
+    list_display = ('user', 'tipo_de_usuário', 'join_date')  # Atualizado para campos existentes no modelo
+    list_filter = ('tipo_de_usuário', 'join_date')  # Filtros baseados nos campos válidos
     search_fields = ('user__username', 'user__email')  # Permitindo busca por nome de usuário e e-mail do User
 
 @admin.register(Store)

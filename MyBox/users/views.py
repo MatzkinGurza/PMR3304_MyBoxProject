@@ -123,33 +123,35 @@ class PasswordsChangeView(PasswordChangeView):
     success_url = reverse_lazy('home:home')
 
 class AddToCartView(LoginRequiredMixin, View):
-    def post(self, request, *args, **kwargs):
-        box_id = kwargs.get('box_id')  # Recebe o ID do pacote da URL
-        quantity = int(request.POST.get('quantity', 1))  # Pega a quantidade do formulário
+    """Adiciona um pacote ao carrinho do usuário."""
 
-        # Obtém o pacote ou retorna 404
+    def post(self, request, *args, **kwargs):
+        box_id = kwargs.get('box_id')  # ID do pacote recebido pela URL
+        quantity = int(request.POST.get('quantity', 1))  # Quantidade passada no formulário ou padrão 1
+
+        # Busca o pacote pelo ID ou retorna 404
         box = get_object_or_404(Box, id=box_id)
 
-        # Obtém o carrinho do usuário ou cria um novo
-        cart, created = Cart.objects.get_or_create(buyer=request.user)
+        # Busca ou cria o carrinho do usuário
+        cart, _ = Cart.objects.get_or_create(buyer=request.user)
 
-        # Verifica se o item já está no carrinho
+        # Busca ou cria o item no carrinho
         cart_item, item_created = CartItem.objects.get_or_create(cart=cart, box=box)
 
         if not item_created:
-            # Atualiza a quantidade se o item já existir no carrinho
+            # Incrementa a quantidade se o item já existir no carrinho
             cart_item.quantity += quantity
-            cart_item.save()
         else:
             # Define a quantidade para o novo item
             cart_item.quantity = quantity
-            cart_item.save()
 
-        # Mensagem de sucesso
-        messages.success(request, f"{box.name} foi adicionado ao seu carrinho!")
+        cart_item.save()
+
+        # Envia mensagem de sucesso
+        messages.success(request, f"'{box.name}' foi adicionado ao seu carrinho!")
 
         # Redireciona para a página do carrinho
-        return redirect(reverse('cart:detail'))
+        return redirect(reverse('users:detail'))
     
 class CartDetailView(LoginRequiredMixin, TemplateView):
     template_name = "users/cart_detail.html"  # Nome do template para renderização
@@ -165,6 +167,7 @@ class CartDetailView(LoginRequiredMixin, TemplateView):
         context['total_price'] = cart.total_price if cart else 0
 
         return context
+    
 
 
 # def login_view(request):

@@ -61,7 +61,7 @@
                             Profile Configs
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <small class="ml-4">Logged in as {{ user.profile.user_type }}</small>
+                            <small class="ml-4">Logged in as {{ user.profile.tipo_de_usuário }}</small>
                             {% if user.profile %}
                             <li><a class="dropdown-item" href="{% url 'users:edit_profile' %}">Edit your profile</a></li>
                             {% else %}

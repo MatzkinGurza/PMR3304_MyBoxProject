@@ -34,8 +34,8 @@ class EditUserForm(UserChangeForm):
 
 
 class UserProfileForm(forms.ModelForm):
-    user_type = forms.ChoiceField(
-        choices=[("buyer", "Buyer"), ("seller", "Seller")], 
+    tipo_de_usuário = forms.ChoiceField(
+        choices=[("comprador", "Comprador"), ("vendedor", "Vendedor")], 
         widget=forms.Select(attrs={'class': 'form-control'})
         )
     

@@ -60,6 +60,13 @@
   <hr class="my-4">
 </div>
 
+<form method="post" action="{% url 'users:add_to_cart' box.id %}">
+  {% csrf_token %}
+  <label for="quantity">Quantidade:</label>
+  <input type="number" id="quantity" name="quantity" value="1" min="1">
+  <button type="submit">Adicionar ao Carrinho</button>
+</form>
+
 <br/>
 <br/>
 <a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Back</a>

@@ -11,7 +11,7 @@ class Profile(models.Model):
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, null =True)
-    user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
+    tipo_de_usuário = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
     
     # Campos para usuários
     CPF = models.CharField(max_length=14, unique=False, blank=False, null=False, default="000.000.000-00")  # CPF genérico
@@ -24,15 +24,15 @@ class Profile(models.Model):
     join_date = models.DateTimeField(auto_now_add=True)  # Data de criação do perfil
 
     def __str__(self):
-        return f"{self.user.username} - {self.get_user_type_display()}"
+        return f"{self.user.username} - {self.get_tipo_de_usuário_display()}"
 
     @property
     def is_seller(self):
-        return self.user_type == "seller"
+        return self.tipo_de_usuário == "vendedor"
 
     @property
     def is_buyer(self):
-        return self.user_type == "buyer"
+        return self.tipo_de_usuário == "comprador"
 
 
 # Modelo de Loja para Vendedores
