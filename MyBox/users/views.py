@@ -151,7 +151,7 @@ class AddToCartView(LoginRequiredMixin, View):
         messages.success(request, f"'{box.name}' foi adicionado ao seu carrinho!")
 
         # Redireciona para a página do carrinho
-        return redirect(reverse('users:detail'))
+        return redirect(reverse('users:cart'))
     
 class CartDetailView(LoginRequiredMixin, TemplateView):
     template_name = "users/cart_detail.html"  # Nome do template para renderização
