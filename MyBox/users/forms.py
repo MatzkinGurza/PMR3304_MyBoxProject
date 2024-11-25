@@ -41,14 +41,16 @@ class UserProfileForm(forms.ModelForm):
     
     class Meta:
         model = Profile
-        fields = ('phone', 'cpf', 'birth_date', 'address', 'complement', 'cep')
+        fields = ('telefone', 'CPF', 'nascimento', 'endereço', 'complemento', 'CEP')
         widgets = {
-            'phone': forms.TextInput(attrs={'class': 'form-control','placeholder':''}), 
-            'cpf': forms.TextInput(attrs={'class': 'form-control','placeholder':''}),
-            'birth_date': forms.DateInput(attrs={'class': 'form-control', 'placeholder':'birth date'}), 
-            'address': forms.TextInput(attrs={'class': 'form-control','placeholder':'address'}),
-            'complement': forms.TextInput(attrs={'class': 'form-control','placeholder':''}),
-            'cep': forms.NumberInput(attrs={'class': 'form-control','placeholder':''}),
+            'telefone': forms.TextInput(attrs={'class': 'form-control','placeholder':''}), 
+            'CPF': forms.TextInput(attrs={'class': 'form-control','placeholder':''}),
+            'nascimento': forms.DateInput(
+                attrs={'class': 'form-control', 'placeholder': 'birth date'}, 
+                format='%d/%m/%Y'),
+            'endereço': forms.TextInput(attrs={'class': 'form-control','placeholder':'address'}),
+            'complemento': forms.TextInput(attrs={'class': 'form-control','placeholder':''}),
+            'CEP': forms.NumberInput(attrs={'class': 'form-control','placeholder':''}),
         }
         def clean(self):
             cleaned_data = super().clean()

@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+from store.models import Box
+from django.urls import reverse
 
 # Modelo de Perfil para Usuários
 class Profile(models.Model):
@@ -12,14 +14,14 @@ class Profile(models.Model):
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
     
     # Campos para usuários
-    cpf = models.CharField(max_length=14, unique=False, blank=False, null=False, default="000.000.000-00")  # CPF genérico
-    phone = models.CharField(max_length=15, blank=False, null=False, default="(00) 00000-0000")  # Telefone padrão genérico
-    address = models.TextField(blank=False, null=False, default="Endereço não informado")  # Endereço padrão
-    complement = models.CharField(max_length=100, blank=True, null=True, default="Nenhum complemento")  # Complemento padrão
-    cep = models.CharField(max_length=10, blank=False, null=False, default="00000-000")  # CEP padrão genérico
-    birth_date = models.DateField(blank=False, null=False, default="2000-01-01")  # Data de nascimento padrão
+    CPF = models.CharField(max_length=14, unique=False, blank=False, null=False, default="000.000.000-00")  # CPF genérico
+    telefone = models.CharField(max_length=15, blank=False, null=False, default="(00) 00000-0000")  # Telefone padrão genérico
+    endereço = models.TextField(blank=False, null=False, default="Endereço não informado")  # Endereço padrão
+    complemento = models.CharField(max_length=100, blank=True, null=True, default="Nenhum complemento")  # Complemento padrão
+    CEP = models.CharField(max_length=10, blank=False, null=False, default="00000-000")  # CEP padrão genérico
+    nascimento = models.DateTimeField(blank=False, null=False, default="2000-01-01")  # Data de nascimento padrão
 
-    join_date = models.DateField(auto_now_add=True)  # Data de criação do perfil
+    join_date = models.DateTimeField(auto_now_add=True)  # Data de criação do perfil
 
     def __str__(self):
         return f"{self.user.username} - {self.get_user_type_display()}"
@@ -46,6 +48,49 @@ class Store(models.Model):
     def __str__(self):
         return self.store_name
 
+# Modelo de Carrinho
+class Cart(models.Model):
+    buyer = models.OneToOneField(
+        User, 
+        on_delete=models.CASCADE, 
+        related_name="cart",
+        null=True,
+        blank=True
+    )  # Um comprador pode ter apenas um carrinho
+    created_at = models.DateTimeField(auto_now_add=True)  # Data de criação do carrinho
+    updated_at = models.DateTimeField(auto_now=True)  # Data da última atualização
+
+    def __str__(self):
+        return f"Carrinho de {self.buyer.username}" 
+    
+    @property
+    def total_price(self):
+        """Calcula o preço total de todos os itens no carrinho."""
+        return sum(item.total_price for item in self.cart_items.all())
+
+    def get_absolute_url(self):
+        """Redireciona para a visualização do carrinho."""
+        return reverse('cart:detail', kwargs={'cart_id': self.id})
+    
+class CartItem(models.Model):
+    cart = models.ForeignKey(
+        Cart, 
+        on_delete=models.CASCADE, 
+        related_name="cart_items"
+    )  # Um carrinho pode ter vários itens
+    box = models.ForeignKey(
+        Box, 
+        on_delete=models.CASCADE
+    )  # Cada item está relacionado a uma Box específica
+    quantity = models.PositiveIntegerField(default=1)  # Quantidade do item no carrinho
+
+    def __str__(self):
+        return f"{self.quantity}x {self.box.name} no carrinho de {self.cart.buyer.username}"
+
+    @property
+    def total_price(self):
+        """Calcula o preço total deste item (quantidade x preço da Box)."""
+        return self.quantity * self.box.price
 
 # class Profile(models.Model):
 #     USER_TYPE_CHOICES = [

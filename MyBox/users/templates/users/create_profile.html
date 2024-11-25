@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Create Profile Page{% endblock %}
+{% block title %}Crie Seu Perfil{% endblock %}
 
 
 {% block content %}
@@ -9,13 +9,13 @@
 <br/>
 <br/>
 <div class="card text-white mb-2" style="background-color: #222; width: 50%; justify-self: center;">
-    <h1 class="card-header">Create your profile page</h1>
+    <h1 class="card-header">Crie Seu Perfil</h1>
     <div class="card-body">
         <div class="form-group">
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button class="btn btn-secondary">Create Page</button>
+                <button class="btn btn-secondary">Criar</button>
             </form>
         </div>
     </div>
@@ -35,11 +35,11 @@
         </div> -->
 
 {% else %}
-    <h2> You need to be logged in to do this</h2>
+    <h2> Faça Log in primeiro! </h2>
     
 {% endif %}
 
-<a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Back</a>
+<a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Voltar</a>
 <br/>
 <br/>
 

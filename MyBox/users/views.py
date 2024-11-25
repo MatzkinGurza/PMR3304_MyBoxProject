@@ -1,19 +1,23 @@
 from django.shortcuts import render, redirect,  get_object_or_404
-from django.views import generic
+from django.views import generic, View
 from .forms import UserProfileForm, StoreForm
 from django.contrib import messages
 from MyBox import settings
 import requests
 from django.contrib.auth.models import User
-from .models import Profile, Store
+from .models import Profile, Store, Cart, CartItem
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
-from django.views.generic import DetailView, CreateView, UpdateView
+from django.views.generic import DetailView, CreateView, UpdateView, TemplateView
 from django.urls import reverse_lazy
 from .forms import SignUpForm, UserProfileForm, StoreForm, EditUserForm
 from django.contrib.auth.views import PasswordChangeView
 import requests
 from django.conf import settings
+from store.models import Box
+from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 class CreateStoreView(CreateView):
     model = Profile
@@ -117,6 +121,50 @@ class UserEditView(generic.UpdateView):
 class PasswordsChangeView(PasswordChangeView):
     forms_classe = PasswordChangeForm
     success_url = reverse_lazy('home:home')
+
+class AddToCartView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        box_id = kwargs.get('box_id')  # Recebe o ID do pacote da URL
+        quantity = int(request.POST.get('quantity', 1))  # Pega a quantidade do formulário
+
+        # Obtém o pacote ou retorna 404
+        box = get_object_or_404(Box, id=box_id)
+
+        # Obtém o carrinho do usuário ou cria um novo
+        cart, created = Cart.objects.get_or_create(buyer=request.user)
+
+        # Verifica se o item já está no carrinho
+        cart_item, item_created = CartItem.objects.get_or_create(cart=cart, box=box)
+
+        if not item_created:
+            # Atualiza a quantidade se o item já existir no carrinho
+            cart_item.quantity += quantity
+            cart_item.save()
+        else:
+            # Define a quantidade para o novo item
+            cart_item.quantity = quantity
+            cart_item.save()
+
+        # Mensagem de sucesso
+        messages.success(request, f"{box.name} foi adicionado ao seu carrinho!")
+
+        # Redireciona para a página do carrinho
+        return redirect(reverse('cart:detail'))
+    
+class CartDetailView(LoginRequiredMixin, TemplateView):
+    template_name = "users/cart_detail.html"  # Nome do template para renderização
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Obtém o carrinho do usuário logado
+        cart = Cart.objects.filter(buyer=self.request.user).first()
+
+        # Adiciona o carrinho e os itens ao contexto
+        context['cart'] = cart
+        context['cart_items'] = cart.cart_items.all() if cart else []
+        context['total_price'] = cart.total_price if cart else 0
+
+        return context
 
 
 # def login_view(request):
