@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, Store, Cart, CartItem
+from .models import Profile, Store, Cart, CartItem, Subscription, Payment
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     # Campos exibidos na lista do admin
@@ -16,6 +16,8 @@ class StoreAdmin(admin.ModelAdmin):
 
 admin.site.register(Cart)
 admin.site.register(CartItem)
+admin.site.register(Subscription)
+admin.site.register(Payment)
 
 # from django.contrib import admin
 # from .models import Profile

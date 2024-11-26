@@ -5,12 +5,12 @@ from django.contrib import messages
 from MyBox import settings
 import requests
 from django.contrib.auth.models import User
-from .models import Profile, Store, Cart, CartItem
+from .models import Profile, Store, Cart, CartItem, Subscription
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django.views.generic import DetailView, CreateView, UpdateView, TemplateView, DeleteView
 from django.urls import reverse_lazy
-from .forms import SignUpForm, UserProfileForm, StoreForm, EditUserForm
+from .forms import SignUpForm, UserProfileForm, StoreForm, EditUserForm, SubscriptionForm, PaymentForm
 from django.contrib.auth.views import PasswordChangeView
 import requests
 from django.conf import settings
@@ -172,6 +172,66 @@ class DeleteCartItem(DeleteView):
     model=CartItem
     template_name = 'users/cart_detail.html'
     success_url = reverse_lazy('users:cart')
+
+class CreateSubscriptionView(View):
+    def get(self, request, *args, **kwargs):
+        # Renderiza o formulário para criar a subscrição
+        subscription_form = SubscriptionForm()
+        payment_form = PaymentForm()
+        return render(request, 'users/subscription.html', {
+            'subscription_form': subscription_form,
+            'payment_form': payment_form,
+        })
+
+    def post(self, request, *args, **kwargs):
+        # Trata os dados enviados pelo usuário
+        subscription_form = SubscriptionForm(request.POST)
+        payment_form = PaymentForm(request.POST)
+
+        if subscription_form.is_valid() and payment_form.is_valid():
+            payment = payment_form.save()
+            subscription = subscription_form.save(commit=False)
+            subscription.payment = payment
+            subscription.user = request.user
+            subscription.save()
+
+            messages.success(request, "Subscrição criada com sucesso!")
+            return redirect('users:subscription', subscription.id)
+
+        return render(request, 'users/subscription.html', {
+            'subscription_form': subscription_form,
+            'payment_form': payment_form,
+        })
+    
+class CancelSubscriptionView(View):
+    def post(self, request, *args, **kwargs):
+        subscription_id = kwargs.get('pk')
+        subscription = get_object_or_404(Subscription, id=subscription_id, user=request.user)
+
+        if subscription.is_active:
+            subscription.is_active = False
+            subscription.save()
+            messages.success(request, "Subscrição cancelada com sucesso!")
+        else:
+            messages.warning(request, "Esta subscrição já está cancelada.")
+
+        return redirect('users:subscription')
+    
+def create_payment(request):
+    if request.method == 'POST':
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            # Salvar o pagamento no banco de dados
+            payment = form.save(commit=False)
+            payment.user = request.user  # Associa o pagamento ao usuário logado
+            payment.save()
+
+            return redirect('users:subscription')  # Redireciona para a página inicial ou onde desejar
+
+    else:
+        form = PaymentForm()
+
+    return render(request, 'users/payment.html', {'form': form})
 
 
 # def login_view(request):

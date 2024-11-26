@@ -98,8 +98,8 @@ td img {
 }
 </style>
 <body>
-    <h1>Carrinho de Compras</h1>
-        {% if cart_items %}
+    <h1>Subscrições Ativas</h1>
+        {% if subscription %}
         <table>
             <thead>
                 <tr>
@@ -126,14 +126,8 @@ td img {
             </tbody>
         </table>
         <p><strong>Subtotal:</strong> R$ {{ total_price }}</p>
-    <div class="button-group">
-        <form method="post" action="{% url 'users:create_payment' %}">
-            {% csrf_token %}
-            <button>Finalizar Compra</button>
-        </form>
-    </div>
     {% else %}
-        <p>Seu carrinho está vazio.</p>
+        <p>Não há subscrições ativas.</p>
     {% endif %}
 </body>
 {% endblock %}

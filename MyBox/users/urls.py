@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.urls import path
-from .views import UserRegisterView, UserEditView, PasswordsChangeView, ShowProfilePageView, CreateProfileView, CreateStoreView, AddToCartView, CartDetailView, DeleteCartItem
+from .views import UserRegisterView, UserEditView, PasswordsChangeView, ShowProfilePageView, CreateProfileView, CreateStoreView, AddToCartView, CartDetailView, DeleteCartItem, CreateSubscriptionView, CancelSubscriptionView
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LoginView
 
@@ -21,4 +21,7 @@ urlpatterns = [
     path('add/<int:box_id>/', AddToCartView.as_view(), name='add_to_cart'),
     path('cart/', CartDetailView.as_view(), name='cart'),
     path('delete/<int:pk>/', DeleteCartItem.as_view(), name='delete_item'),
+    path('subscription/', CreateSubscriptionView.as_view(), name='subscription'),
+    path('<int:pk>/cancel/', CancelSubscriptionView.as_view(), name='cancel'),
+    path('payment/', views.create_payment, name='create_payment'),
 ]

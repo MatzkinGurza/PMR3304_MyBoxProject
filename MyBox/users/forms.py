@@ -1,5 +1,5 @@
 from django import forms
-from .models import Profile, Store
+from .models import Profile, Store, Subscription, Payment
 from django.contrib.auth.models import User
 import requests
 from typing import Any
@@ -76,3 +76,13 @@ class StoreForm(forms.ModelForm):
             'cnpj': forms.NumberInput(attrs={'class': 'form-control', 'placeholder':'cnpj'}), 
             'store_description': forms.Textarea(attrs={'class': 'form-control','placeholder':'description'}),
         }
+
+class SubscriptionForm(forms.ModelForm):
+    class Meta:
+        model = Subscription
+        fields = ['store']
+
+class PaymentForm(forms.ModelForm):
+    class Meta:
+        model = Payment
+        fields = ['nome_no_cartão', 'número_do_cartão', 'validade', 'CPF_do_titular', 'PIN']

@@ -92,6 +92,31 @@ class CartItem(models.Model):
         """Calcula o preço total deste item (quantidade x preço da Box)."""
         return self.quantity * self.box.price
 
+class Payment(models.Model):
+
+    nome_no_cartão = models.CharField(max_length=255, null=True, blank=True)
+    número_do_cartão = models.BigIntegerField(null=True, blank=True)
+    validade = models.DateField(null=True, blank=True)
+    CPF_do_titular = models.BigIntegerField(null=True, blank=True)
+    PIN = models.IntegerField(null=True, blank=True)
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="subscriptions")
+    payment = models.OneToOneField(Payment, on_delete=models.CASCADE, related_name="subscription")
+    store = models.ForeignKey('Store', on_delete=models.CASCADE, related_name="subscriptions")
+    purchase_date = models.DateField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+    box = models.OneToOneField(
+        Box,
+        on_delete=models.CASCADE,
+        related_name="subscription"
+    )  # Cada assinatura está associada a uma única Box
+
+    def __str__(self):
+        return f"Subscrição {self.id} - {self.user.username} ({self.store.name})"
+
+
 # class Profile(models.Model):
 #     USER_TYPE_CHOICES = [
 #         ("seller", "Vendedor"),
