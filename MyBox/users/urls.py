@@ -10,7 +10,7 @@ app_name = 'users'
 
 urlpatterns = [
     path('<int:pk>/profile', ShowProfilePageView.as_view(), name="user_profile"),
-    path('password/', PasswordsChangeView.as_view(template_name='users/change-password.html')),
+    path('password/', PasswordsChangeView.as_view(template_name='users/change-password.html'), name='password_change'),
     # path('login/', views.login_view, name='login'),
     path('login/', LoginView.as_view(template_name='users/login.html'), name='login'),
     path('register/', UserRegisterView.as_view(), name="register"),

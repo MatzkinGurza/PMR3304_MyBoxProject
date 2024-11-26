@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    {% if user.id == user.id %}
+
+    
+        <br/>
+        <br/>
+        <div class="card text-white mb-2" style="background-color: white; width: 50%; justify-self: center;">
+            <h1 class="card-header">Editar página de perfil de {{user.username}}</h1>
+            <div class="card-body">
+                <div class="form-group">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_username" style="color: #222;">Usuário:</label>
+                            {{ form.username }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_first_name" style="color: #222;">Primeiro nome:</label>
+                            {{ form.first_name }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_last_name" style="color: #222;">Último nome:</label>
+                            {{ form.last_name }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_email" style="color: #222;">Email:</label>
+                            {{ form.email }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_password" style="color: #222;">Senha:</label>
+                            {{ form.password }}
+                        </div>
+                        <button class="btn btn-secondary">Atualizar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <br/>
+
+
+        <!-- <h1>Edit {{user.username}} Profile Page</h1>
+
+        <div class="form-group">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-secondary">Update</button>
+            </form>
+        </div> -->
+
+
+    {% else %}
+        <h2> Sua conta não possui essa permissão</h2>
+    {% endif %}
+
+{% else %}
+<h2> Você precisa estar registrado para fazer isso</h2>
+
+{% endif %}
+
+
+<a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Voltar</a>
+<br/>
+<br/>
+
+{% endblock %}

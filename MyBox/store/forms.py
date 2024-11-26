@@ -10,11 +10,17 @@ from .models import Box
 #         }
 
 class BoxForm(forms.ModelForm):
-    image = forms.ImageField(required=False)  # Campo para upload de imagem
+    image = forms.ImageField(required=False, label='Imagem da Box')  # Campo para upload de imagem
 
     class Meta:
         model = Box
         fields = ('name', 'tag', 'price', 'description', 'image')
+        labels = {
+            'name': 'Nome da Box',
+            'tag': 'Tag da Box',
+            'price': 'Preço',
+            'description': 'Descrição sobre a Box',
+        }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Digite o nome da Box'}),
             'tag': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Escolha uma tag para a Box'}),
@@ -24,7 +30,7 @@ class BoxForm(forms.ModelForm):
 
 # Esse abaixo NÃO está sendo usado
 class BoxFormUpdate(forms.ModelForm):
-    image = forms.ImageField(required=False)  # campo para upload de imagem
+    image = forms.ImageField(required=False, label='Imagem da Box')  # campo para upload de imagem
 
     class Meta: 
         model = Box
@@ -33,6 +39,13 @@ class BoxFormUpdate(forms.ModelForm):
                   'seller', 
                   'price',
                   'description' )
+        labels = {
+            'name': 'Nome da Box',
+            'tag': 'Tag da Box',
+            'seller': 'Vendedor',
+            'price': 'Preço',
+            'description': 'Descrição sobre a Box',
+        }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control','placeholder':'write your title here'}), 
             'tag': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'choose a tag for the post'}), 
