@@ -10,7 +10,7 @@
         <div class="row no-gutters">
             <div class="col-md-3 d-flex justify-content-center align-items-center">
                 <img 
-                    src="{% if seller.profile.store_image %}{{ seller.profile.store_image.url }}{% else %}{% static 'images/image-placeholder.svg' %}{% endif %}" 
+                    src="{% if seller.profile.store.logo_url %}{{ seller.profile.store.logo_url }}{% else %}{% static 'images/image-placeholder.svg' %}{% endif %}" 
                     class="img-fluid rounded-circle p-3" 
                     alt="Imagem da Loja"
                     style="max-width: 180px; height: auto;">
