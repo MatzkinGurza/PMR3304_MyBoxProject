@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from store.forms import BoxForm, BoxFormUpdate  # Importa o formulário BoxForm do app store
 from store.models import Box  # Importa o modelo Box do app store
+from users.models import Store  # Importa o modelo Store do app users
 from django.urls import reverse_lazy, reverse
 import requests
 from django.conf import settings
@@ -17,6 +18,15 @@ def home(request):
     boxes = paginator.get_page(page_number)  # Recupera os objetos da página atual
 
     return render(request, 'home/home.html', {'boxes': boxes})
+
+def list_stores(request):
+    # Busca todas as boxes no banco de dados
+    all_stores = Store.objects.all()
+    paginators = Paginator(all_stores, 16)  # Limita 16 produtos por página
+    page_numbers = request.GET.get('page')  # Obtém o número da página da URL
+    stores = paginators.get_page(page_numbers)  # Recupera os objetos da página atual
+
+    return render(request, 'home/list_stores.html', {'stores': stores})
 
 class BoxDetailView(DetailView):
     model = Box

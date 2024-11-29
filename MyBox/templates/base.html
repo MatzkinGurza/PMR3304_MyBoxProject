@@ -49,6 +49,9 @@
                         <img src="{% static 'images/carrinho-compras-branco.png' %}" alt="Carrinho" width="30">
                     </a>
 
+                    <!-- Botão para lista de lojas -->
+                    <a href="{% url 'home:list_stores' %}" class="btn btn-outline-light me-2 mb-2">Lista de Lojas</a>
+
                     <div class="mr-3 mb-2">
                     {% if user.is_authenticated %}
                     <div class="dropdown">

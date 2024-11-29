@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from store.models import Box
 
 # Modelo de Perfil para Usuários
 class Profile(models.Model):
@@ -42,6 +43,10 @@ class Store(models.Model):
     logo_url = models.URLField(blank=True, null=True) # Logo da loja
     background_url = models.URLField(blank=True, null=True) # Imagem de fundo
     store_description = models.TextField(max_length=200, blank=True, null=True)  # Descrição da loja
+
+    def get_related_boxes(self):
+        # Retorna todas as Boxes associadas ao vendedor dessa loja
+        return Box.objects.filter(seller=self.owner.user)
 
     def __str__(self):
         return self.store_name
