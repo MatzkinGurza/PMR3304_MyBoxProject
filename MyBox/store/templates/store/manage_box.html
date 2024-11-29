@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}MyBox - editar caixa{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated and user.id == box.seller.id %}
+<br/>
+<br/>
+<div class="card" style="background-color: #222; width: 100%;">
+    <h1 class="card-header">Editar Box como {{ user.username }}</h1>
+    <div class="card-body">
+        <div class="form-group">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.media }}
+                {{ form.as_p }}
+                <button class="btn btn-secondary">Confirmar</button>
+            </form>
+        </div>
+    </div>
+</div>
+<br/>
+<br/>
+{% else %}
+<h2>Você não tem permissão para editar essa Box.</h2>
+{% endif %}
+
+<a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Voltar</a>
+<br/>
+<br/>
+
+{% endblock %}

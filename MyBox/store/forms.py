@@ -28,28 +28,26 @@ class BoxForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Escreva a descrição aqui'}),
         }
 
-# Esse abaixo NÃO está sendo usado
 class BoxFormUpdate(forms.ModelForm):
     image = forms.ImageField(required=False, label='Imagem da Box')  # campo para upload de imagem
 
     class Meta: 
         model = Box
         fields = ('name', 
-                  'tag', 
-                  'seller', 
+                  'tag',  
                   'price',
-                  'description' )
+                  'description', 
+                  'image')
         labels = {
             'name': 'Nome da Box',
             'tag': 'Tag da Box',
-            'seller': 'Vendedor',
             'price': 'Preço',
             'description': 'Descrição sobre a Box',
+            'image': 'Imagem da Box',
         }
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control','placeholder':'write your title here'}), 
             'tag': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'choose a tag for the post'}), 
-            'seller': forms.TextInput(attrs={'class': 'form-control', 'value':'', 'id':'authorID', 'type': 'hidden'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter the price'}),
             'description': forms.Textarea(attrs={'class': 'form-control','placeholder':'Escreva a descrição aqui'})
         }
