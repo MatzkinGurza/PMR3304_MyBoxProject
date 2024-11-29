@@ -17,11 +17,15 @@
             </div>
             <div class="col-md-9">
                 <div class="card-body">
-                    <h2 class="card-title text-primary">{{ seller.profile.store_name|default:seller.username }}</h2>
-                    <p class="card-text">{{ seller.profile.description|default:"Descrição da loja." }}</p>
+                    <h2 class="card-title text-primary">{{ seller.profile.store.store_name|default:seller.username }}</h2>
+                    <p class="card-text">{{ seller.profile.store.store_description|default:"Descrição da loja." }}</p>
                     <p class="card-text">
-                        <strong>Localidade:</strong> {{ seller.profile.location|default:"Não informada" }}<br>
-                        <strong>Membro desde:</strong> {{ seller.date_joined|date:"d/m/Y" }}
+                        <small>Localidade: {{ seller.profile.address|default:"Não informada" }}</small><br>
+                        <small>Email: {{ seller.profile.store.store_email }}</small><br>
+                        <small>Membro desde: {{ seller.date_joined|date:"d/m/Y" }}</small><br>
+                        <small>Usuario responsável: {{ seller.profile.user }}</small><br>
+                        <small>Contato: {{ seller.profile.phone|default:"Não informada" }}</small><br>
+
                     </p>
                 </div>
             </div>
@@ -32,7 +36,7 @@
     <div class="row row-cols-1 row-cols-md-2 g-5">
         {% if boxes %}
             {% for box in boxes %}
-            <div class="col">
+            <div class="col" style="padding: 10px;">
                 <div class="card h-100 shadow-lg d-flex flex-column" style="background-color: #222; color: #fff;">
                     <div class="row g-0 h-100">
                         <!-- Imagem Quadrada e Centralizada -->
@@ -56,7 +60,7 @@
                         <div class="col-8 d-flex flex-column justify-content-between">
                             <div class="card-body">
                                 <h5 class="card-title">
-                                    <a href="{% url 'home:box-details' box.pk %}" class="text-decoration-none text-white">
+                                    <a href="{% url 'home:box-details' box.pk %}" class='text-decoration-none'  style="display: inline-block; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
                                         {{ box.name }}
                                     </a>
                                 </h5>

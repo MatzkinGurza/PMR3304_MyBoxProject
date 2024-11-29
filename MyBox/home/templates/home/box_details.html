@@ -1,64 +1,90 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}{{box.author}}{% endblock %}
+{% block title %}{{box.name}} - {{box.seller.profile.store.store_name}}{% endblock %}
 
 {% block content %}
 <br/>
-<h4>Você encontrou {{box.name}} da {{box.seller.profile.store_name}}</h4>
+<h4>{{box.name}} - {{box.seller.profile.store.store_name}}</h4>
 <hr>
-<div class="card text-white mb-2" style="background-color: #222; width: 100%;">
+<div class="card h-100 shadow-lg d-flex flex-column" style="width:100%; background-color: #222; color: #fff; padding: 50px;">
+      <div class="row g-0 h-100">
+          <!-- Imagem Quadrada e Centralizada -->
+          <div class="col-4 d-flex align-items-center justify-content-center" style="min-height: 150px;">
+              {% if box.image %}
+                  <img 
+                      src="{{ box.image.url }}" 
+                      alt="{{ box.name }}" 
+                      class="img-fluid rounded" 
+                      style="width: 300px; height: 300px; object-fit: cover;">
+              {% else %}
+                  <img 
+                      src="{% static 'images/image-placeholder.svg' %}" 
+                      alt="{{ box.name }}" 
+                      class="img-fluid rounded" 
+                      style="width: 300px; height: 300px; object-fit: cover;">
+              {% endif %}
+          </div>
+
+          <!-- Detalhes do Produto -->
+          <div class="col-8 d-flex flex-column justify-content-between">
+              <div class="card-body">
+                  <h5 class="card-title">
+                      <a class='text-decoration-none' href="{% url 'home:box-details' box.pk %}" style="display: inline-block; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                          {{ box.name }} 
+                      </a>
+                       - 
+                      {% if box.seller.profile %}
+                      <a class='text-decoration-none' href="{% url 'store:store_page' box.seller.id %}" style="display: inline-block; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                        {{box.seller.profile.store.store_name}}</a>
+                      {% else %}
+                          {{ box.seller.profile.store.store_name }}
+                      {% endif %}
+                  </h5>
+                  <span class="badge bg-info text-dark">{{ box.tag }}</span>
+                  <p class="card-text">{{ box.description }}</p>
+                  <p class="card-text"><strong>R$ {{ box.price }}</strong></p>
+              </div>
+              {% if user.id == box.seller.id %}
+              <a class="btn btn-outline-primary mr-3 mb-3" href="{% url 'store:manage_box' box.id %}" style="width:20%; align-self: flex-end;">Editar</a>
+              {% endif %}
+          </div>
+      </div>
+</div>
+
+<hr>
+<div class="card text-white mb-2" style="background-color: #222; width: 100%; padding-left: 50px; padding-right: 50px; padding-top: 20px; padding-bottom: 20px;">
     <div class="row no-gutters">
       <div class="col-md-2">
-        {% if box.seller.profile.store_image %}
-        <img src="{{box.seller.profile.store_image}}" class="img-fluid rounded-start" alt="store picture" style="height: 100%;" >
+        {% if box.seller.profile.store.logo_url %}
+        <img src="{{box.seller.profile.store.logo_url}}" class="img-fluid rounded-start" alt="store picture" style="height: 150px; width: 150px;" >
         {% else %}
-        <img src="{% static 'images/logo-mybox.png' %}" class="card-img-top" alt="store picture" style="height: 100%;">
+        <img src="{% static 'images/logo-mybox.png' %}" class="card-img-top" alt="store picture" style="height: 200px; width: 200px; align-self: auto;">
         {% endif %}
     </div>
       <div class="col-md-10">
         <div class="card-body">
         <h5 class="card-title">
-            {% if box.seller.profile %}
-            <a href="{% url 'store:store_page' box.seller.profile.id %}">{{post.seller.profile.store_name}}</a>
-            {% else %}
-                {{ box.seller.profile.store_name }}
-            {% endif %}
+          {% if box.seller.profile %}
+          <a class='text-decoration-none' href="{% url 'store:store_page' box.seller.id %}" style="display: inline-block; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+            {{box.seller.profile.store.store_name}}</a>
+          {% else %}
+              {{ box.seller.profile.store.store_name }}
+          {% endif %}
         </h5>
-          {% if box.seller.profile.description %}
-          <p class="card-text">{{box.seller.profile.description}}</p>
+          {% if box.seller.profile.store.store_description %}
+          <p class="card-text">{{box.seller.profile.store.store_description}}</p>
           {% endif %}
-          {% if box.seller.profile.location %}
-          <small>Localidade: {{ box.seller.profile.location|default:"Não informada" }}</small><br>
+          {% if box.seller.profile.address %}
+          <small>Localidade: {{ box.seller.profile.address|default:"Não informada" }}</small><br>
           {% endif %}
-          {% if  box.seller.profile.store_email %}
-          <small>Contato: {{ box.seller.profile.store_email|default:"Não informado" }}</small><br>
+          {% if  box.seller.profile.store.store_email %}
+          <small>Contato: {{ box.seller.profile.store.store_email|default:"Não informado" }}</small><br>
           {% endif %}
         </div>
       </div>
     </div>
   </div>
-<hr>
 
-<div class="container my-5">
-  <div class="post-container border rounded p-4 shadow-sm">
-      <h2 class="post-title text-primary">{{ box.name }}</h2>
-      <small class="text-muted">
-          {{ post.author.first_name }} {{ post.author.last_name }} on 
-          {% for category in post.category.all %}<a href="{% url 'categories' category %}">{{category}}</a>; {% endfor %} 
-            {{ post.post_date|date:"d/m/Y" }}
-      </small>
-
-      {% if box.image %}
-          <div class="image-container my-3 text-center">
-              <img src="{{ box.image }}" alt="Imagem do Post" class="img-thumbnail w-50">
-          </div>
-      {% endif %}
-
-      <p class="post-body fs-5">{{ box.description|safe }}</p>
-  </div>
-
-  <hr class="my-4">
-</div>
 
 <br/>
 <br/>
