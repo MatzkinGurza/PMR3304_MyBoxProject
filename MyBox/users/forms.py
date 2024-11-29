@@ -42,7 +42,7 @@ class UserProfileForm(forms.ModelForm):
     
     class Meta:
         model = Profile
-        fields = ('phone', 'cpf', 'birth_date', 'address', 'complement', 'cep')
+        fields = ('phone', 'cpf', 'birth_date', 'address', 'complement', 'cep','user_type')
         widgets = {
             'phone': forms.TextInput(attrs={'class': 'form-control','placeholder':''}), 
             'cpf': forms.TextInput(attrs={'class': 'form-control','placeholder':''}),
@@ -93,4 +93,28 @@ class StoreForm(forms.ModelForm):
             'store_email': forms.TextInput(attrs={'class': 'form-control','placeholder':'E-mail'}),
             'cnpj': forms.NumberInput(attrs={'class': 'form-control', 'placeholder':'CNPJ'}), 
             'store_description': forms.Textarea(attrs={'class': 'form-control','placeholder':'Descrição da loja'}),
+        }
+
+class EditStoreForm(forms.ModelForm):
+    logo = forms.ImageField(required=False, label='Logo da loja', widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
+    background = forms.ImageField(required=False, label='Imagem de fundo', widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = Store
+        fields = ('store_name', 'store_email', 'cnpj', 'store_description', 'logo', 'background')
+        labels = {
+            'store_name': 'Nome da loja',
+            'store_email': 'E-mail da loja',
+            'cnpj': 'CNPJ',
+            'store_description': 'Descrição da loja',
+            'logo': 'Logo da loja',
+            'background': 'Imagem de fundo',
+        }
+        widgets = {
+            'store_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome da loja'}),
+            'store_email': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'E-mail da loja'}),
+            'cnpj': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'CNPJ'}),
+            'store_description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Descrição da loja'}),
+            'logo': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
+            'background': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
         }

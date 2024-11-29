@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Create Store Page{% endblock %}
+
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<br/>
+<br/>
+<div class="card text-white mb-2" style="background-color: #222; width: 50%; justify-self: center;">
+    <h1 class="card-header">Editar página da sua loja</h1>
+    <div class="card-body">
+        <div class="form-group">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-secondary">Editar a Loja</button>
+            </form>
+        </div>
+    </div>
+</div>
+<br/>
+<br/>
+
+        <!-- <br/>
+        <h1>Create your profile page</h1>
+
+        <div class="form-group">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-secondary">Create Page</button>
+            </form>
+        </div> -->
+
+{% else %}
+    <h2> Você precisa estar registrado para fazer isso</h2>
+    
+{% endif %}
+
+<a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Voltar</a>
+<br/>
+<br/>
+
+{% endblock %}

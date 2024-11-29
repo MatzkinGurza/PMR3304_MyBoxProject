@@ -10,20 +10,19 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django.views.generic import DetailView, CreateView, UpdateView
 from django.urls import reverse_lazy
-from .forms import SignUpForm, UserProfileForm, StoreForm, EditUserForm
+from .forms import SignUpForm, UserProfileForm, StoreForm, EditUserForm, EditStoreForm
 from django.contrib.auth.views import PasswordChangeView
 import requests
 from django.conf import settings
 
 class CreateStoreView(CreateView):
-    model = Profile
+    model = Store
     form_class = StoreForm
     template_name = 'users/create_store.html'
     #fields = '__all__'
     success_url = reverse_lazy('home:home')
-
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.instance.owner = self.request.user.profile
         logo_file = form.cleaned_data.get('logo')
         bg_file = form.cleaned_data.get('background')
         if logo_file:
@@ -113,6 +112,16 @@ class UserEditView(generic.UpdateView):
 
     def get_object(self):
         return self.request.user
+    
+class StoreEditView(generic.UpdateView):
+    form_class = EditStoreForm
+    template_name = "users/edit_store.html"
+    success_url = reverse_lazy('home:home')
+
+    def get_object(self):
+        user = self.request.user
+        store = get_object_or_404(Store, owner=user.profile) 
+        return store
 
 class PasswordsChangeView(PasswordChangeView):
     forms_classe = PasswordChangeForm

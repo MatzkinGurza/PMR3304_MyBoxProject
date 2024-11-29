@@ -81,7 +81,7 @@
                             {% endif %}
                             {% if user.profile.is_seller %}
                             {% if user.profile.store %}
-                            <li><a class="dropdown-item" href="#">Editar a página da sua loja</a></li>
+                            <li><a class="dropdown-item" href="{% url 'users:edit_store' %}">Editar a página da sua loja</a></li>
                             {% else %}
                             <li><a class="dropdown-item" href="{% url 'users:create_store' %}">Criar página da sua loja</a></li>
                             {% endif %}
