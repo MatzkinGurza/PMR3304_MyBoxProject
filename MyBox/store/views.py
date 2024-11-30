@@ -150,10 +150,17 @@ def search_stores(request):
 
 class BoxListAPIView(APIView):
     def get(self, request):
-        price_filter = request.GET.get('price', 'all')
-        tag_filter = request.GET.get('tag', None)
+        # Obter parâmetros de busca
+        query_param = request.GET.get('q', '').strip()  # Termo de busca
+        price_filter = request.GET.get('price', 'all')  # Filtro de preço
+        tag_filter = request.GET.get('tag', None)  # Filtro de categoria
 
+        # Construir a consulta inicial
         query = Q()
+
+        # Adicionar busca por termo (nome ou descrição)
+        if query_param:
+            query &= Q(name__icontains=query_param) | Q(description__icontains=query_param)
 
         # Filtrar por preço
         if price_filter == 'under_25':
@@ -169,8 +176,12 @@ class BoxListAPIView(APIView):
 
         # Filtrar por categoria (tag)
         if tag_filter:
-            query &= Q(tag=tag_filter)
+            query &= Q(tag__iexact=tag_filter)
 
+        # Aplicar os filtros à consulta
         boxes = Box.objects.filter(query)
+
+        # Serializar os resultados
         serializer = BoxSerializer(boxes, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+

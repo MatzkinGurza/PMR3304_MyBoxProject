@@ -10,23 +10,20 @@
         <div class="col-12">
             <div class="card text-white shadow-lg" style="background-color: #222;">
                 <div class="card-header text-center">
-                    Bem vindo à MyBox – onde sua vontade se encaixa.
+                    Resultados da Pesquisa
                 </div>
                 <div class="card-body text-center">
-                    <h5 class="card-title">Resultados da Pesquisa</h5>
+                    <h5 class="card-title">Encontre a Box perfeita para "{{ query }}"</h5>
                     <p class="card-text text-light">
-                        A MyBox é uma plataforma de e-commerce que oferece a você a conveniência de receber produtos personalizados 
-                        de suas lojas favoritas, automaticamente e sem complicações. Escolha seus pacotes, relaxe, e deixe o resto com a gente.
-                        Simples, prático e feito para facilitar sua vida! Venha procurar a Box perfeita para você.
+                        Explore as opções personalizadas disponíveis com base na sua pesquisa.
+                        Use os filtros para refinar ainda mais os resultados e encontrar exatamente o que você procura!
                     </p>
                 </div>
             </div>
         </div>
     </div>
-    
-    <h2>Resultados da Pesquisa para "{{ query }}"</h2>
 
-    <!-- Layout com Filtros e Resultados -->
+    <!-- Layout com Grid -->
     <div class="row mx-0">
         <!-- Coluna da Esquerda - Botão e Filtros -->
         <div class="col-md-2 px-3">
@@ -49,18 +46,11 @@
                         <li class="list-group-item"><a href="#" class="filter-link" data-price="under_200">Até R$ 200</a></li>
                         <li class="list-group-item"><a href="#" class="filter-link" data-price="above_200">A partir de R$ 200</a></li>
                     </ul>
-
-                    <h5>Filtrar por Categoria</h5>
-                    <ul class="list-group">
-                        {% for tag in tags %}
-                            <li class="list-group-item"><a href="#" class="filter-link" data-tag="{{ tag }}">{{ tag }}</a></li>
-                        {% endfor %}
-                    </ul>
                 </div>
             </div>
         </div>
 
-        <!-- Coluna da Direita - Resultados -->
+        <!-- Coluna da Direita - Grade de Produtos -->
         <div class="col-md-10 px-3">
             <div class="row row-cols-1 row-cols-md-2 gy-5 gx-3" id="products-container">
                 <!-- Produtos serão carregados dinamicamente -->
@@ -75,12 +65,11 @@
         const filterLinks = document.querySelectorAll('.filter-link');
         const productsContainer = document.getElementById('products-container');
         let selectedPrice = 'all';
-        let selectedTag = '';
-        const query = "{{ query }}";
+        const query = "{{ query|escapejs }}"; // Escapar o termo de busca
 
         // Função para carregar produtos com os filtros aplicados
         function loadProducts() {
-            const filterQuery = `q=${query}&price=${selectedPrice}&tag=${selectedTag}`;
+            const filterQuery = `q=${query}&price=${selectedPrice}`;
             fetch(`/store/api/boxes/?${filterQuery}`)
                 .then(response => response.json())
                 .then(data => {
@@ -115,22 +104,18 @@
                 .catch(error => console.error('Erro ao carregar os produtos:', error));
         }
 
-        // Carregar todos os produtos inicialmente
+        // Carregar produtos inicialmente com base no termo de busca
         loadProducts();
 
-        // Filtrar produtos ao clicar nos filtros
+        // Evento de clique nos filtros
         filterLinks.forEach(link => {
             link.addEventListener('click', function (e) {
                 e.preventDefault();
-                const price = this.getAttribute('data-price');
-                const tag = this.getAttribute('data-tag');
-
-                if (price) selectedPrice = price;
-                if (tag) selectedTag = tag;
-
-                loadProducts();
+                selectedPrice = this.getAttribute('data-price'); // Atualizar o filtro de preço
+                loadProducts(); // Recarregar produtos com o filtro aplicado
             });
         });
     });
 </script>
+
 {% endblock %}
