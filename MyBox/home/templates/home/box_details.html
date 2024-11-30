@@ -89,6 +89,26 @@
   </div>
 
 
+  <hr class="my-4">
+  <div class="comments-section">
+      <h3 class="text-secondary">Comments on {{ box.name }}</h3>
+      <a href="{% url 'home:add_comment' box.pk %}" class="btn btn-outline-primary btn-sm mb-3">Add Comment</a>
+
+      {% if not box.comments.all %}
+          <p class="text-muted">No Comments Yet...</p>
+      {% else %}
+           {% for comment in box.comments.all %} <!--post.comments.all|reverse  -->
+              <div class="comment mb-3 p-2 border rounded text-white" style="background: #222;">
+                  <strong>{{ comment.name }} | {{ comment.date_added }}</strong>
+                  <p class="mb-0">{{ comment.body }}</p>
+              </div>
+          {% endfor %}
+      {% endif %}
+  </div>
+</div>
+
+<hr>
+
 <br/>
 <br/>
 <a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Back</a>

@@ -3,12 +3,23 @@ from django.contrib.auth.decorators import login_required
 from store.forms import BoxForm, BoxFormUpdate  # Importa o formulário BoxForm do app store
 from store.models import Box  # Importa o modelo Box do app store
 from users.models import Store  # Importa o modelo Store do app users
+from .models import Comment # Importa o modelo Comment do app home
 from django.urls import reverse_lazy, reverse
+from .forms import CommentForm
 import requests
 from django.conf import settings
 from django.http import Http404, HttpResponseRedirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator
+
+class AddCommentView(CreateView):
+    model = Comment
+    template_name = 'home/add_comment.html'
+    form_class = CommentForm
+
+    def form_valid(self, form):
+        form.instance.box_id = self.kwargs['pk']
+        return super().form_valid(form)
 
 def home(request):
     # Busca todas as boxes no banco de dados
