@@ -50,7 +50,7 @@
                     </a>
 
                     <!-- Botão para lista de lojas -->
-                    <a href="{% url 'home:list_stores' %}" class="btn btn-outline-light me-2 mb-2">Lista de Lojas</a>
+                    <a href="{% url 'home:list_stores' %}" class="btn btn-outline-light me-2 mb-2 ml-1 mr-3">Lista de Lojas</a>
 
                     <div class="mr-3 mb-2">
                     {% if user.is_authenticated %}
@@ -95,9 +95,9 @@
 
                     <!-- Menu colapsável para Sellers -->
                     {% if user.is_authenticated and user.profile.is_seller %}
-                        <ul class="navbar-nav ms-auto">
+                        <ul class="navbar-nav ms-auto mb-2">
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle btn btn-outline-light" href="#" id="sellerMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="btn btn-outline-light dropdown-toggle" href="#" id="sellerMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Mais
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="sellerMenu">
