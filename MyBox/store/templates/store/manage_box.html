@@ -1,33 +1,31 @@
 {% extends 'base.html' %}
-{% block title %}MyBox - editar caixa{% endblock %}
+{% block title %}MyBox - Editar Caixa{% endblock %}
 
 {% block content %}
-
-{% if user.is_authenticated and user.id == box.seller.id %}
-<br/>
-<br/>
-<div class="card" style="background-color: #222; width: 100%;">
-    <h1 class="card-header">Editar Box como {{ user.username }}</h1>
-    <div class="card-body">
-        <div class="form-group">
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.media }}
-                {{ form.as_p }}
-                <button class="btn btn-secondary">Confirmar</button>
-                <a href="{% url 'store:delete_box' box.pk %}" class="btn btn-danger">Apagar</a>
-            </form>
+<div class="container mt-5 d-flex justify-content-center align-items-center">
+    {% if user.is_authenticated and user.id == box.seller.id %}
+        <div class="card text-white mb-3 w-100" style="background-color: #222;">
+            <h1 class="card-header text-center">Editar Box como {{ user.username }}</h1>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group mb-3">
+                        {{ form.media }}
+                        {{ form.as_p }}
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-secondary w-45">Confirmar</button>
+                        <a href="{% url 'store:delete_box' box.pk %}" class="btn btn-danger w-45">Apagar</a>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
+    {% else %}
+        <h2 class="text-center text-warning">Você não tem permissão para editar essa Box.</h2>
+    {% endif %}
 </div>
-<br/>
-<br/>
-{% else %}
-<h2>Você não tem permissão para editar essa Box.</h2>
-{% endif %}
 
-<a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Voltar</a>
-<br/>
-<br/>
-
+<div class="text-center mt-4">
+    <a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Voltar</a>
+</div>
 {% endblock %}

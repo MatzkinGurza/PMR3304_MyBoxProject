@@ -1,32 +1,28 @@
 {% extends 'base.html' %}
-{% block title %}MyBox - adicionar caixa{% endblock %}
+{% block title %}MyBox - Adicionar Caixa{% endblock %}
 
 {% block content %}
-
-{% if user.is_authenticated and user.profile.is_seller %}
-<br/>
-<br/>
-<div class="card" style="background-color: #222; width: 100%;">
-    <h1 class="card-header">Adicionar Box como {{ user.username }}</h1>
-    <div class="card-body">
-        <div class="form-group">
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.media }}
-                {{ form.as_p }}
-                <button class="btn btn-secondary">Criar</button>
-            </form>
+<div class="container mt-5 d-flex justify-content-center align-items-center">
+    {% if user.is_authenticated and user.profile.is_seller %}
+        <div class="card text-white mb-3 w-100" style="background-color: #222;">
+            <h1 class="card-header text-center">Adicionar Box como {{ user.username }}</h1>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group mb-3">
+                        {{ form.media }}
+                        {{ form.as_p }}
+                    </div>
+                    <button type="submit" class="btn btn-secondary w-100">Criar</button>
+                </form>
+            </div>
         </div>
-    </div>
+    {% else %}
+        <h2 class="text-center text-warning">Você não tem permissão para adicionar uma Box.</h2>
+    {% endif %}
 </div>
-<br/>
-<br/>
-{% else %}
-<h2>Você não tem permissão para adicionar uma Box.</h2>
-{% endif %}
 
-<a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Voltar</a>
-<br/>
-<br/>
-
+<div class="text-center mt-4">
+    <a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Voltar</a>
+</div>
 {% endblock %}

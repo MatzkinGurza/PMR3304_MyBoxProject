@@ -3,70 +3,48 @@
 
 {% block content %}
 
-{% if user.is_authenticated %}
-    {% if user.id == user.id %}
-
-    
-        <br/>
-        <br/>
-        <div class="card text-white mb-2" style="background-color: #222; width: 50%; justify-self: center;">
-            <h1 class="card-header">Editar página de perfil de {{user.username}}</h1>
-            <div class="card-body">
-                <div class="form-group">
+<div class="container mt-5 d-flex justify-content-center align-items-center">
+    {% if user.is_authenticated %}
+        {% if user.id == user.id %}
+            <div class="card text-white mb-3 w-50" style="background-color: #222;">
+                <h1 class="card-header text-center">Editar Perfil de {{ user.username }}</h1>
+                <div class="card-body">
                     <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <div class="form-group">
-                            <label for="id_username" >Usuário:</label>
+                        <div class="form-group mb-3">
+                            <label for="id_username">Usuário:</label>
                             {{ form.username }}
                         </div>
-                        <div class="form-group">
-                            <label for="id_first_name" >Primeiro nome:</label>
+                        <div class="form-group mb-3">
+                            <label for="id_first_name">Primeiro nome:</label>
                             {{ form.first_name }}
                         </div>
-                        <div class="form-group">
-                            <label for="id_last_name" >Último nome:</label>
+                        <div class="form-group mb-3">
+                            <label for="id_last_name">Último nome:</label>
                             {{ form.last_name }}
                         </div>
-                        <div class="form-group">
-                            <label for="id_email" >Email:</label>
+                        <div class="form-group mb-3">
+                            <label for="id_email">Email:</label>
                             {{ form.email }}
                         </div>
-                        <div class="form-group">
-                            <label for="id_password" >Senha:</label>
+                        <div class="form-group mb-3">
+                            <label for="id_password">Senha:</label>
                             {{ form.password }}
                         </div>
-                        <button class="btn btn-secondary">Atualizar</button>
+                        <button type="submit" class="btn btn-secondary w-100">Atualizar</button>
                     </form>
                 </div>
             </div>
-        </div>
-        <br/>
-        <br/>
-
-
-        <!-- <h1>Edit {{user.username}} Profile Page</h1>
-
-        <div class="form-group">
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button class="btn btn-secondary">Update</button>
-            </form>
-        </div> -->
-
-
+        {% else %}
+            <h2 class="text-center">Sua conta não possui essa permissão.</h2>
+        {% endif %}
     {% else %}
-        <h2> Sua conta não possui essa permissão</h2>
+        <h2 class="text-center">Você precisa estar registrado para fazer isso.</h2>
     {% endif %}
+</div>
 
-{% else %}
-<h2> Você precisa estar registrado para fazer isso</h2>
-
-{% endif %}
-
-
-<a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Voltar</a>
-<br/>
-<br/>
+<div class="text-center mt-4">
+    <a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Voltar</a>
+</div>
 
 {% endblock %}
