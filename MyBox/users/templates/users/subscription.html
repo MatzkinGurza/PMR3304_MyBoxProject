@@ -111,9 +111,12 @@
         <tbody>
             {% for subscription in subscriptions %}
                 <tr>
-                    <td>{{ subscription.id }}</td>
-                    <td>{{ subscription.payment }}</td>
-                    <td></td>
+                    <td>{{ subscription.payment.box.box.name }}</td>
+                    <td>{{ subscription.payment.box.box.price }}</td>
+                    <td><form method="post" action="{% url 'users:delete_subscription' subscription.payment.box.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">✖</button>
+                    </form></td>
                     
                 </tr>
             {% endfor %}

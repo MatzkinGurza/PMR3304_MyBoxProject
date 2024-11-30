@@ -151,27 +151,38 @@ class CartDetailView(LoginRequiredMixin, TemplateView):
     template_name = "users/cart_detail.html"  # Nome do template para renderização
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Obtém o carrinho do usuário logado
-        cart = Cart.objects.filter(buyer=self.request.user).first()
-        # Adiciona o carrinho e os itens ao contexto
-        context['cart'] = cart
-        context['cart_items'] = cart.cart_items.all() if cart else []
-        context['total_price'] = cart.total_price if cart else 0
-        context['form'] = PaymentForm()
+      context = super().get_context_data(**kwargs)
+      # Obtém o carrinho do usuário logado
+      cart = Cart.objects.filter(buyer=self.request.user).first()
 
-        return context
+      if cart:
+            # Filtra os CartItems que não estão associados a uma Subscription
+            cart_items_without_subscription = cart.cart_items.exclude(
+            selected_box__subscription__isnull=False
+            )
+            context['cart_items'] = cart_items_without_subscription
+            total_price = sum(
+                item.total_price for item in cart_items_without_subscription
+            )
+      else:
+        context['cart_items'] = []
+        total_price=0
+
+    # Outros dados do contexto
+      context['cart'] = cart
+      context['total_price'] = total_price
+      context['form'] = PaymentForm()
+      return context
     
 class DeleteCartItem(DeleteView):
     model=CartItem
     template_name = 'users/cart_detail.html'
     success_url = reverse_lazy('users:cart')
-
+    
 class CreateSubscriptionView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         # Trata os dados enviados pelo usuário
         payment_id = kwargs.get('payment_id')
-        print(payment_id)
         payment = Payment.objects.get(id=payment_id)
         subscription_id = kwargs.get('pk')
         subscription = Subscription.objects.create(
@@ -182,19 +193,10 @@ class CreateSubscriptionView(LoginRequiredMixin, View):
         subscription.save()   
         return redirect('users:subscriptions')
     
-class CancelSubscriptionView(View):
-    def post(self, request, *args, **kwargs):
-        subscription_id = kwargs.get('pk')
-        subscription = get_object_or_404(Subscription, id=subscription_id, user=request.user)
-
-        if subscription.is_active:
-            subscription.is_active = False
-            subscription.save()
-            messages.success(request, "Subscrição cancelada com sucesso!")
-        else:
-            messages.warning(request, "Esta subscrição já está cancelada.")
-
-        return redirect('users:subscription')
+class DeleteSubscription(DeleteView):
+    model=CartItem
+    template_name = 'users/cart_detail.html'
+    success_url = reverse_lazy('users:subscriptions')
     
 class SubscriptionListView(LoginRequiredMixin, ListView):
     model = Subscription

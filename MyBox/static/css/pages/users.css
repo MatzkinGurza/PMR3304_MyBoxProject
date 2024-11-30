@@ -192,7 +192,7 @@ textarea {
 }
 
 .pay-container {
-    max-width: 400px;
+    max-width: 800px;
     margin: 80px auto;
     padding: 20px 30px;
     background-color: #333;
@@ -245,6 +245,6 @@ textarea {
 }
 
 .pay-container button:hover {
-    background-color: #ddd;
+    background-color: #fb1010;
 }
 

@@ -99,49 +99,69 @@ td img {
 </style>
 <body>
     <h1>Carrinho de Compras</h1>
-        {% if cart_items %}
-        <form method="post" action="{% url 'users:create_payment' %}">
-            {% csrf_token %}
-        <table>
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Produto</th>
-                    <th>Preço Unitário</th>
-                    <th>Quantidade</th>
-                    <th>Preço Total</th>
-                    <th>Selecionar</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in cart_items %}
+    <a class="btn btn-outline-secondary" href="{% url 'users:subscriptions' %}">Ver subscrições ativas</a>
+    {% if cart_items %}
+            <table>
+                <thead>
                     <tr>
-                        <td><form method="post" action="{% url 'users:delete_item' item.id %}">
-                            {% csrf_token %}
-                            <button style="background:none; border:none; color:red; cursor:pointer;">✖</button>
-                        </form></td>
+                        <th></th>
+                        <th>Produto</th>
+                        <th>Preço Unitário</th>
+                        <th>Quantidade</th>
+                        <th>Preço Total</th>
+                        <th>Selecionar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
+                        <td>
+                            <form method="post" action="{% url 'users:delete_item' item.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">✖</button>
+                            </form>
+                        </td>
                         <td>{{ item.box.name }}</td>
                         <td>R$ {{ item.box.price }}</td>
                         <td>{{ item.quantity }}</td>
                         <td>R$ {{ item.total_price }}</td>
                         <td>
-                            <input type="radio" name="selected_box" value="{{ item.id }}" required> 
+                            <form method="post" action="{% url 'users:create_payment' %}">
+                                {% csrf_token %}
+                            <!-- Adicionando o evento de alteração no radio button -->
+                            <input type="radio" name="selected_box" value="{{ item.id }}" required onchange="togglePaymentForm()"> 
                         </td>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <p><strong>Subtotal:</strong> R$ {{ total_price }}</p>
-    <div class="button-group">
-                <div class="pay-container">
-                {{ form.as_p }}
-                <button type="submit" class="btn btn-primary">Pagar</button>
-                </div>
-        </form>
-    </div>
+                    <div class="button-group" id="payment-form" style="display: none;">
+                        <div class="pay-container">
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-primary">Pagar</button>
+                        </div>
+                    </div>
+                </form>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p><strong>Subtotal:</strong> R$ {{ total_price }}</p>
+
+            <!-- A div de pagamento começa escondida -->
+            
     {% else %}
         <p>Seu carrinho está vazio.</p>
     {% endif %}
+
+    <script>
+        // Função para mostrar o formulário de pagamento quando o radio button for selecionado
+        function togglePaymentForm() {
+            var paymentForm = document.getElementById("payment-form");
+            var selectedRadio = document.querySelector('input[name="selected_box"]:checked');
+            // Verifica se algum radio button foi selecionado
+            if (selectedRadio) {
+                paymentForm.style.display = "block";
+            } else {
+                paymentForm.style.display = "none";
+            }
+        }
+    </script>
 </body>
-<button href="{% url 'users:subscriptions' %}">Ver subscrições ativas</button>
 {% endblock %}
