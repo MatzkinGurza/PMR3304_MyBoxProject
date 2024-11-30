@@ -37,8 +37,8 @@
             <div class="collapse navbar-collapse" id="navbarContent">
                 <div class="navbar-nav w-100 d-lg-flex align-items-center justify-content-between">
                     <!-- Barra de Pesquisa -->
-                    <form class="d-flex mx-auto my-2 my-lg-0 w-50">
-                        <input class="form-control me-2" type="search" placeholder="Procure sua Loja ou Box favorita" aria-label="Search">
+                    <form class="d-flex mx-auto my-2 my-lg-0 w-50" action="{% url 'home:search_boxes' %}" method="GET">
+                        <input class="form-control me-2" type="search" name="q" placeholder="Procure sua Box favorita" aria-label="Search">
                         <button class="btn btn-outline-light" type="submit">
                             <img src="{% static 'images/lupa-branca.png' %}" alt="Buscar" width="20">
                         </button>

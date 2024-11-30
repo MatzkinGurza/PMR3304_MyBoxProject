@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card text-center shadow-lg p-3" style="width: 400px;">
+        <div class="card-body">
+            <h2 class="card-title mb-4">
+                Você tem certeza que deseja apagar a Box "{{ box.name }}"?
+            </h2>
+            <form method="POST" action="{% url 'store:delete_box' box.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-block mb-2">Sim, apagar</button>
+            </form>
+            <a href="{% url 'home:home' %}" class="btn btn-secondary btn-block">Cancelar</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

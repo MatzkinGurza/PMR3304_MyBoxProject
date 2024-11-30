@@ -9,10 +9,10 @@
     <div class="intro-section mb-4">
         <div class="card text-white shadow-lg" style="background-color: #222;">
             <div class="card-header text-center">
-                Estas são as lojas associadas ao MyBox - com quais você se encaixa?
+                Bem vindo à MyBox – onde sua vontade se encaixa.
             </div>
             <div class="card-body text-center">
-                <h5 class="card-title">Procure a Loja com a Box perfeita para você</h5>
+                <h5 class="card-title">Procure uma Loja com a Box perfeita para você</h5>
                 <p class="card-text">
                     A MyBox é uma plataforma de e-commerce que 
                     oferece a você a conveniência de receber produtos personalizados 
@@ -31,34 +31,33 @@
             <img src="{% static 'images/lupa-branca.png' %}" alt="Buscar" width="20">
         </button>
     </form>
-    <hr>
 
-
+    <h2>Resultados da Pesquisa de "{{ query }}"</h2>
     <!-- Grade de Lojas -->
     <div class="row">
-        {% if stores %}
-            {% for store in stores %}
-                <div class="col-md-12 mb-2" style="width: 80%;">
-                    <div class="card h-100 shadow-lg d-flex flex-column" style="background-color: #222; color: #fff; ">
-                        <div class="row g-0 h-75" >
+        {% if results %}
+            {% for store in results %}
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 shadow-lg d-flex flex-column" style="background-color: #222; color: #fff;">
+                        <div class="row g-0 h-100">
                             <div class="col-4 d-flex align-items-center justify-content-center">
                                 {% if store.logo_url %}
                                     <img 
                                         src="{{ store.logo_url }}" 
                                         alt="{{ store.store_name }}" 
                                         class="img-fluid rounded-start"
-                                        style="width: 75px; height: 75px; object-fit: cover;">
+                                        style="width: 150px; height: 150px; object-fit: cover;">
                                 {% else %}
                                     <img 
                                         src="{% static 'images/image-placeholder.svg' %}" 
                                         alt="{{ store.store_name }}" 
                                         class="img-fluid rounded-start"
-                                        style="width: 75px; height: 75px; object-fit: cover;">
+                                        style="width: 150px; height: 150px; object-fit: cover;">
                                 {% endif %}
                             </div>
                             <div class="col-8 d-flex flex-column justify-content-between">
                                 <div class="card-body">                                    
-                                    <h7 class="card-title">
+                                    <h5 class="card-title">
                                         {% if store.owner and store.owner.user %}
                                             <a class='text-decoration-none' href="{% url 'store:store_page' store.owner.user.id %}" style="display: inline-block; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
                                                 {{ store.store_name }}
@@ -66,9 +65,9 @@
                                         {% else %}
                                             <span>{{ store.store_name }}</span>  <!-- Exibe o nome da loja sem link se não tiver owner -->
                                         {% endif %}
-                                    </h7>
+                                    </h5>
                                     {% if store.store_description %}
-                                    <small><p class="card-text">{{store.store_description|truncatewords:20}}</p></small>
+                                    <p class="card-text">{{store.store_description}}</p>
                                     {% endif %}
                                     {% if  store.store_email %}
                                     <small>Contato: {{ store.store_email|default:"Não informado" }}</small><br>
@@ -85,7 +84,7 @@
             </div>
         {% endif %}
     </div>
-<hr>
+
     <!-- Paginação -->
     <nav>
         <ul class="pagination justify-content-center">

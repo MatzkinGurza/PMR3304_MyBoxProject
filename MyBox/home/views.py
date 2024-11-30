@@ -50,3 +50,13 @@ class BoxDetailView(DetailView):
     #     return context
 
 
+def search_boxes(request):
+    query = request.GET.get('q')  # Recupera o termo da barra de pesquisa
+    results = Box.objects.filter(name__icontains=query) if query else []  # Filtra as lojas com base na pesquisa
+    
+    # Adiciona paginação aos resultados
+    paginator = Paginator(results, 16)  # Limita 16 lojas por página
+    page_number = request.GET.get('page')  # Obtém o número da página da URL
+    boxes = paginator.get_page(page_number)  # Obtém a página de lojas correspondente
+
+    return render(request, 'home/search_boxes.html', {'results': results, 'query': query, 'boxes': boxes})

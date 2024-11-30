@@ -45,7 +45,10 @@
                   <p class="card-text"><strong>R$ {{ box.price }}</strong></p>
               </div>
               {% if user.id == box.seller.id %}
+              <div style="flex-direction: column;">
               <a class="btn btn-outline-primary mr-3 mb-3" href="{% url 'store:manage_box' box.id %}" style="width:20%; align-self: flex-end;">Editar</a>
+              <a href="{% url 'store:delete_box' box.pk %}" class="btn btn-danger mr-3 mb-3" style="width:20%; align-self: flex-end;">Apagar</a>
+              </div>
               {% endif %}
           </div>
       </div>
