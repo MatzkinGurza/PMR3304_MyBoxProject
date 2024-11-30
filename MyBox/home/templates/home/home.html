@@ -67,8 +67,7 @@
     </div>
 </div>
 
-<!-- JavaScript para Filtrar Produtos -->
-<script>
+<<script>
     document.addEventListener('DOMContentLoaded', function () {
         const filterLinks = document.querySelectorAll('.filter-link');
         const productsContainer = document.getElementById('products-container');
@@ -115,24 +114,48 @@
                 .catch(error => console.error('Erro ao carregar os produtos:', error));
         }
 
-        // Carregar todos os produtos inicialmente
-        loadProducts();
+        // Função para gerenciar visualmente o filtro ativo
+        function highlightActiveFilter() {
+            filterLinks.forEach(link => {
+                const price = link.getAttribute('data-price') || '';
+                const tag = link.getAttribute('data-tag') || '';
 
-        // Filtrar produtos ao clicar nos filtros
+                // Verificar se o filtro deve estar ativo
+                if (price === selectedPrice || tag === selectedTag) {
+                    link.classList.add('active-filter');
+                } else {
+                    link.classList.remove('active-filter');
+                }
+            });
+        }
+
+        // Inicializar produtos e filtros
+        loadProducts();
+        highlightActiveFilter();
+
+        // Evento de clique nos filtros
         filterLinks.forEach(link => {
             link.addEventListener('click', function (e) {
                 e.preventDefault();
+
                 const price = this.getAttribute('data-price');
                 const tag = this.getAttribute('data-tag');
 
                 // Atualizar os filtros selecionados
-                if (price) selectedPrice = price;
-                if (tag) selectedTag = tag;
+                if (price) {
+                    selectedPrice = selectedPrice === price ? 'all' : price; // Desmarcar se já selecionado
+                }
+                if (tag) {
+                    selectedTag = selectedTag === tag ? '' : tag; // Desmarcar se já selecionado
+                }
 
-                // Recarregar os produtos com os novos filtros
+                // Atualizar a UI e os produtos
+                highlightActiveFilter();
                 loadProducts();
             });
         });
     });
 </script>
+
+
 {% endblock %}

@@ -34,4 +34,20 @@
     color: #fff;
 }
 
+
+.active-filter {
+    background-color: #007bff; /* Cor de fundo do filtro ativo */
+    color: white !important; /* Cor do texto do link */
+    font-weight: bold; /* Destacar o texto */
+    border: 1px solid #0056b3; /* Borda para realçar */
+}
+
+.filter-link.active-filter {
+    background-color: #007bff !important;
+    color: #fff !important;
+    font-weight: bold !important;
+    border: 1px solid #0056b3 !important;
+}
+
+
 /* Espaciamento entre linhas e colunas controlado pelo Bootstrap */
