@@ -16,8 +16,9 @@ def home(request):
     paginator = Paginator(all_boxes, 16)  # Limita 16 produtos por página
     page_number = request.GET.get('page')  # Obtém o número da página da URL
     boxes = paginator.get_page(page_number)  # Recupera os objetos da página atual
+    tags = Box.objects.values_list('tag', flat=True).distinct()
 
-    return render(request, 'home/home.html', {'boxes': boxes})
+    return render(request, 'home/home.html', {'boxes': boxes, 'tags': tags})
 
 def list_stores(request):
     # Busca todas as boxes no banco de dados
