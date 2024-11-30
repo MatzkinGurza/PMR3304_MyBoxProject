@@ -153,7 +153,6 @@ class BoxListAPIView(APIView):
         price_filter = request.GET.get('price', 'all')
         tag_filter = request.GET.get('tag', None)
 
-        # Inicializar consulta vazia
         query = Q()
 
         # Filtrar por preço
@@ -172,9 +171,6 @@ class BoxListAPIView(APIView):
         if tag_filter:
             query &= Q(tag=tag_filter)
 
-        # Buscar os boxes de acordo com o filtro
         boxes = Box.objects.filter(query)
-
-        # Serializar os resultados
         serializer = BoxSerializer(boxes, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

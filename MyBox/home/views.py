@@ -9,16 +9,22 @@ from django.conf import settings
 from django.http import Http404, HttpResponseRedirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 def home(request):
-    # Busca todas as boxes no banco de dados
-    all_boxes = Box.objects.all()
-    paginator = Paginator(all_boxes, 16)  # Limita 16 produtos por página
-    page_number = request.GET.get('page')  # Obtém o número da página da URL
-    boxes = paginator.get_page(page_number)  # Recupera os objetos da página atual
+    """
+    Renderiza a página inicial com as tags disponíveis para os filtros.
+    As boxes são carregadas dinamicamente via API no frontend.
+    """
+    # Obter todas as categorias únicas para os filtros
     tags = Box.objects.values_list('tag', flat=True).distinct()
 
-    return render(request, 'home/home.html', {'boxes': boxes, 'tags': tags})
+    # Garantir que as tags estejam ordenadas para melhor usabilidade
+    tags = sorted(tags)
+
+    return render(request, 'home/home.html', {
+        'tags': tags,  # Tags disponíveis para o filtro de categorias
+    })
 
 def list_stores(request):
     # Busca todas as boxes no banco de dados
@@ -50,14 +56,7 @@ class BoxDetailView(DetailView):
     #     context['liked'] = liked
     #     return context
 
-
 def search_boxes(request):
-    query = request.GET.get('q')  # Recupera o termo da barra de pesquisa
-    results = Box.objects.filter(name__icontains=query) if query else []  # Filtra as lojas com base na pesquisa
-    
-    # Adiciona paginação aos resultados
-    paginator = Paginator(results, 16)  # Limita 16 lojas por página
-    page_number = request.GET.get('page')  # Obtém o número da página da URL
-    boxes = paginator.get_page(page_number)  # Obtém a página de lojas correspondente
-
-    return render(request, 'home/search_boxes.html', {'results': results, 'query': query, 'boxes': boxes})
+    query = request.GET.get('q')  # Termo de pesquisa
+    tags = Box.objects.values_list('tag', flat=True).distinct()  # Obter categorias para filtros
+    return render(request, 'home/search_boxes.html', {'query': query, 'tags': tags})
