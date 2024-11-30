@@ -77,10 +77,10 @@ class StoreForm(forms.ModelForm):
             'store_description': forms.Textarea(attrs={'class': 'form-control','placeholder':'description'}),
         }
 
-class SubscriptionForm(forms.ModelForm):
-    class Meta:
-        model = Subscription
-        fields = ['store']
+#class SubscriptionForm(forms.ModelForm):
+ #   class Meta:
+   #     model = Subscription
+  #      fields = ['store']
 
 class PaymentForm(forms.ModelForm):
     class Meta:

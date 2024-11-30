@@ -5,12 +5,12 @@ from django.contrib import messages
 from MyBox import settings
 import requests
 from django.contrib.auth.models import User
-from .models import Profile, Store, Cart, CartItem, Subscription
+from .models import Profile, Store, Cart, CartItem, Subscription, Payment
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
-from django.views.generic import DetailView, CreateView, UpdateView, TemplateView, DeleteView
+from django.views.generic import DetailView, CreateView, UpdateView, TemplateView, DeleteView, ListView
 from django.urls import reverse_lazy
-from .forms import SignUpForm, UserProfileForm, StoreForm, EditUserForm, SubscriptionForm, PaymentForm
+from .forms import SignUpForm, UserProfileForm, StoreForm, EditUserForm, PaymentForm
 from django.contrib.auth.views import PasswordChangeView
 import requests
 from django.conf import settings
@@ -160,11 +160,11 @@ class CartDetailView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         # Obtém o carrinho do usuário logado
         cart = Cart.objects.filter(buyer=self.request.user).first()
-
         # Adiciona o carrinho e os itens ao contexto
         context['cart'] = cart
         context['cart_items'] = cart.cart_items.all() if cart else []
         context['total_price'] = cart.total_price if cart else 0
+        context['form'] = PaymentForm()
 
         return context
     
@@ -173,35 +173,20 @@ class DeleteCartItem(DeleteView):
     template_name = 'users/cart_detail.html'
     success_url = reverse_lazy('users:cart')
 
-class CreateSubscriptionView(View):
-    def get(self, request, *args, **kwargs):
-        # Renderiza o formulário para criar a subscrição
-        subscription_form = SubscriptionForm()
-        payment_form = PaymentForm()
-        return render(request, 'users/subscription.html', {
-            'subscription_form': subscription_form,
-            'payment_form': payment_form,
-        })
-
+class CreateSubscriptionView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         # Trata os dados enviados pelo usuário
-        subscription_form = SubscriptionForm(request.POST)
-        payment_form = PaymentForm(request.POST)
-
-        if subscription_form.is_valid() and payment_form.is_valid():
-            payment = payment_form.save()
-            subscription = subscription_form.save(commit=False)
-            subscription.payment = payment
-            subscription.user = request.user
-            subscription.save()
-
-            messages.success(request, "Subscrição criada com sucesso!")
-            return redirect('users:subscription', subscription.id)
-
-        return render(request, 'users/subscription.html', {
-            'subscription_form': subscription_form,
-            'payment_form': payment_form,
-        })
+        payment_id = kwargs.get('payment_id')
+        print(payment_id)
+        payment = Payment.objects.get(id=payment_id)
+        subscription_id = kwargs.get('pk')
+        subscription = Subscription.objects.create(
+            payment = payment,
+            user = request.user,
+            is_active=True    
+        )
+        subscription.save()   
+        return redirect('users:subscriptions')
     
 class CancelSubscriptionView(View):
     def post(self, request, *args, **kwargs):
@@ -217,21 +202,59 @@ class CancelSubscriptionView(View):
 
         return redirect('users:subscription')
     
-def create_payment(request):
-    if request.method == 'POST':
-        form = PaymentForm(request.POST)
+class SubscriptionListView(LoginRequiredMixin, ListView):
+    model = Subscription
+    template_name = 'users/subscription.html'  # O template que será usado para exibir as subscrições
+    context_object_name = 'subscriptions'  # Nome do contexto que será passado para o template
+    paginate_by = 10  # Paginação, caso você queira dividir as subscrições em páginas
+    payment = Subscription.payment
+    box = payment.box
+
+    def get_queryset(self):
+        """Retorna todas as subscrições do usuário logado"""
+        return Subscription.objects.filter(user=self.request.user)
+
+    
+
+    
+class CreatePaymentView(View):
+    def get(self, request, *args, **kwargs):
+        selected_box_id = request.GET.get('selected_box')
+        form = PaymentForm()  # Cria o formulário vazio
+         # Se não houver selected_box, exibe uma mensagem de erro
+        if not selected_box_id:
+            error = "Por favor, volte e selecione uma box."
+            return render(request, 'users/payment.html', {'form': form, 'error': error})
+        
+        # Passa o selected_box_id para o contexto
+        print(f"selected:{selected_box_id}")
+        return render(request, 'users/payment.html', {'form': form, 'selected_box_id': selected_box_id})
+
+
+    def post(self, request, *args, **kwargs):
+        selected_box_id = request.POST.get('selected_box')
+        form = PaymentForm(request.POST)  # Preenche o formulário com os dados POST
+        print(f"selected_box_id: {selected_box_id}") 
+        if not selected_box_id:
+            error = "Por favor, volte e selecione uma box."
+            return render(request, 'users/payment.html', {'form': form, 'error': error})
+        
+        # Se o formulário for válido
         if form.is_valid():
-            # Salvar o pagamento no banco de dados
+            # Cria o pagamento sem salvar imediatamente
+            print('valid')
             payment = form.save(commit=False)
-            payment.user = request.user  # Associa o pagamento ao usuário logado
-            payment.save()
+           # payment, create = Payment.objects.get_or_create(
+            #    box_id=selected_box_id,
+             #   defaults={})
+            #payment.user = request.user  # Associa o pagamento ao usuário logado
+            payment_id = kwargs.get('pk')
+            payment.box_id = selected_box_id # Associa a Box selecionada
+            payment.save()  # Salva o pagamento no banco de dados
+            return render(request, 'users/payment_confirmation.html', {'payment': payment, 'form': form})
 
-            return redirect('users:subscription')  # Redireciona para a página inicial ou onde desejar
-
-    else:
-        form = PaymentForm()
-
-    return render(request, 'users/payment.html', {'form': form})
+        # Caso o formulário não seja válido, renderiza novamente com os erros
+        return render(request, 'users/payment.html', {'form': form, 'error': 'Formulário inválido.'})
 
 
 # def login_view(request):
