@@ -49,5 +49,6 @@ class BoxFormUpdate(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control','placeholder':'write your title here'}), 
             'tag': forms.TextInput(attrs={'class': 'form-control', 'placeholder':'choose a tag for the post'}), 
             'price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter the price'}),
-            'description': forms.Textarea(attrs={'class': 'form-control','placeholder':'Escreva a descrição aqui'})
+            'description': forms.Textarea(attrs={'class': 'form-control','placeholder':'Escreva a descrição aqui'}),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control-file'})
         }

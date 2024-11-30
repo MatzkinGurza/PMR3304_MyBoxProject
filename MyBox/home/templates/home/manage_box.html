@@ -22,8 +22,8 @@
     <form method="post" enctype="multipart/form-data" class="product-form">
         {% csrf_token %}
         <div class="product-image-upload">
-            {% if box and box.image %}
-                <img src="{{ box.image.url }}" alt="Imagem do Produto">
+            {% if box and box.image_url %}
+                <img src="{{ box.image_url }}" alt="Imagem do Produto">
             {% else %}
                 <img src="{% static 'images/image-placeholder.png' %}" alt="Placeholder">
             {% endif %}

@@ -52,9 +52,33 @@ class AddBoxView(CreateView):
             return redirect('store:not_seller')
         return super().dispatch(request, *args, **kwargs)
     
-    def form_valid(self, form):        
+    def form_valid(self, form):
         # Associa o vendedor à Box
         form.instance.seller = self.request.user
+
+        # Verifica se há uma imagem
+        image_file = form.cleaned_data.get('image')  # Substitua 'image' pelo nome do campo no seu form
+
+        if image_file:
+            # Enviar a imagem para o Imgur
+            url = "https://api.imgur.com/3/image"
+            headers = {"Authorization": f"Client-ID {settings.IMGUR_CLIENT_ID}"}
+            files = {'image': image_file.read()}
+
+            response = requests.post(url, headers=headers, files=files)
+            data = response.json()
+
+            if response.status_code == 200 and data['success']:
+                try:
+                    if data.get('success'):
+                        form.instance.image_url = data['data']['link']  # Salva o link da imagem no campo image_url
+                    else:
+                        print("Erro no JSON retornado:", data)
+                except ValueError:
+                    print("Erro ao interpretar JSON:", response.text)                
+            else:
+                print("Erro no upload do Imgur:", response.text)
+        
         return super().form_valid(form)
 
 def not_seller(request):
@@ -106,12 +130,29 @@ def manage_box(request, box_id=None):
         if form.is_valid():
             box = form.save(commit=False)
             box.seller = request.user
+
+            # Se foi feito upload de uma nova imagem
+            if form.cleaned_data['image']:
+                image_file = form.cleaned_data['image']
+                url = "https://api.imgur.com/3/image"
+                headers = {"Authorization": f"Client-ID {settings.IMGUR_CLIENT_ID}"}
+                files = {'image': image_file.read()}
+
+                response = requests.post(url, headers=headers, files=files)
+                data = response.json()
+
+                if response.status_code == 200 and data['success']:
+                    box.image_url = data['data']['link']  # Salva o link da nova imagem da Box
+                else:
+                    print("Erro no upload do Imgur:", response.text)
+
             box.save()
             return redirect('store:store_page', seller_id=request.user.id)
     else:
-        form = BoxForm(instance=box)
+        form = BoxFormUpdate(instance=box)
 
     return render(request, 'store/manage_box.html', {'form': form, 'box': box})
+
     
 class DeleteBoxView(DeleteView):
     model=Box
