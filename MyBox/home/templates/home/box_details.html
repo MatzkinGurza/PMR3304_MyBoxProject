@@ -18,7 +18,7 @@
                       style="width: 300px; height: 300px; object-fit: cover;">
               {% else %}
                   <img 
-                      src="{% static 'images/image-placeholder.svg' %}" 
+                      src="{% static 'images/image-placeholder.svg' %}"  
                       alt="{{ box.name }}" 
                       class="img-fluid rounded" 
                       style="width: 300px; height: 300px; object-fit: cover;">
@@ -61,7 +61,7 @@
         {% if box.seller.profile.store.logo_url %}
         <img src="{{box.seller.profile.store.logo_url}}" class="img-fluid rounded-start" alt="store picture" style="height: 150px; width: 150px;" >
         {% else %}
-        <img src="{% static 'images/logo-mybox.png' %}" class="card-img-top" alt="store picture" style="height: 200px; width: 200px; align-self: auto;">
+        <img src="{% static 'images/image-placeholder.svg' %}" class="card-img-top" alt="store picture" style="height: 200px; width: 200px; align-self: auto;">
         {% endif %}
     </div>
       <div class="col-md-10">

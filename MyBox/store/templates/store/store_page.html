@@ -31,16 +31,18 @@
             </div>
         </div>
     </div>
+</div>
+
 
     <!-- Grade de Produtos -->
     <div class="row row-cols-1 row-cols-md-2 g-5">
         {% if boxes %}
             {% for box in boxes %}
-            <div class="col" style="padding: 10px;">
+            <div class="col-md-6 mb-4">
                 <div class="card h-100 shadow-lg d-flex flex-column" style="background-color: #222; color: #fff;">
-                    <div class="row g-0 h-100">
+                    <div class="row g-0 h-100" >
                         <!-- Imagem Quadrada e Centralizada -->
-                        <div class="col-4 d-flex align-items-center justify-content-center" style="min-height: 150px;">
+                        <div class="col-4 d-flex align-items-center justify-content-center">
                             {% if box.image_url %}
                                 <img 
                                     src="{{ box.image_url }}" 
