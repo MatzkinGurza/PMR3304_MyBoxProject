@@ -15,6 +15,13 @@ from django.http import Http404, HttpResponseRedirect, HttpResponseForbidden
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Box
+from .serializers import BoxSerializer
+from django.db.models import Q
+
 def store_page(request, seller_id):
     seller = get_object_or_404(User, id=seller_id)
     boxes = Box.objects.filter(seller=seller)
@@ -85,37 +92,6 @@ class AddBoxView(CreateView):
 def not_seller(request):
     return render(request, 'store/not_seller.html')
 
-# class UpdateBoxView(UpdateView):
-#     model=Box
-#     form_class = BoxFormUpdate
-#     template_name= 'store/manage_box.html'
-#     success_url = reverse_lazy('home:home')
-
-    # def form_valid(self, form):
-        # image_file = form.cleaned_data.get('image')
-        # if image_file:
-        #     # Enviar a imagem para o Imgur
-        #     url = "https://api.imgur.com/3/image"
-        #     headers = {"Authorization": f"Client-ID {settings.IMGUR_CLIENT_ID}"}
-        #     files = {'image': image_file.read()}
-
-        #     response = requests.post(url, headers=headers, files=files)
-        #     data = response.json()
-
-        #     if response.status_code == 200 and data['success']:
-        #         form.instance.image_url = data['data']['link']
-        #     else:
-        #         # Log failure details
-        #         print("Imgur upload failed:", response.status_code, data)
-            
-        #     url = "https://api.imgur.com/3/credits"
-        #     headers = {"Authorization": "Client-ID 017429aafa9c2c9"}
-
-        #     response = requests.get(url, headers=headers)
-        #     print("Imgur API Quota Check:", response.status_code, response.json())
-        
-        # return super().form_valid(form)
-
     
 @login_required
 def manage_box(request, box_id=None):
@@ -171,4 +147,41 @@ def search_stores(request):
     stores = paginator.get_page(page_number)  # Obtém a página de lojas correspondente
 
     return render(request, 'store/search_stores.html', {'results': results, 'query': query, 'stores': stores})
+
+class BoxListAPIView(APIView):
+    def get(self, request):
+        # Obter parâmetros de busca
+        query_param = request.GET.get('q', '').strip()  # Termo de busca
+        price_filter = request.GET.get('price', 'all')  # Filtro de preço
+        tag_filter = request.GET.get('tag', None)  # Filtro de categoria
+
+        # Construir a consulta inicial
+        query = Q()
+
+        # Adicionar busca por termo (nome ou descrição)
+        if query_param:
+            query &= Q(name__icontains=query_param) | Q(description__icontains=query_param)
+
+        # Filtrar por preço
+        if price_filter == 'under_25':
+            query &= Q(price__lt=25)
+        elif price_filter == 'under_50':
+            query &= Q(price__lt=50)
+        elif price_filter == 'under_100':
+            query &= Q(price__lt=100)
+        elif price_filter == 'under_200':
+            query &= Q(price__lt=200)
+        elif price_filter == 'above_200':
+            query &= Q(price__gte=200)
+
+        # Filtrar por categoria (tag)
+        if tag_filter:
+            query &= Q(tag__iexact=tag_filter)
+
+        # Aplicar os filtros à consulta
+        boxes = Box.objects.filter(query)
+
+        # Serializar os resultados
+        serializer = BoxSerializer(boxes, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
