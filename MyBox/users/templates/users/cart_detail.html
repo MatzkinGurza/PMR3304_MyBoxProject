@@ -124,22 +124,17 @@ td img {
                         <td>R$ {{ item.box.price }}</td>
                         <td>{{ item.quantity }}</td>
                         <td>R$ {{ item.total_price }}</td>
-                        <td><!--<form method="post" action="{% url 'users:create_payment' %}">-->
-                            <!--{% csrf_token %}-->
+                        <td>
                             <input type="radio" name="selected_box" value="{{ item.id }}" required> 
-                     <!--    </form>--></td>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
         <p><strong>Subtotal:</strong> R$ {{ total_price }}</p>
     <div class="button-group">
-        <!--<form method="post" action="{% url 'users:create_payment' %}">-->
-           <!-- {% csrf_token %}-->
-            <!--<button>Realizar Compra</button>-->
                 <div class="pay-container">
                 {{ form.as_p }}
-                <!-- Botão de Submissão -->
                 <button type="submit" class="btn btn-primary">Pagar</button>
                 </div>
         </form>
@@ -148,4 +143,5 @@ td img {
         <p>Seu carrinho está vazio.</p>
     {% endif %}
 </body>
+<button href="{% url 'users:subscriptions' %}">Ver subscrições ativas</button>
 {% endblock %}

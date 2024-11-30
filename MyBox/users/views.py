@@ -139,18 +139,12 @@ class AddToCartView(LoginRequiredMixin, View):
         cart_item, item_created = CartItem.objects.get_or_create(cart=cart, box=box)
 
         if not item_created:
-            # Incrementa a quantidade se o item já existir no carrinho
             cart_item.quantity += quantity
         else:
-            # Define a quantidade para o novo item
             cart_item.quantity = quantity
 
         cart_item.save()
 
-        # Envia mensagem de sucesso
-        messages.success(request, f"'{box.name}' foi adicionado ao seu carrinho!")
-
-        # Redireciona para a página do carrinho
         return redirect(reverse('users:cart'))
     
 class CartDetailView(LoginRequiredMixin, TemplateView):
@@ -204,23 +198,21 @@ class CancelSubscriptionView(View):
     
 class SubscriptionListView(LoginRequiredMixin, ListView):
     model = Subscription
+    subscription = Subscription.objects.all()
     template_name = 'users/subscription.html'  # O template que será usado para exibir as subscrições
     context_object_name = 'subscriptions'  # Nome do contexto que será passado para o template
-    paginate_by = 10  # Paginação, caso você queira dividir as subscrições em páginas
+    paginate_by = 10  # Paginação
     payment = Subscription.payment
-    box = payment.box
 
     def get_queryset(self):
         """Retorna todas as subscrições do usuário logado"""
         return Subscription.objects.filter(user=self.request.user)
 
     
-
-    
 class CreatePaymentView(View):
     def get(self, request, *args, **kwargs):
         selected_box_id = request.GET.get('selected_box')
-        form = PaymentForm()  # Cria o formulário vazio
+        form = PaymentForm()  
          # Se não houver selected_box, exibe uma mensagem de erro
         if not selected_box_id:
             error = "Por favor, volte e selecione uma box."
@@ -233,21 +225,14 @@ class CreatePaymentView(View):
 
     def post(self, request, *args, **kwargs):
         selected_box_id = request.POST.get('selected_box')
-        form = PaymentForm(request.POST)  # Preenche o formulário com os dados POST
-        print(f"selected_box_id: {selected_box_id}") 
+        form = PaymentForm(request.POST) 
         if not selected_box_id:
             error = "Por favor, volte e selecione uma box."
             return render(request, 'users/payment.html', {'form': form, 'error': error})
         
         # Se o formulário for válido
         if form.is_valid():
-            # Cria o pagamento sem salvar imediatamente
-            print('valid')
             payment = form.save(commit=False)
-           # payment, create = Payment.objects.get_or_create(
-            #    box_id=selected_box_id,
-             #   defaults={})
-            #payment.user = request.user  # Associa o pagamento ao usuário logado
             payment_id = kwargs.get('pk')
             payment.box_id = selected_box_id # Associa a Box selecionada
             payment.save()  # Salva o pagamento no banco de dados
