@@ -15,6 +15,7 @@
                 {{ form.media }}
                 {{ form.as_p }}
                 <button class="btn btn-secondary">Confirmar</button>
+                <a href="{% url 'store:delete_box' box.pk %}" class="btn btn-danger">Apagar</a>
             </form>
         </div>
     </div>

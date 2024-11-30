@@ -157,7 +157,7 @@ def manage_box(request, box_id=None):
 class DeleteBoxView(DeleteView):
     model=Box
     template_name= 'store/delete_box.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('home:home')
 
     
 
