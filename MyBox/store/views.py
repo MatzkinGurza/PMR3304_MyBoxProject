@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Box
+from users.models import Store
 from .forms import BoxForm, BoxFormUpdate
 from django.core.paginator import Paginator
 from .forms import BoxForm, BoxFormUpdate  # Importa o formulário BoxForm do app store
@@ -12,7 +13,7 @@ import requests
 from django.conf import settings
 from django.http import Http404, HttpResponseRedirect, HttpResponseForbidden
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-
+from django.core.paginator import Paginator
 
 def store_page(request, seller_id):
     seller = get_object_or_404(User, id=seller_id)
@@ -159,5 +160,15 @@ class DeleteBoxView(DeleteView):
     template_name= 'store/delete_box.html'
     success_url = reverse_lazy('home:home')
 
+
+def search_stores(request):
+    query = request.GET.get('q')  # Recupera o termo da barra de pesquisa
+    results = Store.objects.filter(store_name__icontains=query) if query else []  # Filtra as lojas com base na pesquisa
     
+    # Adiciona paginação aos resultados
+    paginator = Paginator(results, 16)  # Limita 16 lojas por página
+    page_number = request.GET.get('page')  # Obtém o número da página da URL
+    stores = paginator.get_page(page_number)  # Obtém a página de lojas correspondente
+
+    return render(request, 'store/search_stores.html', {'results': results, 'query': query, 'stores': stores})
 

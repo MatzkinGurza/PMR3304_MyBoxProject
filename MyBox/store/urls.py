@@ -9,5 +9,6 @@ urlpatterns = [
     path('box/<int:pk>/', views.BoxDetailView.as_view(), name="box-detail"),  # Detalhes de uma Box
     path('add_box/', views.AddBoxView.as_view(), name='add_box'),  # Adicionar uma nova Box
     path('box/<int:pk>/delete/', views.DeleteBoxView.as_view(), name='delete_box'),  # Excluir uma Box
+    path('search/', views.search_stores, name='search_stores'),
     path('not_seller/', views.not_seller, name='not_seller'),   # Página informativa para buyers
 ]

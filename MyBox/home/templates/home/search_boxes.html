@@ -12,7 +12,7 @@
                 Bem vindo à MyBox – onde sua vontade se encaixa.
             </div>
             <div class="card-body text-center">
-                <h5 class="card-title">Procure uma Loja com a Box perfeita para você</h5>
+                <h5 class="card-title">Procure a Box perfeita para você</h5>
                 <p class="card-text">
                     A MyBox é uma plataforma de e-commerce que 
                     oferece a você a conveniência de receber produtos personalizados 
@@ -23,55 +23,39 @@
             </div>
         </div>
     </div>
-
-    <!-- Barra de Pesquisa -->
-    <form class="d-flex mx-auto my-2 my-lg-0 w-50" action="{% url 'store:search_stores' %}" method="GET">
-        <input class="form-control me-2" type="search" name="q" placeholder="Procure sua loja favorita" aria-label="Search">
-        <button class="btn btn-outline-light" type="submit">
-            <img src="{% static 'images/lupa-branca.png' %}" alt="Buscar" width="20">
-        </button>
-    </form>
-
-
-    <!-- Grade de Lojas -->
+    <h2>Resultados da Pesquisa de "{{ query }}"</h2>
+    <!-- Grade de Produtos -->
     <div class="row">
-        {% if stores %}
-            {% for store in stores %}
+        {% if results %}
+            {% for box in results %}
                 <div class="col-md-6 mb-4">
                     <div class="card h-100 shadow-lg d-flex flex-column" style="background-color: #222; color: #fff;">
                         <div class="row g-0 h-100">
                             <div class="col-4 d-flex align-items-center justify-content-center">
-                                {% if store.logo_url %}
+                                {% if box.image_url %}
                                     <img 
-                                        src="{{ store.logo_url }}" 
-                                        alt="{{ store.store_name }}" 
+                                        src="{{ box.image_url }}" 
+                                        alt="{{ box.name }}" 
                                         class="img-fluid rounded-start"
                                         style="width: 150px; height: 150px; object-fit: cover;">
                                 {% else %}
                                     <img 
                                         src="{% static 'images/image-placeholder.svg' %}" 
-                                        alt="{{ store.store_name }}" 
+                                        alt="{{ box.name }}" 
                                         class="img-fluid rounded-start"
                                         style="width: 150px; height: 150px; object-fit: cover;">
                                 {% endif %}
                             </div>
                             <div class="col-8 d-flex flex-column justify-content-between">
-                                <div class="card-body">                                    
+                                <div class="card-body">
                                     <h5 class="card-title">
-                                        {% if store.owner and store.owner.user %}
-                                            <a class='text-decoration-none' href="{% url 'store:store_page' store.owner.user.id %}" style="display: inline-block; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                                                {{ store.store_name }}
-                                            </a>
-                                        {% else %}
-                                            <span>{{ store.store_name }}</span>  <!-- Exibe o nome da loja sem link se não tiver owner -->
-                                        {% endif %}
+                                        <a href="{% url 'home:box-details' box.pk %}" class='text-decoration-none'  style="display: inline-block; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                                            {{ box.name }}
+                                        </a>
                                     </h5>
-                                    {% if store.store_description %}
-                                    <p class="card-text">{{store.store_description}}</p>
-                                    {% endif %}
-                                    {% if  store.store_email %}
-                                    <small>Contato: {{ store.store_email|default:"Não informado" }}</small><br>
-                                    {% endif %}
+                                    <span class="badge bg-info text-dark">{{ box.tag }}</span>
+                                    <p class="card-text">{{ box.description|truncatewords:20 }}</p>
+                                    <p class="card-text"><strong>R$ {{ box.price }}</strong></p>
                                 </div>
                             </div>
                         </div>
@@ -80,7 +64,7 @@
             {% endfor %}
         {% else %}
             <div class="alert alert-warning text-center" role="alert">
-                Nenhuma Loja disponível no momento.
+                Nenhuma Box disponível no momento.
             </div>
         {% endif %}
     </div>
@@ -88,21 +72,21 @@
     <!-- Paginação -->
     <nav>
         <ul class="pagination justify-content-center">
-            {% if stores.has_previous %}
+            {% if boxes.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ stores.previous_page_number }}" aria-label="Anterior">
+                    <a class="page-link" href="?page={{ boxes.previous_page_number }}" aria-label="Anterior">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
             {% endif %}
-            {% for num in stores.paginator.page_range %}
-                <li class="page-item {% if stores.number == num %}active{% endif %}">
+            {% for num in boxes.paginator.page_range %}
+                <li class="page-item {% if boxes.number == num %}active{% endif %}">
                     <a class="page-link" href="?page={{ num }}">{{ num }}</a>
                 </li>
             {% endfor %}
-            {% if stores.has_next %}
+            {% if boxes.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ stores.next_page_number }}" aria-label="Próximo">
+                    <a class="page-link" href="?page={{ boxes.next_page_number }}" aria-label="Próximo">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
