@@ -23,24 +23,21 @@
                         <small>Localidade: {{ seller.profile.address|default:"Não informada" }}</small><br>
                         <small>Email: {{ seller.profile.store.store_email }}</small><br>
                         <small>Membro desde: {{ seller.date_joined|date:"d/m/Y" }}</small><br>
-                        <small>Usuario responsável: {{ seller.profile.user }}</small><br>
+                        <small>Usuário responsável: {{ seller.profile.user }}</small><br>
                         <small>Contato: {{ seller.profile.phone|default:"Não informada" }}</small><br>
-
                     </p>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
 
     <!-- Grade de Produtos -->
-    <div class="row row-cols-1 row-cols-md-2 g-5">
+    <div class="row row-cols-1 row-cols-md-2 g-4">
         {% if boxes %}
             {% for box in boxes %}
-            <div class="col-md-6 mb-4">
-                <div class="card h-100 shadow-lg d-flex flex-column" style="background-color: #222; color: #fff;">
-                    <div class="row g-0 h-100" >
+            <div class="col mb-4">
+                <div class="card h-100 shadow-lg" style="background-color: #222; color: #fff;">
+                    <div class="row g-0 h-100">
                         <!-- Imagem Quadrada e Centralizada -->
                         <div class="col-4 d-flex align-items-center justify-content-center">
                             {% if box.image_url %}
@@ -62,7 +59,7 @@
                         <div class="col-8 d-flex flex-column justify-content-between">
                             <div class="card-body">
                                 <h5 class="card-title">
-                                    <a href="{% url 'home:box-details' box.pk %}" class='text-decoration-none'  style="display: inline-block; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                                    <a href="{% url 'home:box-details' box.pk %}" class="text-decoration-none" style="display: inline-block; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
                                         {{ box.name }}
                                     </a>
                                 </h5>
@@ -71,11 +68,11 @@
                                 <p class="card-text"><strong>R$ {{ box.price }}</strong></p>
                             </div>
                             {% if user.id == box.seller.id %}
-                            <div style="flex-direction: column;">
-                            <a class="btn btn-outline-primary mr-3 mb-3" href="{% url 'store:manage_box' box.id %}" style="width:40%; align-self: flex-end;">Editar</a>
-                            <a href="{% url 'store:delete_box' box.pk %}" class="btn btn-danger mr-3 mb-3" style="width:40%; align-self: flex-end;">Apagar</a>
-                            {% endif %}
+                            <div class="d-flex justify-content-between">
+                                <a class="btn btn-outline-primary mr-2 mb-2" href="{% url 'store:manage_box' box.id %}">Editar</a>
+                                <a href="{% url 'store:delete_box' box.pk %}" class="btn btn-danger mb-2">Apagar</a>
                             </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
