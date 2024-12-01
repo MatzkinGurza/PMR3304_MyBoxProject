@@ -23,10 +23,7 @@ IMGUR_CLIENT_SECRET = '1dd706bed963d43daae40c7a95a45e8fa5e2b48e'
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -97,10 +94,21 @@ WSGI_APPLICATION = 'MyBox.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'myboxdb',
+        'USER': 'myboxdb_user',
+        'PASSWORD': 'Vkunn1n1UXc2wPJgMPwXJ8IbysnaXrns',
+        'HOST': 'dpg-ct6atsbv2p9s739ajot0-a.oregon-postgres.render.com',
+        'PORT': '5432',
     }
 }
 
