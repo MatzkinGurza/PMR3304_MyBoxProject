@@ -56,6 +56,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # adicione esta linha
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -88,10 +89,21 @@ WSGI_APPLICATION = 'MyBox.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'myboxdb',
+        'USER': 'myboxdb_user',
+        'PASSWORD': 'Vkunn1n1UXc2wPJgMPwXJ8IbysnaXrns',
+        'HOST': 'dpg-ct6atsbv2p9s739ajot0-a.oregon-postgres.render.com',
+        'PORT': '5432',
     }
 }
 
@@ -134,6 +146,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static'), ]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' # adicione esta linha
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
