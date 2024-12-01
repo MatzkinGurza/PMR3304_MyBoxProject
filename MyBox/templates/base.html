@@ -45,7 +45,7 @@
                     </form>
 
                     <!-- Ícone do Carrinho -->
-                    <a href="#" class="nav-link text-center text-white mx-lg-3">
+                    <a href="{% url 'users:cart' %}" class="nav-link text-center text-white mx-lg-3">
                         <img src="{% static 'images/carrinho-compras-branco.png' %}" alt="Carrinho" width="30">
                     </a>
 
@@ -143,7 +143,7 @@
                 </div>
                 <div class="footer-logo">
                     <a href="{% url 'home:home' %}">
-                        <img src="{% static 'images/logo-mybox.png' %}" alt="MyBox Logo">
+                        <img src="{% static 'images/logo-mybox.png' %}" alt="MyBox Logo"></a>
                 </div>
             </div>
 

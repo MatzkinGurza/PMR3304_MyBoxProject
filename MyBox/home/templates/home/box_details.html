@@ -3,6 +3,30 @@
 {% block title %}{{box.name}} - {{box.seller.profile.store.store_name}}{% endblock %}
 
 {% block content %}
+<style>.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.button-group button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button-group input {
+  width: 150px;
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #333;
+  background-color: #1c1c1c;
+  color: white;
+}
+</style>
 <br/>
 <h4>{{box.name}} - {{box.seller.profile.store.store_name}}</h4>
 <hr>
@@ -89,10 +113,28 @@
   </div>
 
 
+<form method="post" action="{% url 'users:add_to_cart' box.id %}">
+  {% csrf_token %}
+  <label for="quantity">Quantidade:</label>
+  <input type="number" id="quantity" name="quantity" value="1" min="1">
+  <div class="button-group">
+    <button type="submit">Adicionar ao Carrinho</button>
+  </div>
+</form>
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
 <br/>
 <br/>
-<a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Back</a>
+<a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Voltar</a>
 <br/>
 <br/>
+
 
 {% endblock %}

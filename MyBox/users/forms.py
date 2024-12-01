@@ -1,5 +1,5 @@
 from django import forms
-from .models import Profile, Store
+from .models import Profile, Store, Subscription, Payment
 from django.contrib.auth.models import User
 import requests
 from typing import Any
@@ -35,21 +35,32 @@ class EditUserForm(UserChangeForm):
 
 
 class UserProfileForm(forms.ModelForm):
+<<<<<<< HEAD
     user_type = forms.ChoiceField(
         choices=[("buyer", "Comprador"), ("seller", "Vendedor")], 
+=======
+    tipo_de_usuário = forms.ChoiceField(
+        choices=[("comprador", "Comprador"), ("vendedor", "Vendedor")], 
+>>>>>>> carrinho
         widget=forms.Select(attrs={'class': 'form-control'})
         , label = 'Tipo de usuário')
     
     class Meta:
         model = Profile
+<<<<<<< HEAD
         fields = ('phone', 'cpf', 'birth_date', 'address', 'complement', 'cep','user_type')
+=======
+        fields = ('telefone', 'CPF', 'nascimento', 'endereço', 'complemento', 'CEP')
+>>>>>>> carrinho
         widgets = {
-            'phone': forms.TextInput(attrs={'class': 'form-control','placeholder':''}), 
-            'cpf': forms.TextInput(attrs={'class': 'form-control','placeholder':''}),
-            'birth_date': forms.DateInput(attrs={'class': 'form-control', 'placeholder':'birth date'}), 
-            'address': forms.TextInput(attrs={'class': 'form-control','placeholder':'address'}),
-            'complement': forms.TextInput(attrs={'class': 'form-control','placeholder':''}),
-            'cep': forms.NumberInput(attrs={'class': 'form-control','placeholder':''}),
+            'telefone': forms.TextInput(attrs={'class': 'form-control','placeholder':''}), 
+            'CPF': forms.TextInput(attrs={'class': 'form-control','placeholder':''}),
+            'nascimento': forms.DateInput(
+                attrs={'class': 'form-control', 'placeholder': 'birth date'}, 
+                format='%d/%m/%Y'),
+            'endereço': forms.TextInput(attrs={'class': 'form-control','placeholder':'address'}),
+            'complemento': forms.TextInput(attrs={'class': 'form-control','placeholder':''}),
+            'CEP': forms.NumberInput(attrs={'class': 'form-control','placeholder':''}),
         }
         labels = {
             'phone': 'Telefone',
@@ -89,6 +100,7 @@ class StoreForm(forms.ModelForm):
             'store_description': 'Descrição da loja',
         }
         widgets = {
+<<<<<<< HEAD
             'store_name': forms.TextInput(attrs={'class': 'form-control','placeholder':'Nome da loja'}), 
             'store_email': forms.TextInput(attrs={'class': 'form-control','placeholder':'E-mail'}),
             'cnpj': forms.NumberInput(attrs={'class': 'form-control', 'placeholder':'CNPJ'}), 
@@ -118,3 +130,20 @@ class EditStoreForm(forms.ModelForm):
             'logo': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
             'background': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
         }
+=======
+            'store_name': forms.TextInput(attrs={'class': 'form-control','placeholder':'store name'}), 
+            'store_email': forms.TextInput(attrs={'class': 'form-control','placeholder':'email'}),
+            'cnpj': forms.NumberInput(attrs={'class': 'form-control', 'placeholder':'cnpj'}), 
+            'store_description': forms.Textarea(attrs={'class': 'form-control','placeholder':'description'}),
+        }
+
+#class SubscriptionForm(forms.ModelForm):
+ #   class Meta:
+   #     model = Subscription
+  #      fields = ['store']
+
+class PaymentForm(forms.ModelForm):
+    class Meta:
+        model = Payment
+        fields = ['nome_no_cartão', 'número_do_cartão', 'validade', 'CPF_do_titular', 'PIN']
+>>>>>>> carrinho
