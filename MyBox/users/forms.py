@@ -122,7 +122,41 @@ class EditStoreForm(forms.ModelForm):
    #     model = Subscription
   #      fields = ['store']
 
+from django import forms
+from .models import Payment
+from datetime import datetime
+
 class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
         fields = ['nome_no_cartão', 'número_do_cartão', 'validade', 'CPF_do_titular', 'PIN']
+        widgets = {
+            'nome_no_cartão': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Nome no cartão'
+            }),
+            'número_do_cartão': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Número do cartão'
+            }),
+            'validade': forms.DateInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'DD/MM/AA', 
+                'type': 'text'
+            }),
+            'CPF_do_titular': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'CPF do titular'
+            }),
+            'PIN': forms.PasswordInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'PIN'
+            }),
+        }
+        labels = {
+            'nome_no_cartão': 'Nome no cartão',
+            'número_do_cartão': 'Número do cartão',
+            'validade': 'Validade (DD/MM/AA)',
+            'CPF_do_titular': 'CPF do titular',
+            'PIN': 'PIN',
+        }
