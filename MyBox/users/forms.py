@@ -36,13 +36,13 @@ class EditUserForm(UserChangeForm):
 
 class UserProfileForm(forms.ModelForm):
     tipo_de_usuário = forms.ChoiceField(
-        choices=[("comprador", "Comprador"), ("vendedor", "Vendedor")], 
+        choices=[("buyer", "Comprador"), ("seller", "Vendedor")], 
         widget=forms.Select(attrs={'class': 'form-control'})
         , label = 'Tipo de usuário')
     
     class Meta:
         model = Profile
-        fields = ('telefone', 'CPF', 'nascimento', 'endereço', 'complemento', 'CEP')
+        fields = ('telefone', 'CPF', 'nascimento', 'endereço', 'complemento', 'CEP', 'tipo_de_usuário')
         widgets = {
             'telefone': forms.TextInput(attrs={'class': 'form-control','placeholder':''}), 
             'CPF': forms.TextInput(attrs={'class': 'form-control','placeholder':''}),
@@ -79,7 +79,6 @@ class UserProfileForm(forms.ModelForm):
 
 class StoreForm(forms.ModelForm):
     logo = forms.ImageField(required=False)
-    background = forms.ImageField(required=False, label='Imagem de fundo')
 
     class Meta:
         model = Store
@@ -99,18 +98,16 @@ class StoreForm(forms.ModelForm):
 
 class EditStoreForm(forms.ModelForm):
     logo = forms.ImageField(required=False, label='Logo da loja', widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
-    background = forms.ImageField(required=False, label='Imagem de fundo', widget=forms.ClearableFileInput(attrs={'class': 'form-control'}))
-
+   
     class Meta:
         model = Store
-        fields = ('store_name', 'store_email', 'cnpj', 'store_description', 'logo', 'background')
+        fields = ('store_name', 'store_email', 'cnpj', 'store_description', 'logo')
         labels = {
             'store_name': 'Nome da loja',
             'store_email': 'E-mail da loja',
             'cnpj': 'CNPJ',
             'store_description': 'Descrição da loja',
             'logo': 'Logo da loja',
-            'background': 'Imagem de fundo',
         }
         widgets = {
             'store_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome da loja'}),
@@ -118,7 +115,6 @@ class EditStoreForm(forms.ModelForm):
             'cnpj': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'CNPJ'}),
             'store_description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Descrição da loja'}),
             'logo': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
-            'background': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
         }
            
 #class SubscriptionForm(forms.ModelForm):

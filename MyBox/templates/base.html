@@ -73,9 +73,9 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <small class="ml-4">
                                 Registrado como 
-                                {% if user.profile.user_type == 'seller' %}
+                                {% if user.profile.tipo_de_usuário == 'seller' %}
                                     Vendedor
-                                {% elif user.profile.user_type == 'buyer' %}
+                                {% elif user.profile.tipo_de_usuário == 'buyer' %}
                                     Comprador
                                 {% else %}
                                     Usuário
@@ -97,8 +97,6 @@
                     </div>
                     {% endif %}
                     </div>
-                    
-                    
 
                     <!-- Menu colapsável para Sellers -->
                     {% if user.is_authenticated and user.profile.is_seller %}

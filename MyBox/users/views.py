@@ -29,7 +29,6 @@ class CreateStoreView(CreateView):
     def form_valid(self, form):
         form.instance.owner = self.request.user.profile
         logo_file = form.cleaned_data.get('logo')
-        bg_file = form.cleaned_data.get('background')
         if logo_file:
             # Enviar a imagem para o Imgur
             url = "https://api.imgur.com/3/image"
@@ -49,29 +48,7 @@ class CreateStoreView(CreateView):
                 except ValueError:
                     print("Erro ao interpretar JSON:", response.text)                
             else:
-                print("Erro no upload do Imgur:", response.text)
-
-        if bg_file:
-            # Enviar a imagem para o Imgur
-            url = "https://api.imgur.com/3/image"
-            headers = {"Authorization": f"Client-ID {settings.IMGUR_CLIENT_ID}"}
-            files = {'image': bg_file.read()}
-
-            response = requests.post(url, headers=headers, files=files)
-            data = response.json()
-
-            if response.status_code == 200 and data['success']:
-                    try:
-                        data = response.json()
-                        if data.get('success'):
-                            form.instance.background_url = data['data']['link']
-                        else:
-                            print("Erro no JSON retornado:", data)
-                    except ValueError:
-                        print("Erro ao interpretar JSON:", response.text)
-            else:
-                print("Erro no upload do Imgur:", response.text)
-                
+                print("Erro no upload do Imgur:", response.text)                
         return super().form_valid(form)
 
 
@@ -144,22 +121,6 @@ class StoreEditView(generic.UpdateView):
 
             if response.status_code == 200 and data['success']:
                 store.logo_url = data['data']['link']  # Salva o link da nova logo no campo logo_url
-            else:
-                print("Erro no upload do Imgur:", response.text)
-
-        # Verifica se foi feito upload de uma nova imagem de fundo
-        if form.cleaned_data['background']:
-            # Enviar a nova imagem de fundo para o Imgur
-            image_file = form.cleaned_data['background']
-            url = "https://api.imgur.com/3/image"
-            headers = {"Authorization": f"Client-ID {settings.IMGUR_CLIENT_ID}"}
-            files = {'image': image_file.read()}
-
-            response = requests.post(url, headers=headers, files=files)
-            data = response.json()
-
-            if response.status_code == 200 and data['success']:
-                store.background_url = data['data']['link']  # Salva o link da nova imagem de fundo
             else:
                 print("Erro no upload do Imgur:", response.text)
 
