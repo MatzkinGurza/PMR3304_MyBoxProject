@@ -15,8 +15,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" 
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     
+    
     <!-- Link para o CSS principal que importa os outros arquivos de estilo -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/pages/ratings.css' %}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     
 </head>
 
@@ -38,8 +42,8 @@
                 <div class="navbar-nav w-100 d-lg-flex align-items-center justify-content-between">
                     <!-- Barra de Pesquisa -->
                     <form class="d-flex mx-auto my-2 my-lg-0 w-50" action="{% url 'home:search_boxes' %}" method="GET">
-                        <input class="form-control me-2" type="search" name="q" placeholder="Procure sua Box favorita" aria-label="Search">
-                        <button class="btn btn-outline-light" type="submit">
+                        <input class="form-control me-2 mr-2" type="search" name="q" placeholder="Procure sua Box favorita" aria-label="Search">
+                        <button class="btn btn-outline-secondary" type="submit">
                             <img src="{% static 'images/lupa-branca.png' %}" alt="Buscar" width="20">
                         </button>
                     </form>

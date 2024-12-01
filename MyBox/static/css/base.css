@@ -9,6 +9,7 @@
 @import 'utilities/colors.css';
 @import 'utilities/spacing.css';
 @import 'utilities/typography.css';
+@import 'pages/ratings.css';
 
 /* Estilos globais para o corpo da página */
 body {

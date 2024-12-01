@@ -88,6 +88,47 @@
     </div>
   </div>
 
+  <form action="{% url 'home:submit_review' box.id %}" method="POST">
+    {% csrf_token %}
+    <h6>Envie sua avaliação de {{box.name}}</h6>
+    <div class="rate">
+      <!--Rating stars-->
+      <input type="radio" name="rating" id="rating10" value="5" required><label for="rating10" title="5"></label>
+      <input type="radio" name="rating" id="rating9" value="4.5" required><label for="rating9" title="4.5" class="half"></label>
+      <input type="radio" name="rating" id="rating8" value="4" required><label for="rating8" title="4"></label>
+      <input type="radio" name="rating" id="rating7" value="3.5" required><label for="rating7" title="3.5" class="half"></label>
+      <input type="radio" name="rating" id="rating6" value="3" required><label for="rating6" title="3"></label>
+      <input type="radio" name="rating" id="rating5" value="2.5" required><label for="rating5" title="2.5" class="half"></label>
+      <input type="radio" name="rating" id="rating4" value="2" required><label for="rating4" title="2"></label>
+      <input type="radio" name="rating" id="rating3" value="1.5" required><label for="rating3" title="1.5" class="half"></label>
+      <input type="radio" name="rating" id="rating1" value="1" required><label for="rating2" title="1"></label>
+      <input type="radio" name="rating" id="rating0" value="0.5" required><label for="rating1" title="0.5" class="half"></label>
+    </div>
+    <br>
+    {% if user.is_authenticated %}
+    <input type="submit" value="Avaliar" class="btn btn-primary btn-sm">
+    {% else %}
+    Você precisa estar logado para enviar uma avaliação
+    {% endif %}
+  </form>
+
+<br>
+ 
+<div class="card text-white mb-2" style="background-color: #333; padding: 20px;">
+  <h5>Avaliações</h5>
+  <p>Avaliação Média: <strong>{{ average_rating }}</strong> / 5</p>
+  <p>Número de Avaliações: <strong>{{ ratings_count }}</strong></p>
+  
+  {% if user.is_authenticated %}
+      {% if user_rating %}
+          <p>Sua Avaliação: <strong>{{ user_rating }}</strong> / 5</p>
+      {% else %}
+          <p>You haven't rated this box yet.</p>
+      {% endif %}
+  {% else %}
+      <p>You need to be logged in to see your rating.</p>
+  {% endif %}
+</div>
 
   <hr class="my-4">
   <div class="comments-section">

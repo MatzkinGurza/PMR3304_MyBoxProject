@@ -11,4 +11,5 @@ urlpatterns = [
     path('list_stores/', views.list_stores, name='list_stores'),
     path('search/', views.search_boxes, name='search_boxes'),
     path('article/<int:pk>/comment', AddCommentView.as_view(), name="add_comment"),
+    path('submit_review/<int:box_id>', views.submit_review, name="submit_review"),
 ]

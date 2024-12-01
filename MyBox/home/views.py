@@ -3,14 +3,16 @@ from django.contrib.auth.decorators import login_required
 from store.forms import BoxForm, BoxFormUpdate  # Importa o formulário BoxForm do app store
 from store.models import Box  # Importa o modelo Box do app store
 from users.models import Store  # Importa o modelo Store do app users
-from .models import Comment # Importa o modelo Comment do app home
+from .models import Comment, Rating # Importa o modelo Comment do app home
 from django.urls import reverse_lazy, reverse
-from .forms import CommentForm
+from .forms import CommentForm, RatingForm
 import requests
 from django.conf import settings
 from django.http import Http404, HttpResponseRedirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator
+from django.contrib import messages
+from django.db.models import Avg
 
 class AddCommentView(CreateView):
     model = Comment
@@ -47,18 +49,26 @@ class BoxDetailView(DetailView):
         # Use get_object_or_404 to retrieve the Post or raise a 404 if not found
         return get_object_or_404(Box, pk=self.kwargs.get('pk'))
     
-    # def get_context_data(self, *args, **kwargs):
-    #     cat_menu = Category.objects.all()
-    #     context = super(ArticleDetailView, self).get_context_data(*args, **kwargs)
-    #     current_post = get_object_or_404(Post, id=self.kwargs['pk'])
-    #     liked = False
-    #     if current_post.likes.filter(id=self.request.user.id).exists():
-    #         liked=True
-    #     context['comments'] = self.object.comments.all().order_by('-date_added')
-    #     context['total_likes'] = current_post.total_likes()
-    #     context["cat_menu"] = cat_menu
-    #     context['liked'] = liked
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        box = self.get_object()
+
+        # Calculate average rating and count
+        ratings = Rating.objects.filter(box=box, status=True)
+        context['ratings_count'] = ratings.count()
+        average_rating = ratings.aggregate(Avg('rating'))['rating__avg']
+
+        # Handle case where no ratings exist
+        context['average_rating'] = average_rating if average_rating is not None else "-"
+
+        # Fetch the user's rating if logged in
+        if self.request.user.is_authenticated:
+            user_rating = ratings.filter(user=self.request.user).first()
+            context['user_rating'] = user_rating.rating if user_rating else None
+        else:
+            context['user_rating'] = None
+
+        return context
 
 
 def search_boxes(request):
@@ -71,3 +81,24 @@ def search_boxes(request):
     boxes = paginator.get_page(page_number)  # Obtém a página de lojas correspondente
 
     return render(request, 'home/search_boxes.html', {'results': results, 'query': query, 'boxes': boxes})
+
+def submit_review(request, box_id):
+    url = request.META.get('HTTP_REFERER')
+    if request.method == 'POST':
+        try:
+            reviews = Rating.objects.get(user__id=request.user.id, box__id=box_id)
+            form = RatingForm(request.POST, instance=reviews)
+            form.save()
+            messages.success(request, 'Obrigado! seu rating foi atualizado')
+            return redirect(url)
+        except Rating.DoesNotExist:
+            form = RatingForm(request.POST)
+            if form.is_valid():
+                data = Rating()
+                data.rating = form.cleaned_data['rating']
+                data.ip = request.META.get('REMOTE_ADDR')
+                data.box_id = box_id
+                data.user_id = request.user.id
+                data.save()
+                messages.success(request, 'Obrigado! seu rating foi enviado')
+                return redirect(url)
