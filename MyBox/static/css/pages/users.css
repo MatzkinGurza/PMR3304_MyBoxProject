@@ -190,3 +190,61 @@ textarea {
 .login-container .forgot-password:hover {
     color: #fff;
 }
+
+.pay-container {
+    max-width: 800px;
+    margin: 80px auto;
+    padding: 20px 30px;
+    background-color: #333;
+    border-radius: 10px;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Título da Página de Login */
+.pay-container h2 {
+    font-size: 1.8em;
+    color: #888;
+    margin-bottom: 20px;
+}
+
+/* Labels do Formulário de Login */
+.pay-container label {
+    display: block;
+    font-size: 0.9em;
+    color: #ccc;
+    margin: 10px 0 5px;
+    text-align: left;
+}
+
+/* Campos de Entrada*/
+.pay-container input {
+    width: 100%;
+    padding: 10px;
+    background-color: #222;
+    border: 1px solid #444;
+    border-radius: 5px;
+    color: #fff;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+/* Botão de Login */
+.pay-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #fff;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.pay-container button:hover {
+    background-color: #fb1010;
+}
+
