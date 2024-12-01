@@ -17,6 +17,7 @@ from django.conf import settings
 from store.models import Box
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 
 
 class CreateStoreView(CreateView):
@@ -136,14 +137,16 @@ class AddToCartView(LoginRequiredMixin, View):
         cart, _ = Cart.objects.get_or_create(buyer=request.user)
 
         # Busca ou cria o item no carrinho
-        cart_item, item_created = CartItem.objects.get_or_create(cart=cart, box=box)
+        cart_item = CartItem.objects.filter(cart=cart, box=box).first()
 
-        if not item_created:
-            cart_item.quantity += quantity
-        else:
-            cart_item.quantity = quantity
+        if cart_item:  # Se o item já existir no carrinho
+            # Exibe uma mensagem de erro
+            messages.error(request, f'A box já está no seu carrinho.')
+            box_id = kwargs.get('box_id')
+            return redirect('home:box-details', box_id)
 
-        cart_item.save()
+        # Se o item não existe, cria o novo item no carrinho
+        cart_item = CartItem.objects.create(cart=cart, box=box, quantity=quantity)
 
         return redirect(reverse('users:cart'))
     
@@ -218,8 +221,8 @@ class CreatePaymentView(View):
          # Se não houver selected_box, exibe uma mensagem de erro
         if not selected_box_id:
             error = "Por favor, volte e selecione uma box."
-            return render(request, 'users/payment.html', {'form': form, 'error': error})
-        
+            return (request, 'users/payment.html', {'form': form, 'error': error})
+        render
         # Passa o selected_box_id para o contexto
         print(f"selected:{selected_box_id}")
         return render(request, 'users/payment.html', {'form': form, 'selected_box_id': selected_box_id})

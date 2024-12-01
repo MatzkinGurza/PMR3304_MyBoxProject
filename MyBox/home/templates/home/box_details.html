@@ -91,13 +91,21 @@
   <div class="button-group">
     <button type="submit">Adicionar ao Carrinho</button>
   </div>
-  
 </form>
-
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
 <br/>
 <br/>
 <a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Voltar</a>
 <br/>
 <br/>
+
 
 {% endblock %}
