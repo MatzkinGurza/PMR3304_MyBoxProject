@@ -1,19 +1,24 @@
 from django.shortcuts import render, redirect,  get_object_or_404
-from django.views import generic
+from django.views import generic, View
 from .forms import UserProfileForm, StoreForm
 from django.contrib import messages
 from MyBox import settings
 import requests
 from django.contrib.auth.models import User
-from .models import Profile, Store
+from .models import Profile, Store, Cart, CartItem, Subscription, Payment
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
-from django.views.generic import DetailView, CreateView, UpdateView
+from django.views.generic import DetailView, CreateView, UpdateView, TemplateView, DeleteView, ListView
 from django.urls import reverse_lazy
-from .forms import SignUpForm, UserProfileForm, StoreForm, EditUserForm, EditStoreForm
+from .forms import SignUpForm, UserProfileForm, StoreForm, EditUserForm, PaymentForm, EditStoreForm
 from django.contrib.auth.views import PasswordChangeView
 import requests
 from django.conf import settings
+from store.models import Box
+from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
+
 
 class CreateStoreView(CreateView):
     model = Store
@@ -164,6 +169,129 @@ class StoreEditView(generic.UpdateView):
 class PasswordsChangeView(PasswordChangeView):
     forms_classe = PasswordChangeForm
     success_url = reverse_lazy('home:home')
+
+class AddToCartView(LoginRequiredMixin, View):
+    """Adiciona um pacote ao carrinho do usuário."""
+
+    def post(self, request, *args, **kwargs):
+        box_id = kwargs.get('box_id')  # ID do pacote recebido pela URL
+        quantity = int(request.POST.get('quantity', 1))  # Quantidade passada no formulário ou padrão 1
+
+        # Busca o pacote pelo ID ou retorna 404
+        box = get_object_or_404(Box, id=box_id)
+
+        # Busca ou cria o carrinho do usuário
+        cart, _ = Cart.objects.get_or_create(buyer=request.user)
+
+        # Busca ou cria o item no carrinho
+        cart_item = CartItem.objects.filter(cart=cart, box=box).first()
+
+        if cart_item:  # Se o item já existir no carrinho
+            # Exibe uma mensagem de erro
+            messages.error(request, f'A box já está no seu carrinho.')
+            box_id = kwargs.get('box_id')
+            return redirect('home:box-details', box_id)
+
+        # Se o item não existe, cria o novo item no carrinho
+        cart_item = CartItem.objects.create(cart=cart, box=box, quantity=quantity)
+
+        return redirect(reverse('users:cart'))
+    
+class CartDetailView(LoginRequiredMixin, TemplateView):
+    template_name = "users/cart_detail.html"  # Nome do template para renderização
+
+    def get_context_data(self, **kwargs):
+      context = super().get_context_data(**kwargs)
+      # Obtém o carrinho do usuário logado
+      cart = Cart.objects.filter(buyer=self.request.user).first()
+
+      if cart:
+            # Filtra os CartItems que não estão associados a uma Subscription
+            cart_items_without_subscription = cart.cart_items.exclude(
+            selected_box__subscription__isnull=False
+            )
+            context['cart_items'] = cart_items_without_subscription
+            total_price = sum(
+                item.total_price for item in cart_items_without_subscription
+            )
+      else:
+        context['cart_items'] = []
+        total_price=0
+
+    # Outros dados do contexto
+      context['cart'] = cart
+      context['total_price'] = total_price
+      context['form'] = PaymentForm()
+      return context
+    
+class DeleteCartItem(DeleteView):
+    model=CartItem
+    template_name = 'users/cart_detail.html'
+    success_url = reverse_lazy('users:cart')
+    
+class CreateSubscriptionView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        # Trata os dados enviados pelo usuário
+        payment_id = kwargs.get('payment_id')
+        payment = Payment.objects.get(id=payment_id)
+        subscription_id = kwargs.get('pk')
+        subscription = Subscription.objects.create(
+            payment = payment,
+            user = request.user,
+            is_active=True    
+        )
+        subscription.save()   
+        return redirect('users:subscriptions')
+    
+class DeleteSubscription(DeleteView):
+    model=CartItem
+    template_name = 'users/cart_detail.html'
+    success_url = reverse_lazy('users:subscriptions')
+    
+class SubscriptionListView(LoginRequiredMixin, ListView):
+    model = Subscription
+    subscription = Subscription.objects.all()
+    template_name = 'users/subscription.html'  # O template que será usado para exibir as subscrições
+    context_object_name = 'subscriptions'  # Nome do contexto que será passado para o template
+    paginate_by = 10  # Paginação
+    payment = Subscription.payment
+
+    def get_queryset(self):
+        """Retorna todas as subscrições do usuário logado"""
+        return Subscription.objects.filter(user=self.request.user)
+
+    
+class CreatePaymentView(View):
+    def get(self, request, *args, **kwargs):
+        selected_box_id = request.GET.get('selected_box')
+        form = PaymentForm()  
+         # Se não houver selected_box, exibe uma mensagem de erro
+        if not selected_box_id:
+            error = "Por favor, volte e selecione uma box."
+            return (request, 'users/payment.html', {'form': form, 'error': error})
+        render
+        # Passa o selected_box_id para o contexto
+        print(f"selected:{selected_box_id}")
+        return render(request, 'users/payment.html', {'form': form, 'selected_box_id': selected_box_id})
+
+
+    def post(self, request, *args, **kwargs):
+        selected_box_id = request.POST.get('selected_box')
+        form = PaymentForm(request.POST) 
+        if not selected_box_id:
+            error = "Por favor, volte e selecione uma box."
+            return render(request, 'users/payment.html', {'form': form, 'error': error})
+        
+        # Se o formulário for válido
+        if form.is_valid():
+            payment = form.save(commit=False)
+            payment_id = kwargs.get('pk')
+            payment.box_id = selected_box_id # Associa a Box selecionada
+            payment.save()  # Salva o pagamento no banco de dados
+            return render(request, 'users/payment_confirmation.html', {'payment': payment, 'form': form})
+
+        # Caso o formulário não seja válido, renderiza novamente com os erros
+        return render(request, 'users/payment.html', {'form': form, 'error': 'Formulário inválido.'})
 
 
 # def login_view(request):

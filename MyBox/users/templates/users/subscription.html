@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Minhas Subscrições</h1>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #1c1c1c;
+        color: white;
+        margin: 0;
+        padding: 20px;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    
+    th, td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #444;
+    }
+    
+    th {
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    
+    td img {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .quantity-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .quantity-container button {
+        background-color: #333;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    
+    .quantity-container input {
+        width: 50px;
+        text-align: center;
+        margin: 0 5px;
+        border: 1px solid #333;
+        background-color: #1c1c1c;
+        color: white;
+    }
+    
+    .summary {
+        width: 100%;
+        border-top: 1px solid #444;
+        margin-top: 20px;
+    }
+    
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin: 10px 0;
+    }
+    
+    .summary-row.total {
+        font-size: 20px;
+        font-weight: bold;
+    }
+    
+    .button-group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+    
+    .button-group button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    
+    .button-group input {
+        width: 150px;
+        padding: 10px;
+        margin-right: 10px;
+        border: 1px solid #333;
+        background-color: #1c1c1c;
+        color: white;
+    }
+    </style>
+{% if subscriptions %}
+    <table>
+        <thead>
+            <tr>
+                <th>PRODUTO</th>
+                <th>PREÇO</th>
+                <th>CANCELAR</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for subscription in subscriptions %}
+                <tr>
+                    <td>{{ subscription.payment.box.box.name }}</td>
+                    <td>{{ subscription.payment.box.box.price }}</td>
+                    <td><form method="post" action="{% url 'users:delete_subscription' subscription.payment.box.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">✖</button>
+                    </form></td>
+                    
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if subscriptions.has_other_pages %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if subscriptions.has_previous %}
+                    <a href="?page=1">&laquo; primeira</a>
+                    <a href="?page={{ subscriptions.previous_page_number }}">anterior</a>
+                {% endif %}
+
+                <span class="current">
+                    Página {{ subscriptions.number }} de {{ subscriptions.paginator.num_pages }}.
+                </span>
+
+                {% if subscriptions.has_next %}
+                    <a href="?page={{ subscriptions.next_page_number }}">próxima</a>
+                    <a href="?page={{ subscriptions.paginator.num_pages }}">última &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+
+{% else %}
+    <p>Você não tem subscrições.</p>
+{% endif %}
+
+{% endblock %}

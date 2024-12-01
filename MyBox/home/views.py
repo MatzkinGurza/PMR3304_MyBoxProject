@@ -11,6 +11,7 @@ from django.conf import settings
 from django.http import Http404, HttpResponseRedirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator
+<<<<<<< HEAD
 from django.contrib import messages
 from django.db.models import Avg
 
@@ -22,15 +23,24 @@ class AddCommentView(CreateView):
     def form_valid(self, form):
         form.instance.box_id = self.kwargs['pk']
         return super().form_valid(form)
+=======
+from django.db.models import Q
+>>>>>>> main
 
 def home(request):
-    # Busca todas as boxes no banco de dados
-    all_boxes = Box.objects.all()
-    paginator = Paginator(all_boxes, 16)  # Limita 16 produtos por página
-    page_number = request.GET.get('page')  # Obtém o número da página da URL
-    boxes = paginator.get_page(page_number)  # Recupera os objetos da página atual
+    """
+    Renderiza a página inicial com as tags disponíveis para os filtros.
+    As boxes são carregadas dinamicamente via API no frontend.
+    """
+    # Obter todas as categorias únicas para os filtros
+    tags = Box.objects.values_list('tag', flat=True).distinct()
 
-    return render(request, 'home/home.html', {'boxes': boxes})
+    # Garantir que as tags estejam ordenadas para melhor usabilidade
+    tags = sorted(tags)
+
+    return render(request, 'home/home.html', {
+        'tags': tags,  # Tags disponíveis para o filtro de categorias
+    })
 
 def list_stores(request):
     # Busca todas as boxes no banco de dados
@@ -69,7 +79,6 @@ class BoxDetailView(DetailView):
             context['user_rating'] = None
 
         return context
-
 
 def search_boxes(request):
     query = request.GET.get('q')  # Recupera o termo da barra de pesquisa

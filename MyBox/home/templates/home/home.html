@@ -4,94 +4,162 @@
 {% block title %}Home - MyBox{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
+<div class="container-fluid mt-5 px-0">
     <!-- Texto de Apresentação -->
-    <div class="intro-section mb-4">
-        <div class="card text-white shadow-lg" style="background-color: #222;">
-            <div class="card-header text-center">
-                Bem vindo à MyBox – onde sua vontade se encaixa.
-            </div>
-            <div class="card-body text-center">
-                <h5 class="card-title">Procure a Box perfeita para você</h5>
-                <p class="card-text">
-                    A MyBox é uma plataforma de e-commerce que 
-                    oferece a você a conveniência de receber produtos personalizados 
-                    de suas lojas favoritas, automaticamente e sem complicações. 
-                    Escolha seus pacotes, relaxe, e deixe o resto com a gente. Simples, 
-                    prático e feito para facilitar sua vida! Venha procurar a Box perfeita para você.
-                </p>
+    <div class="row mx-0 mb-4">
+        <div class="col-12">
+            <div class="card text-white shadow-lg" style="background-color: #222;">
+                <div class="card-header text-center">
+                    Bem vindo à MyBox – onde sua vontade se encaixa.
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="card-title">Procure a Box perfeita para você</h5>
+                    <p class="card-text text-light">
+                        A MyBox é uma plataforma de e-commerce que oferece a você a conveniência de receber produtos personalizados 
+                        de suas lojas favoritas, automaticamente e sem complicações. Escolha seus pacotes, relaxe, e deixe o resto com a gente.
+                        Simples, prático e feito para facilitar sua vida! Venha procurar a Box perfeita para você.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Grade de Produtos -->
-    <div class="row">
-        {% if boxes %}
-            {% for box in boxes %}
-                <div class="col-md-6 mb-4">
-                    <div class="card h-100 shadow-lg d-flex flex-column" style="background-color: #222; color: #fff;">
-                        <div class="row g-0 h-100">
-                            <div class="col-4 d-flex align-items-center justify-content-center">
-                                {% if box.image_url %}
-                                    <img 
-                                        src="{{ box.image_url }}" 
-                                        alt="{{ box.name }}" 
-                                        class="img-fluid rounded-start"
-                                        style="width: 150px; height: 150px; object-fit: cover;">
-                                {% else %}
-                                    <img 
-                                        src="{% static 'images/image-placeholder.svg' %}" 
-                                        alt="{{ box.name }}" 
-                                        class="img-fluid rounded-start"
-                                        style="width: 150px; height: 150px; object-fit: cover;">
-                                {% endif %}
-                            </div>
-                            <div class="col-8 d-flex flex-column justify-content-between">
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        <a href="{% url 'home:box-details' box.pk %}" class='text-decoration-none'  style="display: inline-block; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
-                                            {{ box.name }}
-                                        </a>
-                                    </h5>
-                                    <span class="badge bg-info text-dark">{{ box.tag }}</span>
-                                    <p class="card-text">{{ box.description|truncatewords:20 }}</p>
-                                    <p class="card-text"><strong>R$ {{ box.price }}</strong></p>
+    <!-- Layout com Grid -->
+    <div class="row mx-0">
+        <!-- Coluna da Esquerda - Botão e Filtros -->
+        <div class="col-md-2 px-3">
+            <!-- Botão para abrir filtros -->
+            <div class="mb-3">
+                <button class="btn btn-primary w-100" type="button" data-bs-toggle="collapse" data-bs-target="#filter-section" aria-expanded="false" aria-controls="filter-section">
+                    Filtros
+                </button>
+            </div>
+
+            <!-- Filtros -->
+            <div class="collapse show" id="filter-section">
+                <div class="card card-body">
+                    <h5>Filtrar por Preço</h5>
+                    <ul class="list-group mb-3">
+                        <li class="list-group-item"><a href="#" class="filter-link" data-price="all">Tudo</a></li>
+                        <li class="list-group-item"><a href="#" class="filter-link" data-price="under_25">Até R$ 25</a></li>
+                        <li class="list-group-item"><a href="#" class="filter-link" data-price="under_50">Até R$ 50</a></li>
+                        <li class="list-group-item"><a href="#" class="filter-link" data-price="under_100">Até R$ 100</a></li>
+                        <li class="list-group-item"><a href="#" class="filter-link" data-price="under_200">Até R$ 200</a></li>
+                        <li class="list-group-item"><a href="#" class="filter-link" data-price="above_200">A partir de R$ 200</a></li>
+                    </ul>
+
+                    <h5>Filtrar por Categoria</h5>
+                    <ul class="list-group">
+                        {% for tag in tags %}
+                            <li class="list-group-item"><a href="#" class="filter-link" data-tag="{{ tag }}">{{ tag }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coluna da Direita - Grade de Produtos -->
+        <div class="col-md-10 px-3">
+            <div class="row row-cols-1 row-cols-md-2 gy-5 gx-3" id="products-container">
+                <!-- Produtos serão carregados dinamicamente -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const filterLinks = document.querySelectorAll('.filter-link');
+        const productsContainer = document.getElementById('products-container');
+
+        // Variáveis para armazenar os filtros selecionados
+        let selectedPrice = 'all';
+        let selectedTag = '';
+
+        // Função para carregar produtos com os filtros aplicados
+        function loadProducts() {
+            const query = `price=${selectedPrice}&tag=${selectedTag}`;
+            fetch(`/store/api/boxes/?${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Atualizar os produtos na grade
+                    productsContainer.innerHTML = '';
+                    if (data.length === 0) {
+                        productsContainer.innerHTML = '<div class="col-12 text-center"><p class="text-warning">Nenhuma Box disponível no momento.</p></div>';
+                        return;
+                    }
+                    data.forEach(box => {
+                        const productCard = `
+                            <div class="col">
+                                <div class="card h-100 shadow-lg" style="background-color: #222; color: #fff;">
+                                    <div class="row h-100">
+                                        <div class="col-4 d-flex align-items-center justify-content-center">
+                                            <img src="${box.image_url || '/static/images/image-placeholder.svg'}" alt="${box.name}" class="img-fluid rounded-start">
+                                        </div>
+                                        <div class="col-8 d-flex flex-column justify-content-between">
+                                            <div class="card-body">
+                                               <h5 class="card-title">
+                                                <a href="/box/${box.id}" class="text-decoration-none" style="display: inline-block; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                                                    ${box.name}
+                                                </a>
+                                            </h5>
+                                                <span class="badge bg-info text-dark">${box.tag}</span>
+                                                <p class="card-text">${box.description}</p>
+                                                <p class="card-text"><strong>R$ ${box.price}</strong></p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        {% else %}
-            <div class="alert alert-warning text-center" role="alert">
-                Nenhuma Box disponível no momento.
-            </div>
-        {% endif %}
-    </div>
+                        `;
+                        productsContainer.innerHTML += productCard;
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar os produtos:', error));
+        }
 
-    <!-- Paginação -->
-    <nav>
-        <ul class="pagination justify-content-center">
-            {% if boxes.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ boxes.previous_page_number }}" aria-label="Anterior">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-            {% endif %}
-            {% for num in boxes.paginator.page_range %}
-                <li class="page-item {% if boxes.number == num %}active{% endif %}">
-                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                </li>
-            {% endfor %}
-            {% if boxes.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?page={{ boxes.next_page_number }}" aria-label="Próximo">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            {% endif %}
-        </ul>
-    </nav>
-</div>
+        // Função para gerenciar visualmente o filtro ativo
+        function highlightActiveFilter() {
+            filterLinks.forEach(link => {
+                const price = link.getAttribute('data-price') || '';
+                const tag = link.getAttribute('data-tag') || '';
+
+                // Verificar se o filtro deve estar ativo
+                if (price === selectedPrice || tag === selectedTag) {
+                    link.classList.add('active-filter');
+                } else {
+                    link.classList.remove('active-filter');
+                }
+            });
+        }
+
+        // Inicializar produtos e filtros
+        loadProducts();
+        highlightActiveFilter();
+
+        // Evento de clique nos filtros
+        filterLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const price = this.getAttribute('data-price');
+                const tag = this.getAttribute('data-tag');
+
+                // Atualizar os filtros selecionados
+                if (price) {
+                    selectedPrice = selectedPrice === price ? 'all' : price; // Desmarcar se já selecionado
+                }
+                if (tag) {
+                    selectedTag = selectedTag === tag ? '' : tag; // Desmarcar se já selecionado
+                }
+
+                // Atualizar a UI e os produtos
+                highlightActiveFilter();
+                loadProducts();
+            });
+        });
+    });
+</script>
+
+
 {% endblock %}

@@ -11,4 +11,5 @@ urlpatterns = [
     path('box/<int:pk>/delete/', views.DeleteBoxView.as_view(), name='delete_box'),  # Excluir uma Box
     path('search/', views.search_stores, name='search_stores'),
     path('not_seller/', views.not_seller, name='not_seller'),   # Página informativa para buyers
+    path('api/boxes/', views.BoxListAPIView.as_view(), name='api-boxes'),  # API para listar todas as Boxes
 ]

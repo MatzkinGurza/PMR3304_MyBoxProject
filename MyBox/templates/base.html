@@ -49,9 +49,12 @@
                     </form>
 
                     <!-- Ícone do Carrinho -->
-                    <a href="#" class="nav-link text-center text-white mx-lg-3">
+                     {% if user.is_authenticated %}
+                    <a href="{% url 'users:cart' %}" class="nav-link text-center text-white mx-lg-3">
                         <img src="{% static 'images/carrinho-compras-branco.png' %}" alt="Carrinho" width="30">
                     </a>
+                    {% else %}
+                    {% endif %}
 
                     <!-- Botão para lista de lojas -->
                     <a href="{% url 'home:list_stores' %}" class="btn btn-outline-light me-2 mb-2 ml-1 mr-3">Lista de Lojas</a>
@@ -147,7 +150,7 @@
                 </div>
                 <div class="footer-logo">
                     <a href="{% url 'home:home' %}">
-                        <img src="{% static 'images/logo-mybox.png' %}" alt="MyBox Logo">
+                        <img src="{% static 'images/logo-mybox.png' %}" alt="MyBox Logo"></a>
                 </div>
             </div>
 
