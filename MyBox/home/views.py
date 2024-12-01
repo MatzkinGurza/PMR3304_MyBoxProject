@@ -22,9 +22,8 @@ class AddCommentView(CreateView):
     def form_valid(self, form):
         form.instance.box_id = self.kwargs['pk']
         return super().form_valid(form)
-=======
+
 from django.db.models import Q
->>>>>>> main
 
 def home(request):
     """
