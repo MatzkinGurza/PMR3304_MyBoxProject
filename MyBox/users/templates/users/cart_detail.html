@@ -96,58 +96,75 @@ td img {
     background-color: #1c1c1c;
     color: white;
 }
+
+/* Centraliza o conteúdo quando o carrinho está vazio */
+.empty-cart-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 70vh; /* Garante que ocupe o espaço vertical da página */
+    text-align: center;
+}
+
+/* Centraliza o cabeçalho e o botão */
+.cart-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
 </style>
 <body>
-    <h1>Carrinho de Compras</h1>
-    <a class="btn btn-outline-secondary" href="{% url 'users:subscriptions' %}">Ver subscrições ativas</a>
+    <div class="cart-header">
+        <h1>Carrinho de Compras</h1>
+        <a class="btn btn-outline-secondary" href="{% url 'users:subscriptions' %}">Ver subscrições ativas</a>
+    </div>
     {% if cart_items %}
-            <table>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>Produto</th>
-                        <th>Preço Unitário</th>
-                        <th>Quantidade</th>
-                        <th>Preço Total</th>
-                        <th>Selecionar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in cart_items %}
-                    <tr>
-                        <td>
-                            <form method="post" action="{% url 'users:delete_item' item.id %}" style="display:inline;">
-                                {% csrf_token %}
-                                <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">✖</button>
-                            </form>
-                        </td>
-                        <td>{{ item.box.name }}</td>
-                        <td>R$ {{ item.box.price }}</td>
-                        <td>{{ item.quantity }}</td>
-                        <td>R$ {{ item.total_price }}</td>
-                        <td>
-                            <form method="post" action="{% url 'users:create_payment' %}">
-                                {% csrf_token %}
-                            <!-- Adicionando o evento de alteração no radio button -->
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Produto</th>
+                    <th>Preço Unitário</th>
+                    <th>Quantidade</th>
+                    <th>Preço Total</th>
+                    <th>Selecionar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>
+                        <form method="post" action="{% url 'users:delete_item' item.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">✖</button>
+                        </form>
+                    </td>
+                    <td>{{ item.box.name }}</td>
+                    <td>R$ {{ item.box.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>R$ {{ item.total_price }}</td>
+                    <td>
+                        <form method="post" action="{% url 'users:create_payment' %}">
+                            {% csrf_token %}
                             <input type="radio" name="selected_box" value="{{ item.id }}" required onchange="togglePaymentForm()"> 
-                        </td>
-                    </tr>
-                    <div class="button-group" id="payment-form" style="display: none;">
-                        <div class="pay-container">
-                            {{ form.as_p }}
-                            <button type="submit" class="btn btn-primary">Pagar</button>
-                        </div>
+                    </td>
+                </tr>
+                <div class="button-group" id="payment-form" style="display: none;">
+                    <div class="pay-container">
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">Pagar</button>
                     </div>
-                </form>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <p><strong>Subtotal:</strong> R$ {{ total_price }}</p>
-
-            <!-- A div de pagamento começa escondida -->
-            
+                </div>
+            </form>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p><strong>Subtotal:</strong> R$ {{ total_price }}</p>
     {% else %}
-        <p>Seu carrinho está vazio.</p>
+        <div class="empty-cart-container">
+            <p>Seu carrinho está vazio.</p>
+        </div>
     {% endif %}
 
     <script>

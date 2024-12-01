@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Box - add comment{% endblock %}
+{% block title %}Box - Adicionar Comentário{% endblock %}
 
 {% block content %}
 
@@ -7,13 +7,13 @@
 <br/>
 <br/>
 <div class="card" style="width: 100%; background: #222;">
-    <h1 class="card-header">Add comment as {{user.username}}</h1>
+    <h1 class="card-header">Adicionar comentário como {{user.username}}</h1>
     <div class="card-body">
         <div class="form-group">
             <form method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button class="btn btn-secondary">Post Comment</button>
+                <button class="btn btn-secondary">Postar Comentário</button>
             </form>
         </div>
         <script>
@@ -26,12 +26,12 @@
 <br/>
 
 {% else %}
-<h2> You need to be logged in to do this</h2>
+<h2> Você precisa estar logado para fazer isso</h2>
 
 {% endif %}
 
 
-<a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Back</a>
+<a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Voltar</a>
 <br/>
 <br/>
 {% endblock %}

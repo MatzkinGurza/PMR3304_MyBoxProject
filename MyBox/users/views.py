@@ -229,11 +229,11 @@ class CreatePaymentView(View):
          # Se não houver selected_box, exibe uma mensagem de erro
         if not selected_box_id:
             error = "Por favor, volte e selecione uma box."
-            return (request, 'users/payment.html', {'form': form, 'error': error})
+            return (request, 'users/payment_confirmation.html', {'form': form, 'error': error})
         render
         # Passa o selected_box_id para o contexto
         print(f"selected:{selected_box_id}")
-        return render(request, 'users/payment.html', {'form': form, 'selected_box_id': selected_box_id})
+        return render(request, 'users/payment_confirmation.html', {'form': form, 'selected_box_id': selected_box_id})
 
 
     def post(self, request, *args, **kwargs):
@@ -241,7 +241,7 @@ class CreatePaymentView(View):
         form = PaymentForm(request.POST) 
         if not selected_box_id:
             error = "Por favor, volte e selecione uma box."
-            return render(request, 'users/payment.html', {'form': form, 'error': error})
+            return render(request, 'users/payment_confirmation.html', {'form': form, 'error': error})
         
         # Se o formulário for válido
         if form.is_valid():
@@ -252,7 +252,7 @@ class CreatePaymentView(View):
             return render(request, 'users/payment_confirmation.html', {'payment': payment, 'form': form})
 
         # Caso o formulário não seja válido, renderiza novamente com os erros
-        return render(request, 'users/payment.html', {'form': form, 'error': 'Formulário inválido.'})
+        return render(request, 'users/payment_confirmation.html', {'form': form, 'error': 'Formulário inválido.'})
 
 
 # def login_view(request):

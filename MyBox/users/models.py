@@ -102,11 +102,11 @@ class Payment(models.Model):
         on_delete=models.CASCADE,
         related_name="selected_box"
     )  
-    nome_no_cartão = models.CharField(max_length=255, null=True, blank=True)
-    número_do_cartão = models.BigIntegerField(null=True, blank=True)
-    validade = models.DateField(null=True, blank=True)
-    CPF_do_titular = models.BigIntegerField(null=True, blank=True)
-    PIN = models.IntegerField(null=True, blank=True)
+    nome_no_cartão = models.CharField(max_length=255, null=False, blank=False)
+    número_do_cartão = models.BigIntegerField(null=False, blank=False)
+    validade = models.DateField(null=False, blank=False)
+    CPF_do_titular = models.BigIntegerField(null=False, blank=False)
+    PIN = models.IntegerField(null=False, blank=False)
 
 
 class Subscription(models.Model):
