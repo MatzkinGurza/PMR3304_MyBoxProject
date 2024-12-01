@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 LOGIN_URL = '/login/'  # URL to the login page
 LOGIN_REDIRECT_URL = 'home:home'  # Redirect after successful login
 
@@ -21,9 +23,6 @@ IMGUR_CLIENT_ID = '017429aafa9c2c9'
 IMGUR_CLIENT_SECRET = '1dd706bed963d43daae40c7a95a45e8fa5e2b48e'
 
 from pathlib import Path
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 
 # Quick-start development settings - unsuitable for production
@@ -36,7 +35,7 @@ SECRET_KEY = 'django-insecure-xq3gt_mkjfo1ublib2@o-hmj5ujtvza-cgu(hz3%4-xze-+^u5
 DEBUG = False
 
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["127.0.0.1", ".onrender.com"] # modifique esta linha
 
 CSRF_TRUSTED_ORIGINS = ["https://*.onrender.com/"]
 
@@ -53,6 +52,7 @@ INSTALLED_APPS = [
     "home.apps.HomeConfig",
     "store.apps.StoreConfig",
     "rest_framework",
+    "whitenoise"
 ]
 
 MIDDLEWARE = [
@@ -64,11 +64,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', 
 ]
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 ROOT_URLCONF = 'MyBox.urls'
 
@@ -100,6 +99,8 @@ WSGI_APPLICATION = 'MyBox.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+import dj_database_url
 
 DATABASES = {
     'default': {
@@ -144,6 +145,19 @@ TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 
 USE_TZ = True
+
+
+
+STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 
 # Static files (CSS, JavaScript, Images)
