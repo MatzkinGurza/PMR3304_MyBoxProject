@@ -113,6 +113,37 @@ td img {
     margin-bottom: 20px;
 }
 
+.pay-container {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center; /* Garante centralização vertical */
+    margin-top: 20px;
+    width: 80%; /* Aumenta a largura para 80% da tela */
+    max-width: 800px; /* Define um limite máximo para a largura */
+    margin-left: auto; /* Centraliza horizontalmente */
+    margin-right: auto; /* Centraliza horizontalmente */
+    padding: 20px; /* Adiciona espaço interno */
+    background-color: #2a2a2a; /* Fundo mais visível */
+    border-radius: 8px; /* Bordas arredondadas */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); /* Adiciona sombra */
+}
+
+.pay-container input,
+.pay-container select,
+.pay-container textarea {
+    width: 100%; /* Faz os campos ocuparem toda a largura do container */
+    padding: 10px; /* Adiciona espaço interno */
+    margin-bottom: 15px; /* Adiciona espaçamento entre os campos */
+    border: 1px solid #444; /* Define a borda */
+    border-radius: 4px; /* Bordas arredondadas */
+    background-color: #1c1c1c; /* Fundo escuro */
+    color: #fff; /* Texto branco */
+    font-size: 16px; /* Tamanho de fonte ajustado */
+    box-sizing: border-box; /* Garante que padding e borda sejam incluídos no tamanho total */
+}
+
+
 </style>
 <body>
     <div class="cart-header">
