@@ -6,29 +6,29 @@
 <div class="container mt-5 d-flex justify-content-center align-items-center">
     {% if user.is_authenticated %}
         {% if user.id == user.id %}
-            <div class="card text-white mb-3 w-50" style="background-color: #222;">
+            <div class="card text-white mb-3 w-50" style="background-color: #fff;">
                 <h1 class="card-header text-center">Editar Perfil de {{ user.username }}</h1>
                 <div class="card-body">
                     <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-group mb-3">
-                            <label for="id_username">Usuário:</label>
+                            <label for="id_username" style="color:#222;">Usuário:</label>
                             {{ form.username }}
                         </div>
                         <div class="form-group mb-3">
-                            <label for="id_first_name">Primeiro nome:</label>
+                            <label for="id_first_name" style="color:#222;">Primeiro nome:</label>
                             {{ form.first_name }}
                         </div>
                         <div class="form-group mb-3">
-                            <label for="id_last_name">Último nome:</label>
+                            <label for="id_last_name" style="color:#222;">Último nome:</label>
                             {{ form.last_name }}
                         </div>
                         <div class="form-group mb-3">
-                            <label for="id_email">Email:</label>
+                            <label for="id_email" style="color:#222;">Email:</label>
                             {{ form.email }}
                         </div>
                         <div class="form-group mb-3">
-                            <label for="id_password">Senha:</label>
+                            <label for="id_password" style="color:#222;">Senha:</label>
                             {{ form.password }}
                         </div>
                         <button type="submit" class="btn btn-secondary w-100">Atualizar</button>

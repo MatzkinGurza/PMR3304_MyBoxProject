@@ -121,9 +121,9 @@
         <thead>
             <tr>
                 <th>PRODUTO</th>
-                <th>PREÇO</th>
+                <th>PREÇO UNITÁRIO</th>
+                <th>QUANTIDADE</th>
                 <th>CANCELAR</th>
-                
             </tr>
         </thead>
         <tbody>
@@ -131,6 +131,7 @@
                 <tr>
                     <td>{{ subscription.payment.box.box.name }}</td>
                     <td>{{ subscription.payment.box.box.price }}</td>
+                    <td>{{ subscription.payment.box.quantity }}</td>
                     <td><form method="post" action="{% url 'users:delete_subscription' subscription.payment.box.id %}" style="display:inline;">
                         {% csrf_token %}
                         <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">✖</button>
