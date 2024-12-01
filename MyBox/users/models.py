@@ -29,11 +29,11 @@ class Profile(models.Model):
 
     @property
     def is_seller(self):
-        return self.tipo_de_usuário == "vendedor"
+        return self.tipo_de_usuário == "seller"
 
     @property
     def is_buyer(self):
-        return self.tipo_de_usuário == "comprador"
+        return self.tipo_de_usuário == "buyer"
 
 
 # Modelo de Loja para Vendedores
@@ -43,7 +43,6 @@ class Store(models.Model):
     store_email = models.EmailField(unique=True, blank=False, null=False)  # Email único para a loja
     cnpj = models.CharField(max_length=18, unique=True, blank=False, null=False)  # CNPJ único
     logo_url = models.URLField(blank=True, null=True) # Logo da loja
-    background_url = models.URLField(blank=True, null=True) # Imagem de fundo
     store_description = models.TextField(max_length=200, blank=True, null=True)  # Descrição da loja
 
     def get_related_boxes(self):
@@ -103,11 +102,11 @@ class Payment(models.Model):
         on_delete=models.CASCADE,
         related_name="selected_box"
     )  
-    nome_no_cartão = models.CharField(max_length=255, null=True, blank=True)
-    número_do_cartão = models.BigIntegerField(null=True, blank=True)
-    validade = models.DateField(null=True, blank=True)
-    CPF_do_titular = models.BigIntegerField(null=True, blank=True)
-    PIN = models.IntegerField(null=True, blank=True)
+    nome_no_cartão = models.CharField(max_length=255, null=False, blank=False)
+    número_do_cartão = models.BigIntegerField(null=False, blank=False)
+    validade = models.DateField(null=False, blank=False)
+    CPF_do_titular = models.BigIntegerField(null=False, blank=False)
+    PIN = models.IntegerField(null=False, blank=False)
 
 
 class Subscription(models.Model):

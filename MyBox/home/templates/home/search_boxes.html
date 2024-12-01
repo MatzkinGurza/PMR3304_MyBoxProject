@@ -88,7 +88,11 @@
                                         </div>
                                         <div class="col-8 d-flex flex-column justify-content-between">
                                             <div class="card-body">
-                                                <h5 class="card-title">${box.name}</h5>
+                                                <h5 class="card-title">
+                                                    <a href="/box/${box.id}" class="text-decoration-none" style="display: inline-block; transition: transform 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+                                                        ${box.name}
+                                                    </a>
+                                                </h5>
                                                 <span class="badge bg-info text-dark">${box.tag}</span>
                                                 <p class="card-text">${box.description}</p>
                                                 <p class="card-text"><strong>R$ ${box.price}</strong></p>

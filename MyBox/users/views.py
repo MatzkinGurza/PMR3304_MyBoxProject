@@ -29,7 +29,6 @@ class CreateStoreView(CreateView):
     def form_valid(self, form):
         form.instance.owner = self.request.user.profile
         logo_file = form.cleaned_data.get('logo')
-        bg_file = form.cleaned_data.get('background')
         if logo_file:
             # Enviar a imagem para o Imgur
             url = "https://api.imgur.com/3/image"
@@ -49,29 +48,7 @@ class CreateStoreView(CreateView):
                 except ValueError:
                     print("Erro ao interpretar JSON:", response.text)                
             else:
-                print("Erro no upload do Imgur:", response.text)
-
-        if bg_file:
-            # Enviar a imagem para o Imgur
-            url = "https://api.imgur.com/3/image"
-            headers = {"Authorization": f"Client-ID {settings.IMGUR_CLIENT_ID}"}
-            files = {'image': bg_file.read()}
-
-            response = requests.post(url, headers=headers, files=files)
-            data = response.json()
-
-            if response.status_code == 200 and data['success']:
-                    try:
-                        data = response.json()
-                        if data.get('success'):
-                            form.instance.background_url = data['data']['link']
-                        else:
-                            print("Erro no JSON retornado:", data)
-                    except ValueError:
-                        print("Erro ao interpretar JSON:", response.text)
-            else:
-                print("Erro no upload do Imgur:", response.text)
-                
+                print("Erro no upload do Imgur:", response.text)                
         return super().form_valid(form)
 
 
@@ -144,22 +121,6 @@ class StoreEditView(generic.UpdateView):
 
             if response.status_code == 200 and data['success']:
                 store.logo_url = data['data']['link']  # Salva o link da nova logo no campo logo_url
-            else:
-                print("Erro no upload do Imgur:", response.text)
-
-        # Verifica se foi feito upload de uma nova imagem de fundo
-        if form.cleaned_data['background']:
-            # Enviar a nova imagem de fundo para o Imgur
-            image_file = form.cleaned_data['background']
-            url = "https://api.imgur.com/3/image"
-            headers = {"Authorization": f"Client-ID {settings.IMGUR_CLIENT_ID}"}
-            files = {'image': image_file.read()}
-
-            response = requests.post(url, headers=headers, files=files)
-            data = response.json()
-
-            if response.status_code == 200 and data['success']:
-                store.background_url = data['data']['link']  # Salva o link da nova imagem de fundo
             else:
                 print("Erro no upload do Imgur:", response.text)
 
@@ -268,11 +229,11 @@ class CreatePaymentView(View):
          # Se não houver selected_box, exibe uma mensagem de erro
         if not selected_box_id:
             error = "Por favor, volte e selecione uma box."
-            return (request, 'users/payment.html', {'form': form, 'error': error})
+            return (request, 'users/payment_confirmation.html', {'form': form, 'error': error})
         render
         # Passa o selected_box_id para o contexto
         print(f"selected:{selected_box_id}")
-        return render(request, 'users/payment.html', {'form': form, 'selected_box_id': selected_box_id})
+        return render(request, 'users/payment_confirmation.html', {'form': form, 'selected_box_id': selected_box_id})
 
 
     def post(self, request, *args, **kwargs):
@@ -280,7 +241,7 @@ class CreatePaymentView(View):
         form = PaymentForm(request.POST) 
         if not selected_box_id:
             error = "Por favor, volte e selecione uma box."
-            return render(request, 'users/payment.html', {'form': form, 'error': error})
+            return render(request, 'users/payment_confirmation.html', {'form': form, 'error': error})
         
         # Se o formulário for válido
         if form.is_valid():
@@ -291,7 +252,7 @@ class CreatePaymentView(View):
             return render(request, 'users/payment_confirmation.html', {'payment': payment, 'form': form})
 
         # Caso o formulário não seja válido, renderiza novamente com os erros
-        return render(request, 'users/payment.html', {'form': form, 'error': 'Formulário inválido.'})
+        return render(request, 'users/payment_confirmation.html', {'form': form, 'error': 'Formulário inválido.'})
 
 
 # def login_view(request):

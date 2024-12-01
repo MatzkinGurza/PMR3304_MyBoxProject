@@ -182,21 +182,21 @@
       {% if user_rating %}
           <p>Sua Avaliação: <strong>{{ user_rating }}</strong> / 5</p>
       {% else %}
-          <p>You haven't rated this box yet.</p>
+          <p>Você ainda não avaliou a Box.</p>
       {% endif %}
   {% else %}
-      <p>You need to be logged in to see your rating.</p>
+      <p>Você precisa estar logado para ver sua avaliação.</p>
   {% endif %}
 </div>
 
 
   <hr class="my-4">
   <div class="comments-section">
-      <h3 class="text-secondary">Comments on {{ box.name }}</h3>
-      <a href="{% url 'home:add_comment' box.pk %}" class="btn btn-outline-primary btn-sm mb-3">Add Comment</a>
+      <h3 class="text-secondary">Comentários na {{ box.name }}</h3>
+      <a href="{% url 'home:add_comment' box.pk %}" class="btn btn-outline-primary btn-sm mb-3">Adicionar Comentário</a>
 
       {% if not box.comments.all %}
-          <p class="text-muted">No Comments Yet...</p>
+          <p class="text-muted">Ainda Sem Comentários...</p>
       {% else %}
            {% for comment in box.comments.all %} <!--post.comments.all|reverse  -->
               <div class="comment mb-3 p-2 border rounded text-white" style="background: #222;">
