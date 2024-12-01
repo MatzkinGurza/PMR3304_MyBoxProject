@@ -1,0 +1,53 @@
+/* home.css */
+
+/* Container Principal */
+.home-container {
+    padding: 20px;
+    text-align: center;
+    color: #fff;
+}
+
+/* Introdução */
+.intro-section {
+    margin-bottom: 30px;
+}
+
+.intro-section h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.intro-section p {
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+/* Produto */
+.product-card {
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.custom-card {
+    background-color: #222;
+    color: #fff;
+}
+
+
+.active-filter {
+    background-color: #007bff; /* Cor de fundo do filtro ativo */
+    color: white !important; /* Cor do texto do link */
+    font-weight: bold; /* Destacar o texto */
+    border: 1px solid #0056b3; /* Borda para realçar */
+}
+
+.filter-link.active-filter {
+    background-color: #007bff !important;
+    color: #fff !important;
+    font-weight: bold !important;
+    border: 1px solid #0056b3 !important;
+}
+
+
+/* Espaciamento entre linhas e colunas controlado pelo Bootstrap */
