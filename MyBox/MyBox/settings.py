@@ -38,7 +38,6 @@ SECRET_KEY = 'django-insecure-xq3gt_mkjfo1ublib2@o-hmj5ujtvza-cgu(hz3%4-xze-+^u5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ALLOWED_HOSTS = ["*"]
 
@@ -69,6 +68,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'MyBox.urls'
 
@@ -138,8 +141,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static'), ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
