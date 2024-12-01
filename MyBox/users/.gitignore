@@ -1,2 +1,4 @@
 db.sqlite3
 users/migrations
+__pycache__
+.virtualenvs
