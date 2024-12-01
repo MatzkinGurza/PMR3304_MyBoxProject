@@ -15,12 +15,12 @@ class Profile(models.Model):
     tipo_de_usuário = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
     
     # Campos para usuários
-    CPF = models.CharField(max_length=14, unique=False, blank=False, null=False, default="000.000.000-00")  # CPF genérico
-    telefone = models.CharField(max_length=15, blank=False, null=False, default="(00) 00000-0000")  # Telefone padrão genérico
-    endereço = models.TextField(blank=False, null=False, default="Endereço não informado")  # Endereço padrão
+    CPF = models.CharField(max_length=14, unique=False, blank=False, null=True, default="000.000.000-00")  # CPF genérico
+    telefone = models.CharField(max_length=15, blank=False, null=True, default="(00) 00000-0000")  # Telefone padrão genérico
+    endereço = models.TextField(blank=False, null=True, default="Endereço não informado")  # Endereço padrão
     complemento = models.CharField(max_length=100, blank=True, null=True, default="Nenhum complemento")  # Complemento padrão
-    CEP = models.CharField(max_length=10, blank=False, null=False, default="00000-000")  # CEP padrão genérico
-    nascimento = models.DateTimeField(blank=False, null=False, default="2000-01-01")  # Data de nascimento padrão
+    CEP = models.CharField(max_length=10, blank=False, null=True, default="00000-000")  # CEP padrão genérico
+    nascimento = models.DateTimeField(blank=False, null=True, default="2000-01-01")  # Data de nascimento padrão
 
     join_date = models.DateTimeField(auto_now_add=True)  # Data de criação do perfil
 
