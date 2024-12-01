@@ -2,8 +2,6 @@
 {% block title %}Crie Seu Perfil{% endblock %}
 
 {% block content %}
-
-<<<<<<< HEAD
 <div class="container mt-5 d-flex justify-content-center align-items-center">
     {% if user.is_authenticated %}
         <div class="card text-white mb-3 w-50" style="background-color: #222;">
@@ -17,21 +15,6 @@
                     <button type="submit" class="btn btn-secondary w-100">Criar página</button>
                 </form>
             </div>
-=======
-{% if user.is_authenticated %}
-
-<br/>
-<br/>
-<div class="card text-white mb-2" style="background-color: #222; width: 50%; justify-self: center;">
-    <h1 class="card-header">Crie Seu Perfil</h1>
-    <div class="card-body">
-        <div class="form-group">
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button class="btn btn-secondary">Criar</button>
-            </form>
->>>>>>> carrinho
         </div>
     {% else %}
         <h2 class="text-center">Você precisa estar registrado para fazer isso.</h2>
@@ -41,26 +24,5 @@
 <div class="text-center mt-4">
     <a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Voltar</a>
 </div>
-
-<<<<<<< HEAD
 {% endblock %}
-=======
-        <div class="form-group">
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button class="btn btn-secondary">Create Page</button>
-            </form>
-        </div> -->
 
-{% else %}
-    <h2> Faça Log in primeiro! </h2>
-    
-{% endif %}
-
-<a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Voltar</a>
-<br/>
-<br/>
-
-{% endblock %}
->>>>>>> carrinho
