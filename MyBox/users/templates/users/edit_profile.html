@@ -3,7 +3,6 @@
 
 {% block content %}
 
-<<<<<<< HEAD
 <div class="container mt-5 d-flex justify-content-center align-items-center">
     {% if user.is_authenticated %}
         {% if user.id == user.id %}
@@ -49,52 +48,3 @@
 </div>
 
 {% endblock %}
-=======
- {% if user.is_authenticated %}
-    {% if user.id == profile.user.id %} 
-
-
-        <br/>
-        <br/>
-        <div class="card" style="width: 100%;">
-            <h1 class="card-header">Edit {{user.username}} Profile Page</h1>
-            <div class="card-body">
-                <div class="form-group">
-                    <form method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button class="btn btn-secondary">Update</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <br/>
-        <br/>
-
-        <!-- <h1>Edit {{user.username}} Profile Page</h1>
-
-        <div class="form-group">
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button class="btn btn-secondary">Update</button>
-            </form>
-        </div> -->
-
-
-     {% else %}
-        <h2> Your account does not have this permission</h2>
-    {% endif %}
-
-{% else %}
-<h2> You need to be logged in to do this</h2>
-
-{% endif %} 
-
-
-<a class="btn btn-outline-secondary" href="{% url 'home:home' %}">Voltar</a>
-<br/>
-<br/>
-
-{% endblock %}
->>>>>>> carrinho
