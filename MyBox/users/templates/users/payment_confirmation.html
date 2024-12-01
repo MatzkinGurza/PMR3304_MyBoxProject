@@ -5,7 +5,7 @@
   <h1>Obrigado por utilizar o MyBox!!</h1>
   <form method="POST" action="{% url 'users:subscription' payment_id=payment.id %}">
     {% csrf_token %} 
-    <button type="submit" class="btn btn-primary">Ver subscrições</button>
+    <button type="submit" class="btn btn-primary">Confimrar subscrição</button>
   </form>
 </div>
 {% endblock %}
