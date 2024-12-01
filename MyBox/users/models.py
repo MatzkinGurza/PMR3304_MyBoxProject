@@ -1,10 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 from store.models import Box
-<<<<<<< HEAD
-=======
 from django.urls import reverse
->>>>>>> carrinho
+
 
 # Modelo de Perfil para Usuários
 class Profile(models.Model):
