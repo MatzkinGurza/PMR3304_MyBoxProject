@@ -11,7 +11,6 @@ from django.conf import settings
 from django.http import Http404, HttpResponseRedirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator
-<<<<<<< HEAD
 from django.contrib import messages
 from django.db.models import Avg
 
